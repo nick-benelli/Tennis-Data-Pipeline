@@ -25,3 +25,9 @@ Feel free to explore, analyze, and use the data for personal or educational purp
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
+
+### Creative Commons License
+
+All work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).  
+
+**In other words**: Attribution is required. Non-commercial use only.
