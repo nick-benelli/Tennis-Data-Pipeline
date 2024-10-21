@@ -2305,7 +2305,7 @@ ATP,Location,Tournament,Date,Series,Court,Surface,Round,Best of,Winner,Loser,WRa
 54,Beijing,China Open,2024-09-30,ATP500,Outdoor,Hard,Quarterfinals,3,Alcaraz C.,Khachanov K.,3,27.0,6690,1680.0,7.0,5.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.07,9.0,1.09,9.43,1.09,9.43,1.08,8.04
 54,Beijing,China Open,2024-09-30,ATP500,Outdoor,Hard,Quarterfinals,3,Medvedev D.,Cobolli F.,5,32.0,5475,1482.0,6.0,2.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.22,4.92,1.22,5.0,1.19,4.53
 54,Beijing,China Open,2024-09-30,ATP500,Outdoor,Hard,Quarterfinals,3,Sinner J.,Lehecka J.,1,37.0,11180,1345.0,6.0,2.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.11,6.5,1.15,6.38,1.16,6.5,1.13,5.8
-54,Beijing,China Open,2024-09-30,ATP500,Outdoor,Hard,Quarterfinals,3,Bu Y.,Rublev A.,96,6.0,584,4645.0,7.0,5.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.3,3.5,1.27,4.09,1.31,4.09,1.27,3.67
+54,Beijing,China Open,2024-09-30,ATP500,Outdoor,Hard,Quarterfinals,3,Bu Y.,Rublev A.,96,6.0,584,4645.0,7.0,5.0,6.0,4.0,,,,,,,2.0,0.0,Completed,3.5,1.3,4.09,1.27,4.09,1.31,3.67,1.27
 54,Beijing,China Open,2024-10-01,ATP500,Outdoor,Hard,Semifinals,3,Alcaraz C.,Medvedev D.,3,5.0,6690,5475.0,7.0,5.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.25,4.0,1.3,3.94,1.3,4.0,1.27,3.72
 54,Beijing,China Open,2024-10-01,ATP500,Outdoor,Hard,Semifinals,3,Sinner J.,Bu Y.,1,96.0,11180,584.0,6.0,3.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.06,10.0,1.06,12.52,1.07,12.85,1.06,9.43
 54,Beijing,China Open,2024-10-02,ATP500,Outdoor,Hard,The Final,3,Alcaraz C.,Sinner J.,3,1.0,6690,11180.0,6.0,7.0,6.0,4.0,7.0,6.0,,,,,2.0,1.0,Completed,1.73,2.1,1.85,2.07,1.85,2.23,1.74,2.08
@@ -2340,3 +2340,179 @@ ATP,Location,Tournament,Date,Series,Court,Surface,Round,Best of,Winner,Loser,WRa
 55,Tokyo,Japan Open Tennis Championships,2024-09-30,ATP500,Outdoor,Hard,Semifinals,3,Humbert U.,Machac T.,18,34.0,2370,1374.0,6.0,3.0,3.0,6.0,6.0,2.0,,,,,2.0,1.0,Completed,1.57,2.38,1.63,2.45,1.63,2.48,1.57,2.37
 55,Tokyo,Japan Open Tennis Championships,2024-09-30,ATP500,Outdoor,Hard,Semifinals,3,Fils A.,Rune H.,24,14.0,1775,2780.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,2.2,1.67,2.2,1.76,2.23,1.76,2.16,1.69
 55,Tokyo,Japan Open Tennis Championships,2024-10-01,ATP500,Outdoor,Hard,The Final,3,Fils A.,Humbert U.,24,18.0,1775,2370.0,5.0,7.0,7.0,6.0,6.0,3.0,,,,,2.0,1.0,Completed,2.38,1.57,2.33,1.68,2.5,1.68,2.33,1.59
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Muller A.,Nardi L.,74,89.0,748,649.0,4.0,6.0,6.0,1.0,6.0,1.0,,,,,2.0,1.0,Completed,1.53,2.5,1.62,2.43,1.62,2.51,1.56,2.38
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Rinderknech A.,Opelka R.,62,309.0,843,167.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.91,1.91,1.84,2.06,1.91,2.07,1.83,1.95
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Wu Y.,Nagal S.,560,83.0,63,681.0,6.0,3.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.63,2.42,1.67,2.42,1.6,2.3
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Van De Zandschulp B.,Carreno Busta P.,67,203.0,799,287.0,7.0,6.0,6.0,2.0,,,,,,,2.0,0.0,Completed,2.38,1.57,2.24,1.71,2.4,1.73,2.22,1.64
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Monfils G.,Dzumhur D.,46,96.0,1160,599.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.25,4.0,1.26,4.23,1.29,4.25,1.25,3.88
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Carballes Baena R.,Bautista Agut R.,54,57.0,955,896.0,3.0,6.0,6.0,3.0,6.0,2.0,,,,,2.0,1.0,Completed,2.75,1.44,2.66,1.53,2.75,1.53,2.6,1.48
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Cazaux A.,Cilic M.,92,211.0,622,278.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,2.5,1.53,2.3,1.68,2.5,1.73,2.31,1.6
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Fognini F.,Darderi L.,81,42.0,691,1265.0,6.0,4.0,6.0,7.0,6.0,4.0,,,,,2.0,1.0,Completed,2.1,1.73,2.11,1.8,2.11,1.92,2.02,1.77
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Shapovalov D.,Sonego L.,102,49.0,568,1081.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.5,2.63,1.66,2.34,1.66,2.63,1.59,2.34
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Vukic A.,Moutet C.,91,72.0,624,764.0,2.0,6.0,6.0,3.0,6.0,4.0,,,,,2.0,1.0,Completed,,,1.79,2.13,1.85,2.14,1.78,2.02
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Svajda Z.,Mannarino A.,131,53.0,452,984.0,6.0,3.0,1.0,6.0,6.0,0.0,,,,,2.0,1.0,Completed,2.1,1.73,2.15,1.78,2.15,1.79,2.09,1.72
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Shang J.,Wong C.,51,128.0,1045,460.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.22,4.33,1.23,4.61,1.26,4.61,1.22,4.15
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Davidovich Fokina A.,Diallo G.,64,105.0,825,557.0,7.0,5.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.73,2.1,1.88,2.01,1.88,2.13,1.75,2.05
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Daniel T.,Gerasimov E.,93,304.0,619,170.0,6.0,7.0,6.0,3.0,6.0,4.0,,,,,2.0,1.0,Completed,1.29,3.75,1.35,3.47,1.35,3.75,1.3,3.43
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Seyboth Wild T.,Evans D.,88,170.0,656,341.0,6.0,2.0,4.0,6.0,7.0,6.0,,,,,2.0,1.0,Completed,2.5,1.53,2.43,1.62,2.5,1.64,2.37,1.57
+56,Shanghai,Shanghai Masters,2024-10-02,Masters 1000,Outdoor,Hard,1st Round,3,Nishikori K.,Navone M.,153,38.0,388,1328.0,3.0,6.0,6.0,4.0,6.0,3.0,,,,,2.0,1.0,Completed,1.29,3.75,1.33,3.63,1.33,3.75,1.3,3.51
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Kecmanovic M.,Hijikata R.,55,78.0,945,718.0,6.0,2.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.53,2.5,1.55,2.58,1.58,2.6,1.53,2.46
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Munar J.,Gaston H.,63,80.0,839,703.0,6.0,3.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.52,2.7,1.52,2.8,1.46,2.68
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Goffin D.,Duckworth J.,66,75.0,800,748.0,6.0,4.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.53,2.68,1.58,2.78,1.48,2.6
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Zhou Y.,Nishioka Y.,440,60.0,97,854.0,2.0,4.0,,,,,,,,,0.0,0.0,Retired,5.5,1.14,5.34,1.19,5.6,1.19,5.15,1.15
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Berrettini M.,O Connell C.,44,71.0,1215,765.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.36,3.2,1.4,3.19,1.4,3.3,1.35,3.15
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Mensik J.,Martinez P.,65,45.0,822,1207.0,6.0,1.0,5.0,7.0,6.0,4.0,,,,,2.0,1.0,Completed,1.4,3.0,1.42,3.09,1.42,3.1,1.38,2.96
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Griekspoor T.,Diaz Acosta F.,40,59.0,1305,865.0,6.0,4.0,6.0,7.0,6.0,3.0,,,,,2.0,1.0,Completed,1.2,4.5,1.27,4.14,1.27,4.5,1.24,4.03
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Giron M.,Tu L.,47,191.0,1140,304.0,6.0,1.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.53,2.5,1.57,2.54,1.57,2.65,1.53,2.48
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Watanuki Y.,Kotov P.,336,56.0,149,907.0,6.0,7.0,6.0,4.0,7.0,5.0,,,,,2.0,1.0,Completed,2.0,1.8,2.05,1.84,2.1,1.85,1.99,1.8
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Shevchenko A.,Ramanathan R.,58,332.0,875,153.0,6.0,1.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.22,4.33,1.23,4.7,1.23,4.7,1.21,4.32
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Safiullin R.,Zhukayev B.,61,196.0,853,298.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.23,4.64,1.24,4.64,1.21,4.29
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Bergs Z.,Zhang Zh.,73,41.0,763,1270.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.17,1.76,2.25,1.76,2.13,1.69
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Bellucci M.,Harris B.,101,106.0,574,552.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.46,2.89,1.49,3.0,1.42,2.81
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Atmane T.,Kovacevic A.,161,76.0,369,740.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.73,2.1,1.75,2.18,1.76,2.32,1.69,2.14
+56,Shanghai,Shanghai Masters,2024-10-03,Masters 1000,Outdoor,Hard,1st Round,3,Wawrinka S.,Mpetshi G.,236,50.0,243,1073.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.1,1.81,2.25,1.81,2.11,1.71
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,1st Round,3,Michelsen A.,Bu Y.,43,69.0,1215,780.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.69,2.28,1.69,2.42,1.62,2.26
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Paul T.,Fognini F.,13,81.0,3045,691.0,6.0,1.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.07,9.0,1.07,10.77,1.09,10.77,1.06,8.67
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Tabilo A.,Rinderknech A.,23,62.0,1963,843.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.85,2.05,1.85,2.05,1.81,1.98
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Shelton B.,Shapovalov D.,16,102.0,2580,568.0,6.0,3.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.67,2.2,1.71,2.26,1.73,2.33,1.67,2.18
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Muller A.,Auger-Aliassime F.,74,22.0,748,2170.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,4.0,1.25,3.83,1.3,4.0,1.3,3.65,1.27
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Monfils G.,Baez S.,46,26.0,1160,1760.0,6.0,3.0,4.0,6.0,6.0,4.0,,,,,2.0,1.0,Completed,1.33,3.4,1.4,3.17,1.4,3.43,1.34,3.2
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Arnaldi M.,Svajda Z.,36,131.0,1350,452.0,6.0,7.0,6.0,2.0,6.0,4.0,,,,,2.0,1.0,Completed,1.44,2.75,1.53,2.65,1.53,2.75,1.48,2.62
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Tsitsipas S.,Nishikori K.,12,153.0,3390,388.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.5,2.63,1.54,2.64,1.55,2.64,1.5,2.55
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Humbert U.,Cazaux A.,15,92.0,2645,622.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.29,3.75,1.3,3.81,1.33,3.81,1.3,3.45
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Carballes Baena R.,Fils A.,54,21.0,955,2250.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,3.5,1.3,3.37,1.36,3.65,1.36,3.32,1.32
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Etcheverry T.,Van De Zandschulp B.,37,67.0,1335,799.0,7.0,6.0,3.0,6.0,7.0,5.0,,,,,2.0,1.0,Completed,1.91,1.91,1.94,1.94,1.94,1.98,1.87,1.91
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Machac T.,Davidovich Fokina A.,33,64.0,1449,825.0,1.0,6.0,7.0,6.0,6.0,4.0,,,,,2.0,1.0,Completed,1.57,2.38,1.64,2.39,1.64,2.58,1.56,2.38
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Medvedev D.,Seyboth Wild T.,5,88.0,5375,656.0,7.0,5.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.07,9.0,1.08,9.83,1.09,9.91,1.07,8.33
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Wu Y.,Jarry N.,560,29.0,63,1555.0,6.0,2.0,6.0,1.0,,,,,,,2.0,0.0,Completed,2.0,1.8,1.98,1.91,2.02,1.91,1.95,1.83
+56,Shanghai,Shanghai Masters,2024-10-04,Masters 1000,Outdoor,Hard,2nd Round,3,Vukic A.,Ruud C.,91,9.0,624,3965.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,3.4,1.33,3.32,1.37,3.4,1.37,3.21,1.34
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Alcaraz C.,Shang J.,2,51.0,7010,1045.0,6.0,2.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.08,8.0,1.1,8.82,1.11,8.82,1.08,7.59
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Watanuki Y.,Nakashima B.,336,35.0,149,1375.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,3.75,1.29,3.61,1.33,3.75,1.33,3.55,1.29
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Mensik J.,Rublev A.,65,6.0,822,4700.0,6.0,7.0,6.0,4.0,6.0,3.0,,,,,2.0,1.0,Completed,3.5,1.3,3.61,1.33,3.61,1.33,3.41,1.31
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Shevchenko A.,Cerundolo F.,58,31.0,875,1550.0,7.0,6.0,7.0,5.0,,,,,,,2.0,0.0,Completed,3.0,1.4,2.92,1.46,3.1,1.46,2.86,1.41
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Sinner J.,Daniel T.,1,93.0,11010,619.0,6.0,1.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.02,21.0,1.02,27.06,1.02,27.06,1.01,16.19
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Lehecka J.,Munar J.,34,63.0,1400,839.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.33,3.4,1.4,3.19,1.4,3.46,1.36,3.17
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Popyrin A.,Kecmanovic M.,24,55.0,1825,945.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.65,2.38,1.71,2.4,1.61,2.29
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Djokovic N.,Michelsen A.,4,43.0,5560,1215.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.22,4.75,1.24,4.76,1.2,4.45
+56,Shanghai,Shanghai Masters,2024-10-05,Masters 1000,Outdoor,Hard,2nd Round,3,Zverev A.,Bellucci M.,3,101.0,6705,574.0,6.0,4.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.21,4.93,1.21,5.0,1.18,4.73
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Fritz T.,Atmane T.,7,161.0,4060,369.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.1,7.0,1.13,6.94,1.2,7.0,1.13,5.86
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Safiullin R.,Bublik A.,61,27.0,853,1690.0,6.0,4.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.62,2.3,1.68,2.31,1.68,2.33,1.62,2.24
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Griekspoor T.,Thompson J.,40,28.0,1305,1571.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.18,1.75,2.21,1.75,2.13,1.7
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Dimitrov G.,Bergs Z.,10,73.0,3840,763.0,6.0,3.0,3.0,6.0,6.0,2.0,,,,,2.0,1.0,Completed,1.4,3.0,1.44,2.99,1.5,3.0,1.44,2.74
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Goffin D.,Musetti L.,66,18.0,800,2425.0,1.0,6.0,7.0,6.0,6.0,2.0,,,,,2.0,1.0,Completed,2.75,1.44,2.76,1.5,2.88,1.51,2.73,1.44
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Giron M.,Khachanov K.,47,25.0,1140,1780.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,2.63,1.5,2.65,1.53,2.77,1.53,2.59,1.49
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Tiafoe F.,Zhou Y.,17,440.0,2560,97.0,6.0,2.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.06,10.0,1.06,12.55,1.06,12.55,1.05,9.78
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Rune H.,Berrettini M.,14,44.0,2935,1215.0,4.0,6.0,6.0,4.0,6.0,3.0,,,,,2.0,1.0,Completed,1.8,2.0,1.86,2.03,1.91,2.03,1.84,1.93
+56,Shanghai,Shanghai Masters,2024-10-07,Masters 1000,Outdoor,Hard,2nd Round,3,Cobolli F.,Wawrinka S.,30,236.0,1552,243.0,6.0,7.0,7.0,6.0,6.0,3.0,,,,,2.0,1.0,Completed,1.36,3.2,1.4,3.2,1.46,3.37,1.37,3.06
+56,Shanghai,Shanghai Masters,2024-10-06,Masters 1000,Outdoor,Hard,3rd Round,3,Medvedev D.,Arnaldi M.,5,36.0,5375,1350.0,5.0,7.0,6.0,4.0,6.0,4.0,,,,,2.0,1.0,Completed,1.17,5.0,1.19,5.45,1.2,5.45,1.17,4.89
+56,Shanghai,Shanghai Masters,2024-10-06,Masters 1000,Outdoor,Hard,3rd Round,3,Sinner J.,Etcheverry T.,1,37.0,11010,1335.0,6.0,7.0,6.0,4.0,6.0,2.0,,,,,2.0,1.0,Completed,1.03,15.0,1.05,14.72,1.05,16.0,1.03,12.58
+56,Shanghai,Shanghai Masters,2024-10-06,Masters 1000,Outdoor,Hard,3rd Round,3,Alcaraz C.,Wu Y.,2,560.0,7010,63.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.03,15.0,1.03,20.68,1.03,20.68,1.02,13.2
+56,Shanghai,Shanghai Masters,2024-10-06,Masters 1000,Outdoor,Hard,3rd Round,3,Paul T.,Tabilo A.,13,23.0,3045,1963.0,6.0,7.0,7.0,6.0,6.0,2.0,,,,,2.0,1.0,Completed,1.25,4.0,1.24,4.53,1.25,4.53,1.23,4.06
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Machac T.,Vukic A.,33,91.0,1449,624.0,6.0,4.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.42,3.1,1.46,3.12,1.4,2.92
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Monfils G.,Humbert U.,46,15.0,1160,2645.0,7.0,6.0,2.0,6.0,6.0,1.0,,,,,2.0,1.0,Completed,3.2,1.36,3.23,1.4,3.25,1.4,3.08,1.36
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Tsitsipas S.,Muller A.,12,74.0,3390,748.0,6.0,3.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.22,4.33,1.27,4.23,1.27,4.34,1.23,4.05
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Mensik J.,Shevchenko A.,65,58.0,822,875.0,6.0,1.0,6.0,7.0,6.0,2.0,,,,,2.0,1.0,Completed,1.36,3.2,1.41,3.16,1.43,3.2,1.38,2.98
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Fritz T.,Watanuki Y.,7,336.0,4060,149.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.17,5.98,1.21,6.06,1.17,4.9
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Shelton B.,Carballes Baena R.,16,54.0,2580,955.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.17,5.92,1.21,5.92,1.15,5.2
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Dimitrov G.,Popyrin A.,10,24.0,3840,1825.0,7.0,6.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.67,2.2,1.66,2.37,1.76,2.37,1.65,2.21
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Safiullin R.,Tiafoe F.,61,17.0,853,2560.0,5.0,7.0,7.0,5.0,7.0,6.0,,,,,2.0,1.0,Completed,2.2,1.67,2.27,1.7,2.29,1.7,2.19,1.66
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Rune H.,Lehecka J.,14,34.0,2935,1400.0,6.0,4.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.53,2.5,1.61,2.47,1.65,2.51,1.57,2.38
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Djokovic N.,Cobolli F.,4,30.0,5560,1552.0,6.0,1.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.1,7.0,1.13,7.07,1.14,7.07,1.11,6.49
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Goffin D.,Giron M.,66,47.0,800,1140.0,1.0,6.0,6.0,3.0,7.0,5.0,,,,,2.0,1.0,Completed,2.2,1.67,2.24,1.73,2.24,1.76,2.13,1.7
+56,Shanghai,Shanghai Masters,2024-10-08,Masters 1000,Outdoor,Hard,3rd Round,3,Zverev A.,Griekspoor T.,3,40.0,6705,1305.0,7.0,6.0,2.0,6.0,7.0,6.0,,,,,2.0,1.0,Completed,1.22,4.33,1.2,5.18,1.24,5.33,1.2,4.51
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Sinner J.,Shelton B.,1,16.0,11010,2580.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.18,5.73,1.2,5.78,1.16,5.03
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Medvedev D.,Tsitsipas S.,5,12.0,5375,3390.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.42,3.14,1.46,3.14,1.41,2.86
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Alcaraz C.,Monfils G.,2,46.0,7010,1160.0,6.0,4.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.06,10.0,1.06,13.8,1.07,14.01,1.05,9.97
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Machac T.,Paul T.,33,13.0,1449,3045.0,3.0,6.0,6.0,4.0,6.0,3.0,,,,,2.0,1.0,Completed,2.5,1.53,2.53,1.59,2.87,1.59,2.47,1.53
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Mensik J.,Dimitrov G.,65,10.0,822,3840.0,6.0,3.0,3.0,6.0,6.0,4.0,,,,,2.0,1.0,Completed,3.2,1.36,3.41,1.37,3.52,1.37,3.21,1.34
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Djokovic N.,Safiullin R.,4,61.0,5560,853.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.1,7.0,1.1,8.93,1.13,8.93,1.1,6.84
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Fritz T.,Rune H.,7,14.0,4060,2935.0,6.0,1.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.53,2.5,1.6,2.52,1.6,2.54,1.55,2.41
+56,Shanghai,Shanghai Masters,2024-10-09,Masters 1000,Outdoor,Hard,4th Round,3,Goffin D.,Zverev A.,66,3.0,800,6705.0,6.0,4.0,7.0,5.0,,,,,,,2.0,0.0,Completed,5.5,1.14,6.87,1.14,6.87,1.16,5.8,1.14
+56,Shanghai,Shanghai Masters,2024-10-10,Masters 1000,Outdoor,Hard,Quarterfinals,3,Sinner J.,Medvedev D.,1,5.0,11010,5375.0,6.0,1.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.29,3.75,1.32,3.73,1.34,3.75,1.3,3.51
+56,Shanghai,Shanghai Masters,2024-10-10,Masters 1000,Outdoor,Hard,Quarterfinals,3,Machac T.,Alcaraz C.,33,2.0,1449,7010.0,7.0,6.0,7.0,5.0,,,,,,,2.0,0.0,Completed,8.0,1.08,9.53,1.09,9.53,1.09,7.91,1.08
+56,Shanghai,Shanghai Masters,2024-10-11,Masters 1000,Outdoor,Hard,Quarterfinals,3,Fritz T.,Goffin D.,7,66.0,4060,800.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.14,5.5,1.19,5.46,1.2,5.64,1.16,5.14
+56,Shanghai,Shanghai Masters,2024-10-11,Masters 1000,Outdoor,Hard,Quarterfinals,3,Djokovic N.,Mensik J.,4,65.0,5560,822.0,6.0,7.0,6.0,1.0,6.0,4.0,,,,,2.0,1.0,Completed,1.1,7.0,1.12,7.61,1.13,7.61,1.1,6.66
+56,Shanghai,Shanghai Masters,2024-10-12,Masters 1000,Outdoor,Hard,Semifinals,3,Sinner J.,Machac T.,1,33.0,11010,1449.0,6.0,4.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.11,6.5,1.11,8.02,1.14,8.02,1.11,6.49
+56,Shanghai,Shanghai Masters,2024-10-12,Masters 1000,Outdoor,Hard,Semifinals,3,Djokovic N.,Fritz T.,4,7.0,5560,4060.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.44,3.02,1.46,3.16,1.4,2.92
+56,Shanghai,Shanghai Masters,2024-10-13,Masters 1000,Outdoor,Hard,The Final,3,Sinner J.,Djokovic N.,4,4.0,11010,5560.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.43,3.07,1.44,3.07,1.41,2.87
+57,Almaty,Almaty Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Engel J.,Wong C.,458,133.0,91,452.0,7.0,5.0,6.0,4.0,,,,,,,2.0,0.0,Completed,3.0,1.4,2.97,1.44,3.0,1.45,2.88,1.4
+57,Almaty,Almaty Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Marterer M.,Dzumhur D.,114,100.0,507,584.0,7.0,5.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.8,2.0,2.01,1.88,2.01,2.1,1.86,1.93
+57,Almaty,Almaty Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Coric B.,Marozsan F.,96,57.0,595,940.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.16,1.77,2.16,1.82,2.03,1.76
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Diallo G.,O Connell C.,118,72.0,497,762.0,7.0,6.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.94,1.94,1.94,2.0,1.87,1.91
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Mannarino A.,Safiullin R.,56,58.0,949,908.0,5.0,7.0,7.0,6.0,6.0,3.0,,,,,2.0,1.0,Completed,3.0,1.4,3.15,1.4,3.15,1.42,2.96,1.39
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Virtanen O.,Fognini F.,116,76.0,499,721.0,6.0,3.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.58,2.57,1.64,2.6,1.54,2.44
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Zhukayev B.,Hassan B.,213,245.0,272,227.0,6.0,4.0,6.0,1.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.85,2.04,1.87,2.1,1.8,1.99
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Evans D.,Daniel T.,180,89.0,326,636.0,6.0,2.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.46,2.9,1.5,2.9,1.44,2.72
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Karatsev A.,Zhang Zh.,139,46.0,425,1190.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.12,1.79,2.12,1.84,2.02,1.77
+57,Almaty,Almaty Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Shevchenko A.,Kukushkin M.,61,111.0,900,524.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.67,2.2,1.72,2.23,1.72,2.25,1.67,2.17
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Vukic A.,Duckworth J.,85,63.0,669,848.0,6.0,4.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.5,2.63,1.68,2.3,1.68,2.63,1.54,2.43
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Machac T.,Skatov T.,25,192.0,1749,299.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.11,6.5,1.16,6.12,1.16,6.5,1.13,5.81
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Cerundolo F.,Engel J.,31,458.0,1470,91.0,6.0,4.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.25,4.51,1.25,4.59,1.21,4.22
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Diallo G.,Coric B.,118,96.0,497,595.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.73,2.1,1.78,2.17,1.78,2.23,1.69,2.13
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Tabilo A.,Marterer M.,23,114.0,1983,507.0,6.0,2.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.42,3.14,1.46,3.14,1.42,2.79
+57,Almaty,Almaty Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Shevchenko A.,Karatsev A.,61,139.0,900,425.0,6.0,1.0,6.0,7.0,7.0,5.0,,,,,2.0,1.0,Completed,2.0,1.8,2.09,1.83,2.13,1.92,2.01,1.78
+57,Almaty,Almaty Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Zhukayev B.,Machac T.,213,25.0,272,1749.0,3.0,1.0,,,,,,,,,0.0,0.0,Retired,5.0,1.17,5.77,1.18,5.77,1.2,4.79,1.18
+57,Almaty,Almaty Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Khachanov K.,Virtanen O.,26,116.0,1745,499.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.52,2.75,1.61,2.92,1.47,2.63
+57,Almaty,Almaty Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Vukic A.,Mannarino A.,85,56.0,669,949.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.69,2.1,1.81,2.12,1.81,2.13,1.75,2.05
+57,Almaty,Almaty Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Tiafoe F.,Evans D.,15,180.0,2600,326.0,6.0,7.0,7.0,6.0,6.0,3.0,,,,,2.0,1.0,Completed,1.4,3.0,1.43,3.06,1.45,3.1,1.39,2.93
+57,Almaty,Almaty Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Diallo G.,Tabilo A.,118,23.0,497,1983.0,3.0,6.0,6.0,3.0,6.0,4.0,,,,,2.0,1.0,Completed,2.0,1.8,2.08,1.84,2.08,1.88,1.99,1.8
+57,Almaty,Almaty Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Cerundolo F.,Shevchenko A.,31,61.0,1470,900.0,6.0,2.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.67,2.2,1.73,2.24,1.75,2.27,1.68,2.17
+57,Almaty,Almaty Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Vukic A.,Tiafoe F.,85,15.0,669,2600.0,6.0,2.0,7.0,6.0,,,,,,,2.0,0.0,Completed,3.0,1.4,3.11,1.42,3.11,1.48,2.89,1.4
+57,Almaty,Almaty Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Khachanov K.,Zhukayev B.,26,213.0,1745,272.0,6.0,2.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.29,3.75,1.28,4.07,1.29,4.1,1.25,3.87
+57,Almaty,Almaty Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Diallo G.,Cerundolo F.,118,31.0,497,1470.0,6.0,4.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.88,2.02,1.92,2.07,1.82,1.96
+57,Almaty,Almaty Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Khachanov K.,Vukic A.,26,85.0,1745,669.0,6.0,7.0,6.0,3.0,6.0,4.0,,,,,2.0,1.0,Completed,1.5,2.63,1.53,2.7,1.54,2.75,1.49,2.59
+57,Almaty,Almaty Open,2024-10-20,ATP250,Indoor,Hard,The Final,3,Khachanov K.,Diallo G.,26,118.0,1745,497.0,6.0,2.0,5.0,7.0,6.0,3.0,,,,,2.0,1.0,Completed,1.62,2.3,1.74,2.22,1.75,2.46,2.24,2.25
+58,Antwerp,European Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Carballes Baena R.,Koepfer D.,54,81.0,980,686.0,6.0,4.0,6.0,0.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.87,2.02,1.87,2.1,1.8,1.99
+58,Antwerp,European Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Navone M.,Monteiro T.,43,88.0,1238,636.0,6.0,3.0,4.0,6.0,7.0,6.0,,,,,2.0,1.0,Completed,2.0,1.8,2.02,1.87,2.06,1.9,1.97,1.81
+58,Antwerp,European Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Etcheverry T.,Gasquet R.,35,135.0,1375,446.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.4,3.15,1.45,3.15,1.39,2.92
+58,Antwerp,European Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Fucsovics M.,Collignon R.,93,164.0,614,358.0,6.0,2.0,6.0,0.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.81,2.1,1.83,2.14,1.77,2.02
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Lehecka J.,Munar J.,33,65.0,1440,844.0,6.0,1.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.25,4.0,1.32,3.67,1.33,4.01,1.28,3.59
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Gaston H.,Vatutin A.,77,336.0,693,148.0,3.0,6.0,6.0,3.0,6.0,3.0,,,,,2.0,1.0,Completed,1.62,2.3,1.62,2.42,1.65,2.42,1.6,2.29
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Giron M.,Van De Zandschulp B.,47,68.0,1165,804.0,6.0,4.0,6.0,1.0,,,,,,,2.0,0.0,Completed,1.91,1.91,1.93,1.96,1.93,2.01,1.87,1.91
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Bautista Agut R.,Van Assche L.,60,119.0,906,496.0,6.0,2.0,6.0,1.0,,,,,,,2.0,0.0,Completed,1.91,1.91,1.97,1.92,1.97,1.95,1.89,1.88
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Seyboth Wild T.,Mpetshi G.,80,48.0,686,1076.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,2.1,1.73,2.14,1.78,2.14,1.86,2.04,1.76
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Bergs Z.,Diaz Acosta F.,69,67.0,793,830.0,7.0,5.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.23,4.61,1.24,5.0,1.2,4.45
+58,Antwerp,European Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Rinderknech A.,Blockx A.,62,231.0,860,247.0,6.0,3.0,6.0,1.0,,,,,,,2.0,0.0,Completed,1.62,2.3,1.68,2.31,1.75,2.31,1.63,2.24
+58,Antwerp,European Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Altmaier D.,Bailly G.,84,869.0,672,21.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.52,2.7,1.59,2.7,1.53,2.45
+58,Antwerp,European Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Bautista Agut R.,Etcheverry T.,60,35.0,906,1375.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,2.0,1.8,2.12,1.81,2.12,1.89,1.98,1.81
+58,Antwerp,European Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Gaston H.,Navone M.,77,43.0,693,1238.0,6.0,4.0,6.0,7.0,7.0,6.0,,,,,2.0,1.0,Completed,2.1,1.73,2.27,1.71,2.27,1.75,2.15,1.68
+58,Antwerp,European Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,De Minaur A.,Carballes Baena R.,9,54.0,3610,980.0,2.0,6.0,6.0,4.0,6.0,2.0,,,,,2.0,1.0,Completed,1.17,5.0,1.18,5.67,1.2,5.67,1.17,4.9
+58,Antwerp,European Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Auger-Aliassime F.,Fucsovics M.,21,93.0,2155,614.0,6.0,7.0,6.0,4.0,6.0,2.0,,,,,2.0,1.0,Completed,1.44,2.75,1.51,2.77,1.53,2.9,1.46,2.66
+58,Antwerp,European Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Lehecka J.,Altmaier D.,33,84.0,1440,672.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.17,5.0,1.19,5.56,1.19,5.56,1.17,4.85
+58,Antwerp,European Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Giron M.,Rinderknech A.,47,62.0,1165,860.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.62,2.3,1.65,2.39,1.66,2.4,1.61,2.27
+58,Antwerp,European Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Tsitsipas S.,Seyboth Wild T.,11,80.0,3445,686.0,7.0,6.0,4.0,6.0,7.0,5.0,,,,,2.0,1.0,Completed,1.25,4.0,1.27,4.17,1.28,4.25,1.25,3.9
+58,Antwerp,European Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Bergs Z.,Baez S.,69,27.0,793,1725.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.25,4.0,1.27,4.2,1.29,4.2,1.25,3.87
+58,Antwerp,European Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Bautista Agut R.,Auger-Aliassime F.,60,21.0,906,2155.0,3.0,6.0,6.0,2.0,7.0,6.0,,,,,2.0,1.0,Completed,3.4,1.33,3.39,1.37,3.44,1.37,3.24,1.33
+58,Antwerp,European Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Gaston H.,De Minaur A.,77,9.0,693,3610.0,6.0,3.0,3.0,6.0,7.0,5.0,,,,,2.0,1.0,Completed,5.5,1.14,6.61,1.15,6.68,1.16,5.52,1.14
+58,Antwerp,European Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Lehecka J.,Tsitsipas S.,33,11.0,1440,3445.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.9,2.0,1.9,2.0,1.82,1.96
+58,Antwerp,European Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Giron M.,Bergs Z.,47,69.0,1165,793.0,6.0,2.0,6.0,2.0,,,,,,,2.0,0.0,Completed,2.1,1.69,2.21,1.75,2.23,1.75,2.13,1.69
+58,Antwerp,European Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Bautista Agut R.,Gaston H.,60,77.0,906,693.0,6.0,3.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.4,3.22,1.44,3.22,1.39,2.94
+58,Antwerp,European Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Lehecka J.,Giron M.,33,47.0,1440,1165.0,6.0,3.0,4.0,6.0,6.0,2.0,,,,,2.0,1.0,Completed,1.44,2.75,1.56,2.5,1.59,2.75,1.5,2.56
+58,Antwerp,European Open,2024-10-20,ATP250,Indoor,Hard,The Final,3,Bautista Agut R.,Lehecka J.,60,33.0,906,1440.0,7.0,5.0,6.0,1.0,,,,,,,2.0,0.0,Completed,3.2,1.36,3.31,1.38,3.31,1.42,3.04,1.37
+59,Stockholm,Nordic Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Stricker D.,Kovacevic A.,317,90.0,162,624.0,6.0,4.0,5.0,7.0,6.0,4.0,,,,,2.0,1.0,Completed,1.8,2.0,1.96,1.93,1.96,2.02,1.87,1.91
+59,Stockholm,Nordic Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Sonego L.,Huesler M.A.,50,152.0,1046,383.0,7.0,6.0,7.0,5.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.88,2.0,1.88,2.12,1.81,1.98
+59,Stockholm,Nordic Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Griekspoor T.,Kotov P.,37,59.0,1345,907.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.51,2.74,1.53,2.78,1.47,2.65
+59,Stockholm,Nordic Open,2024-10-14,ATP250,Indoor,Hard,1st Round,3,Berrettini M.,Darderi L.,42,44.0,1245,1228.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.13,6.0,1.14,6.83,1.15,6.83,1.13,5.86
+59,Stockholm,Nordic Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Fearnley J.,Moutet C.,99,71.0,588,764.0,6.0,2.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.4,3.0,1.42,3.09,1.44,3.09,1.4,2.9
+59,Stockholm,Nordic Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Kecmanovic M.,Norrie C.,55,52.0,965,989.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.8,2.0,1.88,2.02,1.95,2.02,1.84,1.94
+59,Stockholm,Nordic Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Djere L.,Martinez P.,113,39.0,516,1321.0,6.0,2.0,6.0,0.0,,,,,,,2.0,0.0,Completed,1.44,2.75,1.52,2.71,1.56,2.78,1.49,2.56
+59,Stockholm,Nordic Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Jarry N.,Ymer E.,34,252.0,1385,219.0,2.0,6.0,6.0,4.0,7.0,6.0,,,,,2.0,1.0,Completed,1.67,2.2,1.69,2.28,1.69,2.31,1.64,2.23
+59,Stockholm,Nordic Open,2024-10-15,ATP250,Indoor,Hard,1st Round,3,Muller A.,Borg L.,70,590.0,785,57.0,6.0,3.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.1,7.0,1.13,7.1,1.13,7.6,1.1,6.8
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Davidovich Fokina A.,Tirante T.A.,64,121.0,845,484.0,7.0,6.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.28,4.05,1.28,4.54,1.22,4.1
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Wawrinka S.,Nakashima B.,217,38.0,263,1340.0,6.0,4.0,6.0,4.0,,,,,,,2.0,0.0,Completed,3.0,1.4,3.18,1.4,3.21,1.43,2.98,1.38
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,1st Round,3,Halys Q.,Nagal S.,95,78.0,603,691.0,6.0,0.0,6.0,4.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.27,4.18,1.27,4.5,1.23,4.01
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Griekspoor T.,Fearnley J.,37,99.0,1345,588.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.73,2.1,1.72,2.25,1.73,2.27,1.69,2.14
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Stricker D.,Berrettini M.,317,42.0,162,1245.0,7.0,6.0,6.0,4.0,,,,,,,2.0,0.0,Completed,4.5,1.2,4.84,1.22,4.84,1.23,4.31,1.21
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Ruud C.,Sonego L.,8,50.0,3885,1046.0,6.0,3.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.57,2.38,1.63,2.43,1.63,2.54,1.57,2.37
+59,Stockholm,Nordic Open,2024-10-16,ATP250,Indoor,Hard,2nd Round,3,Paul T.,Djere L.,13,113.0,3055,516.0,6.0,2.0,7.0,6.0,,,,,,,2.0,0.0,Completed,1.22,4.33,1.26,4.37,1.27,4.38,1.23,4.08
+59,Stockholm,Nordic Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Kecmanovic M.,Jarry N.,55,34.0,965,1385.0,6.0,4.0,4.0,6.0,7.0,6.0,,,,,2.0,1.0,Completed,1.44,2.75,1.54,2.67,1.54,2.75,1.49,2.59
+59,Stockholm,Nordic Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Wawrinka S.,Davidovich Fokina A.,217,64.0,263,845.0,6.0,4.0,3.0,6.0,7.0,5.0,,,,,2.0,1.0,Completed,2.38,1.57,2.4,1.65,2.4,1.66,2.31,1.6
+59,Stockholm,Nordic Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Rublev A.,Muller A.,7,70.0,4110,785.0,6.0,4.0,6.0,1.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.2,5.25,1.22,5.25,1.19,4.53
+59,Stockholm,Nordic Open,2024-10-17,ATP250,Indoor,Hard,2nd Round,3,Dimitrov G.,Halys Q.,10,95.0,3580,603.0,7.0,6.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.25,4.0,1.25,4.4,1.26,4.4,1.24,4.02
+59,Stockholm,Nordic Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Paul T.,Kecmanovic M.,13,55.0,3055,965.0,7.0,6.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.29,3.75,1.31,3.86,1.34,3.86,1.28,3.58
+59,Stockholm,Nordic Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Wawrinka S.,Rublev A.,217,7.0,263,4110.0,7.0,6.0,7.0,6.0,,,,,,,2.0,0.0,Completed,5.0,1.17,5.42,1.19,5.42,1.22,4.67,1.19
+59,Stockholm,Nordic Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Griekspoor T.,Ruud C.,37,8.0,1345,3885.0,7.0,5.0,7.0,6.0,,,,,,,2.0,0.0,Completed,2.0,1.8,2.09,1.83,2.14,1.86,2.02,1.78
+59,Stockholm,Nordic Open,2024-10-18,ATP250,Indoor,Hard,Quarterfinals,3,Dimitrov G.,Stricker D.,10,317.0,3580,162.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.24,4.58,1.24,4.58,1.22,4.25
+59,Stockholm,Nordic Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Paul T.,Wawrinka S.,13,217.0,3055,263.0,6.0,3.0,6.0,2.0,,,,,,,2.0,0.0,Completed,1.2,4.5,1.24,4.66,1.25,4.66,1.21,4.28
+59,Stockholm,Nordic Open,2024-10-19,ATP250,Indoor,Hard,Semifinals,3,Dimitrov G.,Griekspoor T.,10,37.0,3580,1345.0,2.0,6.0,7.0,5.0,6.0,4.0,,,,,2.0,1.0,Completed,1.4,3.0,1.43,3.05,1.45,3.05,1.41,2.88
+59,Stockholm,Nordic Open,2024-10-20,ATP250,Indoor,Hard,The Final,3,Paul T.,Dimitrov G.,13,10.0,3055,3580.0,6.0,4.0,6.0,3.0,,,,,,,2.0,0.0,Completed,1.67,2.2,1.77,2.18,1.77,2.25,1.68,2.17
