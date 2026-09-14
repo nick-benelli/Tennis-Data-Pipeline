@@ -29,4 +29,5 @@ build-backend = "hatchling.build"
 dev = [
     "ipykernel>=7.3.0",
     "pytest>=9.1.1",
+    "truststore>=0.10.4",
 ]
