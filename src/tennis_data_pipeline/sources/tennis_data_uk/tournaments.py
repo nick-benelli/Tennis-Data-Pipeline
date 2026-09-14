@@ -62,14 +62,18 @@ def build_tournament_table(
     df = df.copy()
 
     if "source_year" in key_columns and "source_year" not in df.columns:
-        df["source_year"] = pd.to_datetime(df["Date"], errors="coerce").dt.year
+        df["source_year"] = pd.to_datetime(
+            df["Date"], format="mixed", errors="coerce"
+        ).dt.year
 
     required_columns = [*key_columns, *attribute_columns, "Date"]
     missing = [column for column in required_columns if column not in df.columns]
     if missing:
         raise KeyError(f"build_tournament_table: missing required columns: {missing}")
 
-    dates = pd.to_datetime(df["Date"], errors="coerce")
+    # Date format drifts across seasons (e.g. "1/1/23" vs. "2023-01-01"), so
+    # infer per-element rather than assuming one format for every row.
+    dates = pd.to_datetime(df["Date"], format="mixed", errors="coerce")
 
     grouped_attrs = df.groupby(key_columns)[attribute_columns]
 
