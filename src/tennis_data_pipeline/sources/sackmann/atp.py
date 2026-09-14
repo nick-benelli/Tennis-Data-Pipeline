@@ -1,4 +1,4 @@
-"""ATP-specific helpers for Tennis-Data.co.uk."""
+"""ATP helpers for the Sackmann archive."""
 
 from __future__ import annotations
 
@@ -7,34 +7,19 @@ from collections.abc import Iterable
 import pandas as pd
 
 from .cleaning import clean_matches
-from .client import TennisDataUKClient, Tour
+from .client import SackmannClient, Tour
 
 
 def load_year(
     year: int,
     *,
-    client: TennisDataUKClient | None = None,
+    client: SackmannClient | None = None,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Load one ATP season from Tennis-Data.co.uk.
+    """Load one ATP season."""
+    client = client or SackmannClient()
 
-    Parameters
-    ----------
-    year
-        Season year to download.
-    client
-        Optional preconfigured TennisDataUKClient.
-    clean
-        Whether to apply Tennis-Data UK cleaning and normalization.
-
-    Returns
-    -------
-    pandas.DataFrame
-        ATP matches for the requested year.
-    """
-    client = client or TennisDataUKClient()
-
-    df = client.load_year(
+    df = client.load_matches(
         year=year,
         tour=Tour.ATP,
     )
@@ -52,21 +37,20 @@ def load_year(
 def load_years(
     years: Iterable[int],
     *,
-    client: TennisDataUKClient | None = None,
+    client: SackmannClient | None = None,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Load and combine multiple ATP seasons."""
-    client = client or TennisDataUKClient()
+    """Load multiple ATP seasons."""
+    client = client or SackmannClient()
 
-    frames: list[pd.DataFrame] = []
-
-    for year in years:
-        df = load_year(
-            year=year,
+    frames = [
+        load_year(
+            year,
             client=client,
             clean=clean,
         )
-        frames.append(df)
+        for year in years
+    ]
 
     if not frames:
         return pd.DataFrame()
@@ -81,17 +65,17 @@ def load_range(
     start_year: int,
     end_year: int,
     *,
-    client: TennisDataUKClient | None = None,
+    client: SackmannClient | None = None,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Load an inclusive range of ATP seasons."""
+    """Load an inclusive ATP year range."""
     if end_year < start_year:
         raise ValueError(
             "end_year must be greater than or equal to start_year."
         )
 
     return load_years(
-        years=range(start_year, end_year + 1),
+        range(start_year, end_year + 1),
         client=client,
         clean=clean,
     )
