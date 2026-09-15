@@ -5,7 +5,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from tennis_data_pipeline.sources.tennis_data_uk.tournaments import build_tournament_table
+from tennis_data_pipeline.cleaner.uk.tournaments import build_tournament_table
 
 
 def _match_row(**overrides: object) -> dict:
