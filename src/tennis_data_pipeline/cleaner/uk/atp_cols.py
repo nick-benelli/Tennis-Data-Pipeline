@@ -39,15 +39,20 @@ COLUMN_MAP = {
 }
 
 ROUND_MAP = {
-    "1st Round": "R128",
-    "2nd Round": "R64",
-    "3rd Round": "R32",
-    "4th Round": "R16",
     "Quarterfinals": "QF",
     "Semifinals": "SF",
     "The Final": "F",
     "Round Robin": "RR",
 }
+
+# Draw sizes vary a lot (ATP250 ~28-32 players vs. Slams/Masters at 56-128), so a
+# raw "Nth Round" label doesn't map to a fixed bracket code. Instead, count
+# backward from the quarterfinals per tournament: the last numbered round before
+# QF is always effectively "R16", and each earlier numbered round doubles the
+# bracket size. See assign_round_codes() in atp.py.
+NUMBERED_ROUNDS_ASCENDING = ["1st Round", "2nd Round", "3rd Round", "4th Round", "5th Round"]
+BRACKET_CODES_FROM_QF = ["R16", "R32", "R64", "R128", "R256"]
+
 
 SURFACE_MAP = {
     "Hard": "hard",

@@ -29,6 +29,33 @@ def add_source_event_key(df : pd.DataFrame):
 
     return df
 
+def assign_round_codes(df: pd.DataFrame) -> pd.DataFrame:
+    """Map raw 'Nth Round' labels to bracket codes (R16/R32/...) per tournament.
+
+    Draw sizes vary a lot, so "1st Round" doesn't always mean the same bracket
+    size (an ATP250's 1st Round is a Round of 32; a Grand Slam's is a Round of
+    128). Count backward from the quarterfinals instead: the last numbered
+    round before QF is always effectively "R16", and each earlier numbered
+    round doubles the bracket (R32, R64, R128, ...).
+    """
+    df = df.copy()
+    df["Round"] = df["Round"].astype(object)
+
+    for _, group_index in df.groupby("source_event_key").groups.items():
+        rounds_present = [
+            r for r in cols.NUMBERED_ROUNDS_ASCENDING
+            if r in set(df.loc[group_index, "Round"])
+        ]
+        round_code_map = dict(cols.ROUND_MAP)
+        for code, label in zip(cols.BRACKET_CODES_FROM_QF, reversed(rounds_present)):
+            round_code_map[label] = code
+
+        df.loc[group_index, "Round"] = df.loc[group_index, "Round"].map(round_code_map)
+
+    df["Round"] = df["Round"].astype("category")
+    return df
+
+
 def normalize_key_value(series: pd.Series) -> pd.Series:
     return (
         series
@@ -149,6 +176,7 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
 def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     """Rename raw Tennis-Data UK columns/categories to canonical names and add key columns."""
     df = add_source_event_key(df)
+    df = assign_round_codes(df)
     df = df.rename(columns=cols.COLUMN_MAP)
 
     # rename_categories, not replace: these are `category` dtype and replace()
@@ -156,7 +184,6 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     df["series"] = df["series"].cat.rename_categories(cols.SERIES_MAP)
     df["surface"] = df["surface"].cat.rename_categories(cols.SURFACE_MAP)
     df["indoor_outdoor"] = df["indoor_outdoor"].cat.rename_categories(cols.COURT_MAP)
-    df["round"] = df["round"].cat.rename_categories(cols.ROUND_MAP)
     df["match_status"] = df["match_status"].cat.rename_categories(cols.STATUS_MAP)
 
     df = add_source_match_key(df)
