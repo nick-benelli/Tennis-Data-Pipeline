@@ -5,8 +5,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from tennis_data_pipeline.sources.tennis_data_uk.cleaning import clean_matches
-from tennis_data_pipeline.sources.tennis_data_uk.schema import COLUMN_MAP
+from tennis_data_pipeline.datasources.tennis_data_uk.cleaning import clean_matches
+from tennis_data_pipeline.datasources.tennis_data_uk.schema import COLUMN_MAP
 
 
 def _raw_match_row(**overrides: object) -> dict:

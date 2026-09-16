@@ -7,8 +7,8 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from tennis_data_pipeline.sources.tennis_data_uk import atp
-from tennis_data_pipeline.sources.tennis_data_uk.client import TennisDataUKClient, Tour
+from tennis_data_pipeline.datasources.tennis_data_uk import atp
+from tennis_data_pipeline.datasources.tennis_data_uk.client import TennisDataUKClient, Tour
 
 
 def _raw_frame() -> pd.DataFrame:
