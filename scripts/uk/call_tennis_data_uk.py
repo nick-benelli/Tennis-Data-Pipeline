@@ -22,7 +22,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from tennis_data_pipeline.sources.tennis_data_uk import atp, wta
+from tennis_data_pipeline.datasources.tennis_data_uk import atp, wta
 
 _TOUR_MODULES = {"atp": atp, "wta": wta}
 _DEFAULT_START_YEAR = {"atp": 2000, "wta": 2007}

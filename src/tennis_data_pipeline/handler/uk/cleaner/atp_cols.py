@@ -5,7 +5,7 @@ COLUMN_MAP = {
     "Tournament": "tournament_name",
     "Date": "match_date",
     "Series": "series",
-    "Court": "indoor_outdoor",
+    "Court": "is_outdoor",
     "Surface": "surface",
     "Round": "round",
     "Best of": "best_of",
@@ -61,9 +61,10 @@ SURFACE_MAP = {
     "Carpet": "carpet",
 }
 
+# Only ever "Indoor"/"Outdoor" in the raw data, so a bool fits better than a category.
 COURT_MAP = {
-    "Indoor": "indoor",
-    "Outdoor": "outdoor",
+    "Indoor": False,
+    "Outdoor": True,
 }
 
 STATUS_MAP = {
@@ -83,7 +84,6 @@ SERIES_MAP = {
 }
 
 EXPECTED_SURFACES = {"hard", "clay", "grass", "carpet"}
-EXPECTED_COURTS = {"indoor", "outdoor"}
 EXPECTED_ROUNDS = {"R128", "R64", "R32", "R16", "QF", "SF", "F", "RR"}
 
 # Canonical (post-COLUMN_MAP) odds column names; which bookmakers are present varies by year.
@@ -110,7 +110,7 @@ COLUMN_ORDER = [
     "location",
     "match_date",
     "series",
-    "indoor_outdoor",
+    "is_outdoor",
     "surface",
     "round",
     "best_of",

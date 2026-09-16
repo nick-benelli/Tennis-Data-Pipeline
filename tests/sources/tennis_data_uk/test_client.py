@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 import requests
 
-from tennis_data_pipeline.sources.tennis_data_uk.client import (
+from tennis_data_pipeline.datasources.tennis_data_uk.client import (
     TennisDataUKClient,
     TennisDataUKDownloadError,
     Tour,

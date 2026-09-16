@@ -1,6 +1,6 @@
 import re
 import pandas as pd
-from . import atp_cols as cols
+from ....cleaner.uk import atp_cols as cols
 
 def slugify(value: str) -> str:
     value = value.strip().lower()
@@ -95,7 +95,7 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     """Raise ValueError on any data-quality issue found in cleaned UK ATP match data."""
     required_cols = {
         "uk_tournament_id", "year", "location", "tournament_name", "match_date",
-        "series", "indoor_outdoor", "surface", "round", "best_of",
+        "series", "is_outdoor", "surface", "round", "best_of",
         "winner_name", "loser_name", "match_status",
         "source_event_key", "source_match_key",
     }
@@ -106,10 +106,6 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     unexpected_surfaces = set(df["surface"].dropna().unique()) - cols.EXPECTED_SURFACES
     if unexpected_surfaces:
         raise ValueError(f"Unexpected surfaces: {sorted(unexpected_surfaces)}")
-
-    unexpected_courts = set(df["indoor_outdoor"].dropna().unique()) - cols.EXPECTED_COURTS
-    if unexpected_courts:
-        raise ValueError(f"Unexpected court values: {sorted(unexpected_courts)}")
 
     unexpected_rounds = set(df["round"].dropna().unique()) - cols.EXPECTED_ROUNDS
     if unexpected_rounds:
@@ -183,7 +179,8 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     # can't introduce values that aren't already categories.
     df["series"] = df["series"].cat.rename_categories(cols.SERIES_MAP)
     df["surface"] = df["surface"].cat.rename_categories(cols.SURFACE_MAP)
-    df["indoor_outdoor"] = df["indoor_outdoor"].cat.rename_categories(cols.COURT_MAP)
+    # Only ever Indoor/Outdoor, so map straight to a nullable bool rather than a category.
+    df["is_outdoor"] = df["is_outdoor"].map(cols.COURT_MAP).astype("boolean")
     df["match_status"] = df["match_status"].cat.rename_categories(cols.STATUS_MAP)
 
     df = add_source_match_key(df)

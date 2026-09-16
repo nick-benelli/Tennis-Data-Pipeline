@@ -9,17 +9,18 @@ from pathlib import Path
 
 import pandas as pd
 
-from tennis_data_pipeline.cleaner.uk import atp_cols as cols
+from tennis_data_pipeline.handler.uk.cleaner import atp_cols as cols
 
 CATEGORY_COLS = [
     "source",
     "tour",
     "series",
-    "indoor_outdoor",
     "surface",
     "round",
     "match_status",
 ]
+
+BOOLEAN_COLS = ["is_outdoor"]
 
 STRING_COLS = [
     "tournament_name",
@@ -71,6 +72,10 @@ def load_clean_uk_atp_data(path: Path | str) -> pd.DataFrame:
     for col in CATEGORY_COLS:
         if col in df.columns:
             df[col] = df[col].astype("category")
+
+    for col in BOOLEAN_COLS:
+        if col in df.columns:
+            df[col] = df[col].astype("boolean")
 
     for col in STRING_COLS:
         if col in df.columns:
