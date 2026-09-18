@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from tennis_data_pipeline.config import settings
 from tennis_data_pipeline.handler.uk.cleaner import atp_cols as cols
 
 CATEGORY_COLS = [
@@ -84,16 +85,23 @@ def load_clean_uk_atp_data(path: Path | str) -> pd.DataFrame:
     return df
 
 
-def load_clean_uk_atp_year(project_dir: Path, year: int) -> pd.DataFrame:
-    """Load a single season's cleaned UK ATP matches CSV by year."""
+def load_clean_uk_atp_year(year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
+    """Load a single season's cleaned UK ATP matches CSV by year.
+
+    `project_dir` defaults to `settings.paths.project_dir` (override via the
+    TENNIS_DATA_PIPELINE_PROJECT_DIR env var) when not given.
+    """
+    project_dir = Path(project_dir) if project_dir is not None else settings.paths.project_dir
     path = project_dir / f"data/clean/tennis-data-uk/atp/uk_atp_singles_matches_{year}.csv"
     return load_clean_uk_atp_data(path)
 
 
-def load_clean_uk_atp_data_range(project_dir: Path, years: range | list[int]) -> pd.DataFrame:
+def load_clean_uk_atp_data_range(
+    years: range | list[int], project_dir: Path | str | None = None
+) -> pd.DataFrame:
     """Load and concatenate several seasons' cleaned UK ATP matches CSVs."""
     return pd.concat(
-        [load_clean_uk_atp_year(project_dir, year) for year in years],
+        [load_clean_uk_atp_year(year, project_dir) for year in years],
         ignore_index=True,
     )
 

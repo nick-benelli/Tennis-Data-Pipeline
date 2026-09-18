@@ -2,8 +2,22 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# src/tennis_data_pipeline/config/schemas.py -> repo root
+_DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[3]
+
+
+class PathsSettings(BaseSettings):
+    """Filesystem locations, overridable via TENNIS_DATA_PIPELINE_* env vars."""
+
+    model_config = SettingsConfigDict(env_prefix="TENNIS_DATA_PIPELINE_", extra="ignore")
+
+    # Override with TENNIS_DATA_PIPELINE_PROJECT_DIR when data lives outside the repo checkout.
+    project_dir: Path = Field(default=_DEFAULT_PROJECT_DIR)
 
 
 class TennisDataUKSettings(BaseSettings):
@@ -22,5 +36,6 @@ class TennisDataUKSettings(BaseSettings):
 class Settings(BaseModel):
     """Top-level application settings."""
 
+    paths: PathsSettings = Field(default_factory=PathsSettings)
     tennis_data_uk: TennisDataUKSettings = Field(default_factory=TennisDataUKSettings)
 
