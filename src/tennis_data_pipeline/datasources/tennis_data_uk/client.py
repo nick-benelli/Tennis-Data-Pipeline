@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from enum import StrEnum
 from io import BytesIO
 
@@ -11,6 +12,10 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from ...config import settings
+
+# Matches the randomized path segment tennis-data.co.uk inserts before each
+# season file, e.g. href="hrjk-85HytOjkhth76j_ygh4jf7/2024/2024.xlsx".
+_PATH_PREFIX_PATTERN = re.compile(r'href="([A-Za-z0-9_-]+)/\d{4}w?/\d{4}\.xlsx?"')
 
 
 class Tour(StrEnum):
@@ -32,6 +37,7 @@ class TennisDataUKClient:
     """Client for downloading ATP and WTA data from Tennis-Data.co.uk."""
 
     BASE_HOST = "www.tennis-data.co.uk"
+    DATA_PAGE_URL = f"https://{BASE_HOST}/data.php"
 
     # Tennis-Data UK served .xls before this season and .xlsx from this season onward.
     _LEGACY_EXTENSION_CUTOFF_YEAR = 2012
@@ -42,6 +48,7 @@ class TennisDataUKClient:
         retries: int | None = None,
         backoff_factor: float | None = None,
         allow_http_fallback: bool = True,
+        path_prefix: str | None = None,
     ) -> None:
         """
         Initialize the TennisDataUKClient.
@@ -51,6 +58,9 @@ class TennisDataUKClient:
             retries (int | None): The total number of retry attempts.
             backoff_factor (float | None): The backoff factor for retries.
             allow_http_fallback (bool): Whether to allow HTTP fallback if HTTPS fails.
+            path_prefix (str | None): The randomized path segment tennis-data.co.uk
+                inserts before each season's file. Defaults to the configured/last-known
+                value; call `discover_path_prefix()` if downloads start 404ing.
         """
         tennis_data_uk_settings = settings.tennis_data_uk
 
@@ -73,6 +83,12 @@ class TennisDataUKClient:
         )
 
         self.allow_http_fallback = allow_http_fallback
+
+        self.path_prefix = (
+            path_prefix
+            if path_prefix is not None
+            else tennis_data_uk_settings.path_prefix
+        )
 
         self.session = self._create_session(
             retries=retries,
@@ -169,8 +185,41 @@ class TennisDataUKClient:
 
         return (
             f"{scheme}://{self.BASE_HOST}/"
-            f"{directory}/{year}.{extension}"
+            f"{self.path_prefix}/{directory}/{year}.{extension}"
         )
+
+    def discover_path_prefix(self) -> str:
+        """
+        Scrape `DATA_PAGE_URL` for the current randomized path segment and update
+        `self.path_prefix` with it. Tennis-Data.co.uk has changed this segment
+        before with no advance notice, so call this (and update
+        `TENNIS_DATA_UK_PATH_PREFIX`/settings) if downloads start failing with 404s.
+
+        Returns:
+            str: The newly discovered path prefix.
+
+        Raises:
+            TennisDataUKDownloadError: If the data page can't be fetched or no
+                season-file link matching the expected pattern is found on it.
+        """
+        try:
+            response = self.session.get(self.DATA_PAGE_URL, timeout=self.timeout)
+            response.raise_for_status()
+        except requests.RequestException as error:
+            raise TennisDataUKDownloadError(
+                f"Failed to fetch {self.DATA_PAGE_URL} to discover the path prefix: {error}"
+            ) from error
+
+        match = _PATH_PREFIX_PATTERN.search(response.text)
+
+        if match is None:
+            raise TennisDataUKDownloadError(
+                f"Could not find a season-file path prefix on {self.DATA_PAGE_URL}"
+            )
+
+        self.path_prefix = match.group(1)
+
+        return self.path_prefix
 
     def _fetch(
         self,
