@@ -402,7 +402,7 @@ def main(argv: list[str] | None = None) -> int:
     for year in years:
         try:
             df_clean = process_year(args.project_dir, year)
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-exception-caught  # noqa: BLE001
             logger.error("[%s] FAILED: %s", year, exc, exc_info=args.verbose)
             results.append(YearResult(year=year, success=False, error=str(exc)))
             if args.fail_fast:

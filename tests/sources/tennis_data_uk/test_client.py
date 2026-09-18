@@ -24,14 +24,21 @@ def _response(status_code: int, content: bytes = b"") -> requests.Response:
 def test_build_url_atp() -> None:
     client = TennisDataUKClient()
     assert client.build_url(2024, Tour.ATP, extension="xlsx") == (
-        "https://www.tennis-data.co.uk/2024/2024.xlsx"
+        f"https://www.tennis-data.co.uk/{client.path_prefix}/2024/2024.xlsx"
     )
 
 
 def test_build_url_wta() -> None:
     client = TennisDataUKClient()
     assert client.build_url(2024, Tour.WTA, extension="xlsx") == (
-        "https://www.tennis-data.co.uk/2024w/2024.xlsx"
+        f"https://www.tennis-data.co.uk/{client.path_prefix}/2024w/2024.xlsx"
+    )
+
+
+def test_build_url_uses_custom_path_prefix() -> None:
+    client = TennisDataUKClient(path_prefix="custom-id")
+    assert client.build_url(2024, Tour.ATP, extension="xlsx") == (
+        "https://www.tennis-data.co.uk/custom-id/2024/2024.xlsx"
     )
 
 
@@ -128,3 +135,37 @@ def test_download_year_skips_http_fallback_on_definitive_404() -> None:
     assert all(
         call.args[0].startswith("https://") for call in mock_get.call_args_list
     )
+
+
+def test_discover_path_prefix_updates_client() -> None:
+    client = TennisDataUKClient()
+    html = (
+        '<a href="new-id-abc123/2024/2024.xlsx">2024</a>'
+        '<a href="new-id-abc123/2024w/2024.xlsx">2024</a>'
+    )
+
+    with patch.object(client.session, "get", return_value=_response(200, html.encode())):
+        prefix = client.discover_path_prefix()
+
+    assert prefix == "new-id-abc123"
+    assert client.path_prefix == "new-id-abc123"
+
+
+def test_discover_path_prefix_raises_when_not_found() -> None:
+    client = TennisDataUKClient()
+
+    with (
+        patch.object(client.session, "get", return_value=_response(200, b"<html></html>")),
+        pytest.raises(TennisDataUKDownloadError),
+    ):
+        client.discover_path_prefix()
+
+
+def test_discover_path_prefix_raises_on_request_failure() -> None:
+    client = TennisDataUKClient()
+
+    with (
+        patch.object(client.session, "get", side_effect=requests.ConnectionError("down")),
+        pytest.raises(TennisDataUKDownloadError),
+    ):
+        client.discover_path_prefix()

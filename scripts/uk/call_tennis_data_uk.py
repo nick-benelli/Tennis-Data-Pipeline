@@ -10,8 +10,17 @@ derive betting-market columns (Odd_1/Odd_2, Score) - the output stays in the
 package's source-faithful winner_/loser_ schema.
 
 Usage:
+    # Default: bootstrap full history if --output doesn't exist yet, otherwise refresh the current year.
     python scripts/call_tennis_data_uk.py --tour wta --output data/clean/tennis-data-uk/wta_daily.csv
-    python scripts/call_tennis_data_uk.py --tour atp --output data/clean/tennis-data-uk/atp_daily.csv --start-year 2000
+
+    # Refresh/backfill a single season.
+    python scripts/call_tennis_data_uk.py --tour atp --output data/clean/tennis-data-uk/atp_daily.csv --year 2023
+
+    # Refresh/backfill a range of seasons (--end-year defaults to --year or the current year).
+    python scripts/call_tennis_data_uk.py --tour atp --output data/clean/tennis-data-uk/atp_daily.csv --start-year 2000 --end-year 2010
+
+    # Range plus an extra out-of-range season, e.g. backfill 2015-2020 and also refresh 2023.
+    python scripts/call_tennis_data_uk.py --tour atp --output data/clean/tennis-data-uk/atp_daily.csv --start-year 2015 --end-year 2020 --year 2023
 """
 
 from __future__ import annotations
@@ -32,20 +41,35 @@ _DEFAULT_START_YEAR = {"atp": 2000, "wta": 2007}
 _DEDUP_COLUMNS = ["Date", "Tournament", "Round", "winner_Name", "loser_Name"]
 
 
-def _load_full_history(tour_module, start_year: int, end_year: int) -> pd.DataFrame:
-    """Download every season in range, skipping any single year that fails."""
-    frames: list[pd.DataFrame] = []
+def _resolve_years(
+    tour: str,
+    *,
+    year: int | None,
+    start_year: int | None,
+    end_year: int | None,
+    existing_is_empty: bool,
+) -> list[int]:
+    """Turn --year/--start-year/--end-year into the sorted list of seasons to fetch."""
+    current_year = dt.datetime.now().astimezone().year
+    years: set[int] = set()
 
-    for year in range(start_year, end_year + 1):
-        try:
-            frames.append(tour_module.load_year(year))
-        except Exception as exc:  # noqa: BLE001 - a bad season should not abort the rest
-            print(f"Skipped {year}: {exc}")
+    if start_year is not None or end_year is not None:
+        range_start = start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
+        range_end = end_year if end_year is not None else (year or current_year)
+        years.update(range(range_start, range_end + 1))
 
-    if not frames:
-        raise RuntimeError(f"No seasons could be downloaded for {start_year}-{end_year}.")
+    if year is not None:
+        years.add(year)
 
-    return pd.concat(frames, ignore_index=True)
+    if not years:
+        # No years given: bootstrap full history for a new dataset, or just refresh
+        # the current season for one that already exists (the old daily-update behavior).
+        if existing_is_empty:
+            years.update(range(_DEFAULT_START_YEAR[tour], current_year + 1))
+        else:
+            years.add(current_year)
+
+    return sorted(years)
 
 
 def _read_existing(output_path: Path) -> pd.DataFrame:
@@ -74,29 +98,36 @@ def update_dataset(
     tour: str,
     output_path: Path,
     *,
-    start_year: int | None = None,
     year: int | None = None,
+    start_year: int | None = None,
+    end_year: int | None = None,
 ) -> pd.DataFrame:
-    """Refresh a Tennis-Data UK dataset for one tour and persist it to CSV."""
+    """Download/refresh one or more Tennis-Data UK seasons and persist the dataset to CSV."""
     tour_module = _TOUR_MODULES[tour]
-    year = year or dt.datetime.now().astimezone().year
-    start_year = start_year or _DEFAULT_START_YEAR[tour]
-
     existing = _read_existing(output_path)
 
-    if existing.empty:
-        print(f"No existing dataset at {output_path}; downloading full history {start_year}-{year}.")
-        final = _load_full_history(tour_module, start_year, year)
-    else:
-        print(f"Found existing dataset at {output_path} ({len(existing):,} rows); refreshing {year}.")
+    years = _resolve_years(
+        tour,
+        year=year,
+        start_year=start_year,
+        end_year=end_year,
+        existing_is_empty=existing.empty,
+    )
+    print(f"Fetching {tour.upper()} seasons: {years[0]}-{years[-1]} ({len(years)} season(s)).")
 
+    final = existing
+
+    for season in years:
         try:
-            updated_year = tour_module.load_year(year)
-        except Exception as exc:  # noqa: BLE001 - keep the existing dataset on refresh failure
-            print(f"Failed to refresh {year}: {exc}. Keeping existing dataset unchanged.")
-            final = existing
-        else:
-            final = _upsert_year(existing, updated_year, year)
+            downloaded = tour_module.load_year(season)
+        except Exception as exc:  # pylint: disable=broad-exception-caught  # noqa: BLE001
+            print(f"Skipped {season}: {exc}")
+            continue
+
+        final = _upsert_year(final, downloaded, season)
+
+    if final.empty:
+        raise RuntimeError(f"No seasons could be downloaded for {tour.upper()} {years[0]}-{years[-1]}.")
 
     rows_before = len(final)
     final = final.drop_duplicates(subset=_DEDUP_COLUMNS, keep="last")
@@ -118,24 +149,36 @@ def update_dataset(
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--tour", choices=sorted(_TOUR_MODULES), default="wta")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--tour", choices=sorted(_TOUR_MODULES), default="wta", help="Tour to download (default: wta)")
     parser.add_argument("--output", required=True, type=Path, help="CSV path to read/write")
+    parser.add_argument("--year", type=int, default=None, help="Single season to download/refresh")
     parser.add_argument(
         "--start-year",
         type=int,
         default=None,
-        help="First season to download when no dataset exists yet (default: 2000 for ATP, 2007 for WTA)",
+        help="First season of a range to download/refresh (default: 2000 for ATP, 2007 for WTA)",
     )
-    parser.add_argument("--year", type=int, default=None, help="Season to refresh (default: current year)")
+    parser.add_argument(
+        "--end-year",
+        type=int,
+        default=None,
+        help="Last season of a range to download/refresh (default: --year, or the current year)",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Parse CLI args and run the dataset update."""
     args = _parse_args(argv)
-    update_dataset(args.tour, args.output, start_year=args.start_year, year=args.year)
+    update_dataset(
+        args.tour,
+        args.output,
+        year=args.year,
+        start_year=args.start_year,
+        end_year=args.end_year,
+    )
 
 
 if __name__ == "__main__":
     main()
-

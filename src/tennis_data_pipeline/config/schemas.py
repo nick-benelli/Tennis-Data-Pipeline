@@ -32,6 +32,14 @@ class TennisDataUKSettings(BaseSettings):
     github_user: str = "nick-benelli"
     github_repo: str = "Tennis-Data-Pipeline"
 
+    # Tennis-Data.co.uk inserts a randomized path segment before each season's file
+    # (e.g. "hrjk-85HytOjkhth76j_ygh4jf7" in ".../hrjk-.../2024/2024.xlsx"). It has
+    # changed at least once already, so it's exposed here (and via env var) rather
+    # than baked directly into the URL builder. If downloads start 404ing, call
+    # TennisDataUKClient.discover_path_prefix() to scrape the current value from
+    # https://www.tennis-data.co.uk/data.php, or set TENNIS_DATA_UK_PATH_PREFIX.
+    path_prefix: str = "hrjk-85HytOjkhth76j_ygh4jf7"
+
 
 class Settings(BaseModel):
     """Top-level application settings."""
