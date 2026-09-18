@@ -78,7 +78,11 @@ COLUMN_MAP = {
     "MaxW" : "winner_Max_odds", 
     "MaxL" : "loser_Max_odds",
     "AvgW" : "winner_Avg_odds", 
-    "AvgL" : "loser_Avg_odds"
+    "AvgL" : "loser_Avg_odds",
+
+    # Betfair Exchange odds, added by the site in 2025.
+    "BFEW" : "winner_BFE_odds",
+    "BFEL" : "loser_BFE_odds",
 }
 
 # Canonical (post-COLUMN_MAP) columns that should hold numeric values. Used to
@@ -128,4 +132,6 @@ NUMERIC_COLUMNS = [
     "loser_Max_odds",
     "winner_Avg_odds",
     "loser_Avg_odds",
+    "winner_BFE_odds",
+    "loser_BFE_odds",
 ]

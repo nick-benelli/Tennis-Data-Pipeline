@@ -1,20 +1,18 @@
 import pandas as pd
 
-from tennis_data_pipeline.handler.uk.cleaner import atp_cols as cols
 from tennis_data_pipeline.handler.uk.cleaner import common
 from tennis_data_pipeline.handler.uk.cleaner import quality
+from tennis_data_pipeline.handler.uk.cleaner import wta_cols as cols
 
 
 def add_source_event_key(df: pd.DataFrame) -> pd.DataFrame:
-    return common.add_source_event_key(df, id_column="ATP")
+    return common.add_source_event_key(df, id_column="WTA")
 
 
 def assign_round_codes(df: pd.DataFrame) -> pd.DataFrame:
     """Map raw 'Nth Round' labels to bracket codes (R16/R32/...) per tournament.
 
-    Draw sizes vary a lot, so a raw "1st Round" doesn't always mean the same
-    bracket size (an ATP250's 1st Round is a Round of 32; a Grand Slam's is a
-    Round of 128). See common.assign_round_codes() for the counting logic.
+    See common.assign_round_codes() for the counting-backward-from-QF logic.
     """
     return common.assign_round_codes(df, cols.ROUND_MAP)
 
@@ -27,8 +25,8 @@ def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
     return common.add_source_match_key(df)
 
 
-def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
-    """Raise ValueError on any data-quality issue found in cleaned UK ATP match data."""
+def validate_clean_uk_wta_data(df: pd.DataFrame) -> None:
+    """Raise ValueError on any data-quality issue found in cleaned UK WTA match data."""
     required_cols = {
         "uk_tournament_id", "year", "location", "tournament_name", "match_date",
         "series", "is_outdoor", "surface", "round", "best_of",
@@ -50,11 +48,9 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     if df["source_match_key"].duplicated().any():
         raise ValueError("Duplicate source_match_key values found.")
 
-    # Early-season tournaments (e.g. Brisbane, Doha, Pune) often play their first
-    # Early-season tournaments (e.g. Brisbane, Doha, Chennai, Pune) often play their
-    # first round in late December of the prior calendar year (the exact date varies
-    # by year, e.g. Dec 30 in 2013, Dec 31 in 2018); treat any December date in the
-    # prior year as valid for the season.
+    # Early-season tournaments (e.g. Brisbane, Auckland, Adelaide) often play their
+    # first round in late December of the prior calendar year; treat any December
+    # date in the prior year as valid for the season.
     match_date = df["match_date"]
     valid_year = (df["year"] == match_date.dt.year) | (
         (df["year"] == match_date.dt.year + 1)
@@ -68,7 +64,9 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     if same_player.any():
         raise ValueError(f"{same_player.sum()} rows have identical winner and loser.")
 
-    invalid_best_of = ~df["best_of"].isin([3, 5])
+    # WTA singles is always best-of-3 (fix_wta_category_typos corrects the one
+    # known bad "Best of == 5" row before this runs).
+    invalid_best_of = df["best_of"] != 3
     if invalid_best_of.any():
         missing_best_of = df.loc[invalid_best_of, "best_of"].isna().sum()
         unexpected_values = sorted(df.loc[invalid_best_of, "best_of"].dropna().unique())
@@ -105,7 +103,8 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
         if invalid_odds.any():
             raise ValueError(f"{col} contains {invalid_odds.sum()} odds < 1.")
 
-def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
+
+def clean_uk_wta_data(df: pd.DataFrame) -> pd.DataFrame:
     """Rename raw Tennis-Data UK columns/categories to canonical names and add key columns."""
     df = add_source_event_key(df)
     df = assign_round_codes(df)
@@ -122,24 +121,32 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     df = add_source_match_key(df)
 
     df["source"] = "tennis_data_uk"
-    df["tour"] = "atp"
-    df = common.ensure_odds_columns(df, cols.ODDS_COLS)
+    df["tour"] = "wta"
+    df = common.ensure_columns(df, cols.ODDS_COLS)
+    # WTA singles is always best-of-3; keep set_4/set_5 as all-NaN so ATP and
+    # WTA share the exact same column set.
+    df = common.ensure_columns(df, [
+        "winner_set_4_games", "loser_set_4_games",
+        "winner_set_5_games", "loser_set_5_games",
+    ])
     df = df[cols.COLUMN_ORDER]
 
-    validate_clean_uk_atp_data(df)
+    validate_clean_uk_wta_data(df)
 
     return df
 
-def summarize_uk_atp_quality(df: pd.DataFrame) -> None:
+
+def summarize_uk_wta_quality(df: pd.DataFrame) -> None:
     quality.summarize_uk_quality(df)
 
 
-def build_uk_atp_quality_report(df: pd.DataFrame) -> pd.DataFrame:
-    """Flatten UK ATP data-quality metrics into a single-row DataFrame (one row per report run)."""
-    return quality.build_uk_quality_report(df, tour="atp")
+def build_uk_wta_quality_report(df: pd.DataFrame) -> pd.DataFrame:
+    """Flatten UK WTA data-quality metrics into a single-row DataFrame (one row per report run)."""
+    return quality.build_uk_quality_report(df, tour="wta")
+
 
 __all__ = [
-    "build_uk_atp_quality_report",
-    "clean_uk_atp_data",
-    "summarize_uk_atp_quality",
+    "build_uk_wta_quality_report",
+    "clean_uk_wta_data",
+    "summarize_uk_wta_quality",
 ]

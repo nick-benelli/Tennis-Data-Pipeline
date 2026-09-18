@@ -1,17 +1,16 @@
-"""Clean Tennis-Data UK ATP season CSVs (raw -> validated -> clean) from the CLI.
+"""Clean Tennis-Data UK WTA season CSVs (raw -> validated -> clean) from the CLI.
 
-Ports notebooks/cleaning/uk-data-cleaning.ipynb into a repeatable batch job:
-loads one or more raw seasons, applies the known data-error fixes verified in
-that notebook, runs them through `clean_uk_atp_data`, appends to the shared
-ATP+WTA quality report, and writes the clean CSV per year. Each year is
-processed independently: one bad season is logged and skipped rather than
+Mirrors `clean_uk_atp_data.py`: loads one or more raw seasons, applies known
+data-error fixes, runs them through `clean_uk_wta_data`, appends to the
+shared ATP+WTA quality report, and writes the clean CSV per year. Each year
+is processed independently: one bad season is logged and skipped rather than
 aborting the whole batch (use --fail-fast to change that).
 
 Usage:
-    python scripts/uk/clean_uk_atp_data.py 2022
-    python scripts/uk/clean_uk_atp_data.py 2019 2015 2013
-    python scripts/uk/clean_uk_atp_data.py 2010-2023
-    python scripts/uk/clean_uk_atp_data.py 2000-2009 2015 2020-2023 --verbose
+    python scripts/uk/clean_uk_wta_data.py 2022
+    python scripts/uk/clean_uk_wta_data.py 2019 2015 2013
+    python scripts/uk/clean_uk_wta_data.py 2007-2023
+    python scripts/uk/clean_uk_wta_data.py 2007-2015 2020-2023 --verbose
 """
 
 from __future__ import annotations
@@ -25,9 +24,9 @@ from pathlib import Path
 import pandas as pd
 
 from tennis_data_pipeline.handler.uk.cleaner import common, known_fixes, quality
-from tennis_data_pipeline.handler.uk.cleaner.atp import (
-    build_uk_atp_quality_report,
-    clean_uk_atp_data,
+from tennis_data_pipeline.handler.uk.cleaner.wta import (
+    build_uk_wta_quality_report,
+    clean_uk_wta_data,
 )
 from tennis_data_pipeline.handler.uk.validatior.tournaments import (
     find_uk_inconsistent_tournaments,
@@ -36,35 +35,24 @@ from tennis_data_pipeline.handler.uk.validatior.tournaments import (
 
 logger = logging.getLogger(__name__)
 
-# scripts/uk/clean_uk_atp_data.py -> repo root is two levels up.
+# scripts/uk/clean_uk_wta_data.py -> repo root is two levels up.
 DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[2]
 
-
-RAW_DATA_DIR = "data/raw/tennis-data-uk/atp"
-CLEAN_DATA_DIR = "data/clean/tennis-data-uk/atp"
+RAW_DATA_DIR = "data/raw/tennis-data-uk/wta"
+CLEAN_DATA_DIR = "data/clean/tennis-data-uk/wta"
 QUALITY_REPORT_PATH = "data/clean/tennis-data-uk/analysis/tennis_data_uk_quality_report.csv"
 
-# Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
-# known, already-reviewed issues (e.g. two same-week tournaments sharing a raw id).
-YEARS_WITH_KNOWN_TOURNAMENT_INCONSISTENCIES = {2023}
-YEARS_WITH_KNOWN_REUSED_TOURNAMENT_IDS = {2023}
-
-ATP_BEST_OF_5_TOURNAMENTS = {
-    "Australian Open",
-    "French Open",
-    "Roland Garros",
-    "Wimbledon",
-    "US Open",
-}
+# Years where find_uk_inconsistent_tournaments flags known, already-reviewed issues.
+YEARS_WITH_KNOWN_TOURNAMENT_INCONSISTENCIES: set[int] = set()
 
 
 # --------------------------------------------------------------------------- #
 # Load + known-issue fixes
 # --------------------------------------------------------------------------- #
 
-def load_dirty_uk_atp_data(project_dir: Path, year: int) -> pd.DataFrame:
-    """Load one season's raw Tennis-Data UK ATP CSV with basic dtypes applied."""
-    path = project_dir / RAW_DATA_DIR / f"atp_singles_results_{year}.csv"
+def load_dirty_uk_wta_data(project_dir: Path, year: int) -> pd.DataFrame:
+    """Load one season's raw Tennis-Data UK WTA CSV with basic dtypes applied."""
+    path = project_dir / RAW_DATA_DIR / f"wta_singles_results_{year}.csv"
     if not path.exists():
         raise FileNotFoundError(f"No raw data file for {year}: {path}")
 
@@ -74,44 +62,41 @@ def load_dirty_uk_atp_data(project_dir: Path, year: int) -> pd.DataFrame:
     df["Date"] = pd.to_datetime(df["Date"], format="mixed", dayfirst=False)
     df["Year"] = year
 
-    # Nullable ints: ranks/points/set-scores are whole numbers but can be missing (e.g. retired matches).
+    # Category-level typo fixes must run before "Best of"/"Tier"/"Surface"/"Comment"
+    # are coerced to numeric/category dtype (see known_fixes.fix_wta_category_typos).
+    df = known_fixes.fix_wta_category_typos(df)
+
+    # Nullable ints: ranks/set-scores are whole numbers but can be missing (e.g.
+    # retired matches). WTA singles is always best-of-3, so there's no W4/L4/W5/L5.
+    # WPts/LPts are excluded here: 2007's ranking-points formula produced
+    # fractional values (e.g. 332.25), so they're left as plain floats below.
     int_cols = [
-        "ATP", "Year", "Best of",
-        "WRank", "LRank", "WPts", "LPts",
-        "W1", "L1", "W2", "L2", "W3", "L3", "W4", "L4", "W5", "L5",
+        "WTA", "Year", "Best of",
+        "WRank", "LRank",
+        "W1", "L1", "W2", "L2", "W3", "L3",
         "Wsets", "Lsets",
     ]
     for col in int_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
 
+    if "WPts" in df.columns:
+        df["WPts"] = pd.to_numeric(df["WPts"], errors="coerce")
+    if "LPts" in df.columns:
+        df["LPts"] = pd.to_numeric(df["LPts"], errors="coerce")
+
     # Everything left over is bookmaker odds; which bookmakers are present varies by year.
     known_cols = {
-        "ATP", "Year", "Location", "Tournament", "Date", "Series", "Court",
-        "Surface", "Round", "Best of", "Winner", "Loser", "Comment", *int_cols,
+        "WTA", "Year", "Location", "Tournament", "Date", "Tier", "Court",
+        "Surface", "Round", "Best of", "Winner", "Loser", "Comment",
+        "WPts", "LPts", *int_cols,
     }
     odds_cols = [col for col in df.columns if col not in known_cols]
     df[odds_cols] = df[odds_cols].apply(pd.to_numeric, errors="coerce")
 
-    for col in ["Series", "Court", "Surface", "Round", "Comment"]:
+    for col in ["Tier", "Court", "Surface", "Round", "Comment"]:
         if col in df.columns:
             df[col] = df[col].astype("category")
-
-    return df
-
-
-def apply_known_best_of_fixes(df: pd.DataFrame) -> pd.DataFrame:
-    """Correct raw 'Best of' values the source mislabels or omits entirely."""
-    df = df.copy()
-
-    # All ATP Grand Slams are best-of-5; the raw source mislabels some individual matches.
-    grand_slam_mask = df["Tournament"].isin(ATP_BEST_OF_5_TOURNAMENTS)
-    df.loc[grand_slam_mask, "Best of"] = 5
-
-    # ATP Finals (Masters Cup) is best-of-3 for every round; the raw source omits
-    # "Best of" entirely for these rows rather than mislabeling it.
-    masters_cup_mask = df["Series"] == "Masters Cup"
-    df.loc[masters_cup_mask & df["Best of"].isna(), "Best of"] = 3
 
     return df
 
@@ -127,13 +112,8 @@ def fix_bad_odds(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
-    """Apply hand-verified single-match fixes registered for this year.
-
-    See notebooks/cleaning/uk-data-cleaning.ipynb "Bad Set-Score Checker" for
-    the Wikipedia sources backing each of these; the fixes themselves live in
-    `handler/uk/cleaner/known_fixes.py`.
-    """
-    return known_fixes.apply_match_fixes(df, tour="atp", year=year, fixes=known_fixes.ATP_MATCH_FIXES)
+    """Apply hand-verified single-match fixes registered for this year (none yet for WTA)."""
+    return known_fixes.apply_match_fixes(df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES)
 
 
 # --------------------------------------------------------------------------- #
@@ -148,8 +128,8 @@ def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
 
     metrics, affected_rows = find_uk_inconsistent_tournaments(
         df,
-        key_columns=["ATP", "Year", "Location"],
-        info_cols=["Tournament", "Series", "Court", "Surface", "Best of"],
+        key_columns=["WTA", "Year", "Location"],
+        info_cols=["Tournament", "Tier", "Court", "Surface", "Best of"],
     )
 
     if not metrics.empty and not affected_rows.empty:
@@ -160,18 +140,14 @@ def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
 
 
 def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
-    """Raise if an ATP tournament id is reused across genuinely different tournaments."""
-    if year in YEARS_WITH_KNOWN_REUSED_TOURNAMENT_IDS:
-        logger.info("Skipping reused-tournament-id check for %s (known exception).", year)
-        return
-
+    """Raise if a WTA tournament id is reused across genuinely different tournaments."""
     metrics, affected_rows = find_uk_reused_tournament_ids(
-        df=df, id_col="ATP", disambiguating_cols=["Location", "Tournament"],
+        df=df, id_col="WTA", disambiguating_cols=["Location", "Tournament"],
     )
 
     if not metrics.empty and not affected_rows.empty:
         raise ValueError(
-            f"{len(metrics)} reused ATP tournament id(s) found in {year} "
+            f"{len(metrics)} reused WTA tournament id(s) found in {year} "
             f"({len(affected_rows)} row(s) affected)."
         )
 
@@ -186,7 +162,7 @@ def update_quality_report(project_dir: Path, quality_report: pd.DataFrame) -> Pa
 
 
 def write_clean_csv(project_dir: Path, year: int, df: pd.DataFrame) -> Path:
-    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_atp_singles_matches_{year}.csv"
+    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_wta_singles_matches_{year}.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_path, index=False)
     return csv_path
@@ -199,10 +175,7 @@ def write_clean_csv(project_dir: Path, year: int, df: pd.DataFrame) -> Path:
 def process_year(project_dir: Path, year: int) -> pd.DataFrame:
     """Run the full raw-to-clean pipeline for a single season and persist the output."""
     logger.info("[%s] Loading raw data", year)
-    df = load_dirty_uk_atp_data(project_dir, year)
-
-    logger.info("[%s] Applying known Best-of fixes", year)
-    df = apply_known_best_of_fixes(df)
+    df = load_dirty_uk_wta_data(project_dir, year)
 
     logger.info("[%s] Checking tournament consistency", year)
     check_tournament_consistency(df, year)
@@ -215,9 +188,9 @@ def process_year(project_dir: Path, year: int) -> pd.DataFrame:
     df = apply_known_match_fixes(df, year)
 
     logger.info("[%s] Cleaning data", year)
-    df_clean = clean_uk_atp_data(df)
+    df_clean = clean_uk_wta_data(df)
 
-    quality_report = build_uk_atp_quality_report(df_clean)
+    quality_report = build_uk_wta_quality_report(df_clean)
     report_path = update_quality_report(project_dir, quality_report)
     logger.info("[%s] Updated quality report at %s", year, report_path)
 
