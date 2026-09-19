@@ -40,9 +40,9 @@ logger = logging.getLogger(__name__)
 DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[2]
 
 
-RAW_DATA_DIR = "data/raw/tennis-data-uk/atp"
-CLEAN_DATA_DIR = "data/clean/tennis-data-uk/atp"
-QUALITY_REPORT_PATH = "data/clean/tennis-data-uk/analysis/tennis_data_uk_quality_report.csv"
+RAW_DATA_DIR = "data/raw/uk/atp"
+CLEAN_DATA_DIR = "data/clean/uk/atp"
+QUALITY_REPORT_PATH = "data/clean/uk/analysis/tennis_data_uk_quality_report.csv"
 
 # Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
 # known, already-reviewed issues (e.g. two same-week tournaments sharing a raw id).

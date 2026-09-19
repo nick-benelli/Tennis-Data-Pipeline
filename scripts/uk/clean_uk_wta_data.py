@@ -38,9 +38,9 @@ logger = logging.getLogger(__name__)
 # scripts/uk/clean_uk_wta_data.py -> repo root is two levels up.
 DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[2]
 
-RAW_DATA_DIR = "data/raw/tennis-data-uk/wta"
-CLEAN_DATA_DIR = "data/clean/tennis-data-uk/wta"
-QUALITY_REPORT_PATH = "data/clean/tennis-data-uk/analysis/tennis_data_uk_quality_report.csv"
+RAW_DATA_DIR = "data/raw/uk/wta"
+CLEAN_DATA_DIR = "data/clean/uk/wta"
+QUALITY_REPORT_PATH = "data/clean/uk/analysis/tennis_data_uk_quality_report.csv"
 
 # Years where find_uk_inconsistent_tournaments flags known, already-reviewed issues.
 YEARS_WITH_KNOWN_TOURNAMENT_INCONSISTENCIES: set[int] = set()

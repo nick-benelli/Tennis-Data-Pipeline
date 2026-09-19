@@ -39,6 +39,11 @@ class TennisDataUKClient:
     BASE_HOST = "www.tennis-data.co.uk"
     DATA_PAGE_URL = f"https://{BASE_HOST}/data.php"
 
+    # Last-known-good path segment; used when config leaves `path_prefix` blank.
+    # Tennis-Data.co.uk has changed this before with no notice - if downloads
+    # start 404ing, call discover_path_prefix() and update config/config.yaml.
+    DEFAULT_PATH_PREFIX = "hrjk-85HytOjkhth76j_ygh4jf7"
+
     # Tennis-Data UK served .xls before this season and .xlsx from this season onward.
     _LEGACY_EXTENSION_CUTOFF_YEAR = 2012
 
@@ -84,10 +89,13 @@ class TennisDataUKClient:
 
         self.allow_http_fallback = allow_http_fallback
 
+        # An explicit blank in config.yaml means "no override configured";
+        # fall back to the last-known-good default rather than an empty string
+        # (which would build a broken URL like ".../<host>//2024/2024.xlsx").
         self.path_prefix = (
             path_prefix
-            if path_prefix is not None
-            else tennis_data_uk_settings.path_prefix
+            or tennis_data_uk_settings.path_prefix
+            or self.DEFAULT_PATH_PREFIX
         )
 
         self.session = self._create_session(
@@ -304,6 +312,16 @@ class TennisDataUKClient:
         year: int,
         tour: Tour | str,
     ) -> pd.DataFrame:
+        """
+        Load the data for a given year and tour as a pandas DataFrame.
+
+        Args:
+            year (int): The year of the data to load.
+            tour (Tour | str): The tour of the data to load.
+
+        Returns:
+            pd.DataFrame: The loaded data.
+        """
         contents = self.download_year(
             year=year,
             tour=tour,

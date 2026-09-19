@@ -97,7 +97,7 @@ def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
 
 @pytest.mark.parametrize("fix", known_fixes.ATP_MATCH_FIXES, ids=lambda f: f.description)
 def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fixes.MatchFix) -> None:
-    path = PROJECT_DIR / "data/raw/tennis-data-uk/atp" / f"atp_singles_results_{fix.year}.csv"
+    path = PROJECT_DIR / "data/raw/uk/atp" / f"atp_singles_results_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")
 
@@ -107,7 +107,7 @@ def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fix
 
 @pytest.mark.parametrize("fix", known_fixes.WTA_MATCH_FIXES, ids=lambda f: f.description)
 def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fixes.MatchFix) -> None:
-    path = PROJECT_DIR / "data/raw/tennis-data-uk/wta" / f"wta_singles_results_{fix.year}.csv"
+    path = PROJECT_DIR / "data/raw/uk/wta" / f"wta_singles_results_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")
 
