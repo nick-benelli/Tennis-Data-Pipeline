@@ -63,6 +63,10 @@ def _fix_nottingham_sf_2015(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "Comment"] = "Retired"
 
 
+def _fix_montpellier_final_2020(df: pd.DataFrame, mask: pd.Series) -> None:
+    df.loc[mask, "ATP"] = 6
+
+
 def _fix_bogota_final_2013(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, ["Wsets", "Lsets"]] = [2, 0]
 
@@ -112,6 +116,22 @@ ATP_MATCH_FIXES: list[MatchFix] = [
             & (df["Date"] == "2013-07-21")
         ),
         apply=_fix_bogota_final_2013,
+    ),
+    MatchFix(
+        tour="atp",
+        year=2020,
+        description=(
+            "Montpellier (Open Sud de France) final (Monfils d. Pospisil): raw source "
+            "mislabels ATP id as 7 (Pune's id that season); every other Montpellier row is 6"
+        ),
+        source_url="https://en.wikipedia.org/wiki/2020_Open_Sud_de_France",
+        match=lambda df: (
+            (df["ATP"] == 7)
+            & (df["Winner"] == "Monfils G.")
+            & (df["Loser"] == "Pospisil V.")
+            & (df["Date"] == "2020-02-09")
+        ),
+        apply=_fix_montpellier_final_2020,
     ),
 ]
 

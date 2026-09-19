@@ -42,7 +42,7 @@ DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[2]
 
 RAW_DATA_DIR = "data/raw/uk/atp"
 CLEAN_DATA_DIR = "data/clean/uk/atp"
-QUALITY_REPORT_PATH = "data/clean/uk/analysis/tennis_data_uk_quality_report.csv"
+QUALITY_REPORT_PATH = "data/clean/uk/analysis/uk_quality_report.csv"
 
 # Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
 # known, already-reviewed issues (e.g. two same-week tournaments sharing a raw id).
@@ -64,7 +64,7 @@ ATP_BEST_OF_5_TOURNAMENTS = {
 
 def load_dirty_uk_atp_data(project_dir: Path, year: int) -> pd.DataFrame:
     """Load one season's raw Tennis-Data UK ATP CSV with basic dtypes applied."""
-    path = project_dir / RAW_DATA_DIR / f"atp_singles_results_{year}.csv"
+    path = project_dir / RAW_DATA_DIR / f"uk_atp_singles_raw_{year}.csv"
     if not path.exists():
         raise FileNotFoundError(f"No raw data file for {year}: {path}")
 
@@ -186,7 +186,7 @@ def update_quality_report(project_dir: Path, quality_report: pd.DataFrame) -> Pa
 
 
 def write_clean_csv(project_dir: Path, year: int, df: pd.DataFrame) -> Path:
-    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_atp_singles_matches_{year}.csv"
+    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_atp_singles_clean_{year}.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_path, index=False)
     return csv_path
@@ -204,15 +204,15 @@ def process_year(project_dir: Path, year: int) -> pd.DataFrame:
     logger.info("[%s] Applying known Best-of fixes", year)
     df = apply_known_best_of_fixes(df)
 
+    logger.info("[%s] Applying known match fixes", year)
+    df = apply_known_match_fixes(df, year)
+
     logger.info("[%s] Checking tournament consistency", year)
     check_tournament_consistency(df, year)
     check_reused_tournament_ids(df, year)
 
     logger.info("[%s] Fixing bad odds", year)
     df = fix_bad_odds(df)
-
-    logger.info("[%s] Applying known match fixes", year)
-    df = apply_known_match_fixes(df, year)
 
     logger.info("[%s] Cleaning data", year)
     df_clean = clean_uk_atp_data(df)

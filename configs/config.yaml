@@ -1,10 +1,5 @@
 
 
-# TODO:
-# CSV Naming Conventions
-# What else
-
-
 # Directory Settings
 # All *_dir values are resolved relative to `project_dir` unless absolute.
 paths:
@@ -41,5 +36,5 @@ tennis_data_uk:
   raw_dir_name: ${TENNIS_DATA_UK_RAW_DIR_NAME:uk}
   # Not ${VAR:default}-wrapped: the {tour}/{year} placeholders themselves use
   # brace syntax, which would confuse the env-var substitution's own ${VAR:default} parsing.
-  raw_filename_template: "{tour}_singles_results_{year}.csv"
+  raw_filename_template: "uk_{tour}_singles_raw_{year}.csv"
 

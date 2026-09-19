@@ -183,7 +183,7 @@ class TennisDataUKConfig(StrictModel):
     # Stage-2 raw checkpoint naming: written to
     # <paths.raw>/<raw_dir_name>/<tour>/<raw_filename_template>.
     raw_dir_name: str = "uk"
-    raw_filename_template: str = "{tour}_singles_results_{year}.csv"
+    raw_filename_template: str = "uk_{tour}_singles_raw_{year}.csv"
 
     @field_validator("request_timeout_seconds", mode="before")
     @classmethod
