@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import sys
 
 from tennis_data_pipeline.datasources.tennis_data_uk.client import TennisDataUKClient
 from tennis_data_pipeline.workflows.tennis_data_uk import fetch_and_checkpoint_year
@@ -44,6 +45,11 @@ def _resolve_years(
     if start_year is not None or end_year is not None:
         range_start = start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
         range_end = end_year if end_year is not None else (year or current_year)
+        if range_end < range_start:
+            raise ValueError(
+                f"--end-year ({range_end}) is before --start-year ({range_start}) - "
+                "check for a typo (e.g. a missing digit)."
+            )
         years.update(range(range_start, range_end + 1))
 
     if year is not None:
@@ -93,13 +99,20 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: list[str] | None = None) -> int:
     """Parse CLI args and fetch/checkpoint the resolved season(s)."""
     args = _parse_args(argv)
-    years = _resolve_years(args.tour, year=args.year, start_year=args.start_year, end_year=args.end_year)
+
+    try:
+        years = _resolve_years(args.tour, year=args.year, start_year=args.start_year, end_year=args.end_year)
+    except ValueError as exc:
+        print(f"Error: {exc}")
+        return 2
+
     fetch_years(args.tour, years, write=args.write)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
 
