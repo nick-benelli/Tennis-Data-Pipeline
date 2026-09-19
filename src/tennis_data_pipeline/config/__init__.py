@@ -1,10 +1,37 @@
-"""Application configuration."""
+"""Configuration loading and validation."""
 
-from __future__ import annotations
+from .loader import (
+    clear_config_cache,
+    get_config_dict,
+    get_project_root,
+    get_settings,
+    load_app_config,
+    load_raw_config,
+    reload_config,
+    resolve_config_path,
+    settings,
+)
+from .schemas import (
+    ApiConfig,
+    AppConfig,
+    LoggingConfig,
+    PathsConfig,
+    TennisDataUKConfig,
+)
 
-from .loader import load_settings
-from .schemas import PathsSettings, Settings, TennisDataUKSettings
-
-settings = load_settings()
-
-__all__ = ["PathsSettings", "Settings", "TennisDataUKSettings", "settings"]
+__all__ = [
+    "ApiConfig",
+    "AppConfig",
+    "LoggingConfig",
+    "PathsConfig",
+    "TennisDataUKConfig",
+    "clear_config_cache",
+    "get_config_dict",
+    "get_project_root",
+    "get_settings",
+    "load_app_config",
+    "load_raw_config",
+    "reload_config",
+    "resolve_config_path",
+    "settings",
+]

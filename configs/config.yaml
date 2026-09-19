@@ -1,0 +1,45 @@
+
+
+# TODO:
+# CSV Naming Conventions
+# What else
+
+
+# Directory Settings
+# All *_dir values are resolved relative to `project_dir` unless absolute.
+paths:
+  project_dir: ${TENNIS_DATA_PIPELINE_PROJECT_DIR} # default: auto-detected repo root
+  data_dir: ${TENNIS_DATA_PIPELINE_DATA_DIR:data}
+  raw_dir: ${TENNIS_DATA_PIPELINE_RAW_DIR:data/raw}
+  clean_dir: ${TENNIS_DATA_PIPELINE_CLEAN_DIR:data/clean}
+  archive_dir: ${TENNIS_DATA_PIPELINE_ARCHIVE_DIR:data/archive}
+
+# API Client Settings (defaults shared by data sources)
+api:
+  verify_ssl: ${API_VERIFY_SSL:true} # Enable/disable TLS certificate verification
+  timeout_seconds: ${API_TIMEOUT_SECONDS:30.0} # Request timeout in seconds
+  retry_insecure_on_ssl_error: ${API_RETRY_INSECURE_ON_SSL_ERROR:true}
+  max_retries: ${API_MAX_RETRIES:3} # Retry attempts after the initial request
+  backoff_seconds: ${API_BACKOFF_SECONDS:0.8} # Base exponential backoff delay in seconds
+
+# Logging Settings
+logging:
+  output: ${LOG_OUTPUT:console} # Options: console, file, both (default: console)
+  file_path: ${LOG_FILE_PATH:logs/tennis_data_pipeline.log} # Path for log file
+  level: ${LOG_LEVEL:INFO} # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s" # Log message format
+
+# Tennis-Data.co.uk data source settings
+tennis_data_uk:
+  request_timeout_seconds: ${TENNIS_DATA_UK_TIMEOUT_SECONDS:30.0}
+  retry_total: ${TENNIS_DATA_UK_RETRY_TOTAL:3}
+  retry_backoff_factor: ${TENNIS_DATA_UK_RETRY_BACKOFF_FACTOR:0.5}
+  path_prefix: ${TENNIS_DATA_UK_PATH_PREFIX:} # leave blank to use the client's last-known default
+  github_user: ${TENNIS_DATA_UK_GITHUB_USER:}
+  github_repo: ${TENNIS_DATA_UK_GITHUB_REPO:}
+  # Stage-2 raw checkpoint naming: written to <paths.raw>/<raw_dir_name>/<tour>/<raw_filename_template>.
+  raw_dir_name: ${TENNIS_DATA_UK_RAW_DIR_NAME:uk}
+  # Not ${VAR:default}-wrapped: the {tour}/{year} placeholders themselves use
+  # brace syntax, which would confuse the env-var substitution's own ${VAR:default} parsing.
+  raw_filename_template: "{tour}_singles_results_{year}.csv"
+

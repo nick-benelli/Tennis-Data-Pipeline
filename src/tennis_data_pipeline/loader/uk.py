@@ -105,7 +105,7 @@ def load_clean_uk_year(tour: str, year: int, project_dir: Path | str | None = No
     TENNIS_DATA_PIPELINE_PROJECT_DIR env var) when not given.
     """
     project_dir = Path(project_dir) if project_dir is not None else settings.paths.project_dir
-    path = project_dir / f"data/clean/tennis-data-uk/{tour}/uk_{tour}_singles_matches_{year}.csv"
+    path = project_dir / f"data/clean/uk/{tour}/uk_{tour}_singles_matches_{year}.csv"
     return load_clean_uk_data(path, tour)
 
 
