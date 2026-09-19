@@ -40,7 +40,7 @@ DEFAULT_PROJECT_DIR = Path(__file__).resolve().parents[2]
 
 RAW_DATA_DIR = "data/raw/uk/wta"
 CLEAN_DATA_DIR = "data/clean/uk/wta"
-QUALITY_REPORT_PATH = "data/clean/uk/analysis/tennis_data_uk_quality_report.csv"
+QUALITY_REPORT_PATH = "data/clean/uk/analysis/uk_quality_report.csv"
 
 # Years where find_uk_inconsistent_tournaments flags known, already-reviewed issues.
 YEARS_WITH_KNOWN_TOURNAMENT_INCONSISTENCIES: set[int] = set()
@@ -52,7 +52,7 @@ YEARS_WITH_KNOWN_TOURNAMENT_INCONSISTENCIES: set[int] = set()
 
 def load_dirty_uk_wta_data(project_dir: Path, year: int) -> pd.DataFrame:
     """Load one season's raw Tennis-Data UK WTA CSV with basic dtypes applied."""
-    path = project_dir / RAW_DATA_DIR / f"wta_singles_results_{year}.csv"
+    path = project_dir / RAW_DATA_DIR / f"uk_wta_singles_raw_{year}.csv"
     if not path.exists():
         raise FileNotFoundError(f"No raw data file for {year}: {path}")
 
@@ -162,7 +162,7 @@ def update_quality_report(project_dir: Path, quality_report: pd.DataFrame) -> Pa
 
 
 def write_clean_csv(project_dir: Path, year: int, df: pd.DataFrame) -> Path:
-    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_wta_singles_matches_{year}.csv"
+    csv_path = project_dir / CLEAN_DATA_DIR / f"uk_wta_singles_clean_{year}.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_path, index=False)
     return csv_path

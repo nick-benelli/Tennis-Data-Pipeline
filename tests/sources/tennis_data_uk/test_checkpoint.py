@@ -18,12 +18,12 @@ from tennis_data_pipeline.datasources.tennis_data_uk.client import Tour
 
 def test_raw_checkpoint_path_convention(tmp_path: Path) -> None:
     path = raw_checkpoint_path(Tour.ATP, 2024, raw_dir=tmp_path)
-    assert path == tmp_path / "atp/atp_singles_results_2024.csv"
+    assert path == tmp_path / "atp/uk_atp_singles_raw_2024.csv"
 
 
 def test_raw_checkpoint_path_defaults_to_settings_paths_raw() -> None:
     path = raw_checkpoint_path(Tour.ATP, 2024)
-    assert path == settings.paths.raw / "uk/atp/atp_singles_results_2024.csv"
+    assert path == settings.paths.raw / "uk/atp/uk_atp_singles_raw_2024.csv"
 
 
 def test_write_raw_checkpoint_rejects_wrong_tour_column(tmp_path: Path) -> None:
