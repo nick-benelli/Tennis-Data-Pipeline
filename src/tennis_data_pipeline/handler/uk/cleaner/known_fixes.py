@@ -139,7 +139,14 @@ def _fix_us_open_final_2021(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "W1"] = 6
 
 
-# No hand-verified single-match fixes found for WTA yet; add here as they're found.
+def _fix_adelaide_r1_2024(df: pd.DataFrame, mask: pd.Series) -> None:
+    df.loc[mask, "W1"] = 6
+
+
+def _fix_madrid_sf_2024(df: pd.DataFrame, mask: pd.Series) -> None:
+    df.loc[mask, ["Wsets", "Lsets"]] = [2, 1]
+
+
 WTA_MATCH_FIXES: list[MatchFix] = [
     MatchFix(
         tour="wta",
@@ -156,6 +163,38 @@ WTA_MATCH_FIXES: list[MatchFix] = [
             & (df["Date"] == "2021-09-11")
         ),
         apply=_fix_us_open_final_2021,
+    ),
+    MatchFix(
+        tour="wta",
+        year=2024,
+        description=(
+            "Adelaide International 1st Round (Bogdan d. Boulter): missing W1 "
+            "(winner's first-set games). Actual result was 6-3, 6-4 to Bogdan."
+        ),
+        source_url="https://www.wtatennis.com/tournaments/2014/adelaide/2024/scores/LS025",
+        match=lambda df: (
+            (df["WTA"] == 3)
+            & (df["Winner"] == "Bogdan A.")
+            & (df["Loser"] == "Boulter K.")
+            & (df["Date"] == "2024-01-08")
+        ),
+        apply=_fix_adelaide_r1_2024,
+    ),
+    MatchFix(
+        tour="wta",
+        year=2024,
+        description=(
+            "Madrid Open semifinal (Sabalenka d. Rybakina): Wsets/Lsets swapped "
+            "(recorded 1-2 despite Sabalenka winning sets 2 and 3, 1-6 7-5 7-6)."
+        ),
+        source_url="https://en.wikipedia.org/wiki/2024_Mutua_Madrid_Open",
+        match=lambda df: (
+            (df["WTA"] == 20)
+            & (df["Winner"] == "Sabalenka A.")
+            & (df["Loser"] == "Rybakina E.")
+            & (df["Date"] == "2024-05-02")
+        ),
+        apply=_fix_madrid_sf_2024,
     ),
 ]
 

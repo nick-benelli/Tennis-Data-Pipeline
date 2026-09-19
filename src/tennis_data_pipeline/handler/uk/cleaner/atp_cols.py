@@ -42,6 +42,24 @@ COLUMN_MAP = {
 
 ROUND_MAP = dict(common.BASE_ROUND_MAP)
 
+# Raw (pre-COLUMN_MAP) dtypes for common.load_raw_uk_csv(); ATP has no fractional
+# rank-points seasons, so ranks/points/set-scores are all nullable ints.
+RAW_INT_COLS = [
+    "ATP", "Year", "Best of",
+    "WRank", "LRank", "WPts", "LPts",
+    "W1", "L1", "W2", "L2", "W3", "L3", "W4", "L4", "W5", "L5",
+    "Wsets", "Lsets",
+]
+RAW_CATEGORY_COLS = ["Series", "Court", "Surface", "Round", "Comment"]
+
+ID_COL = "ATP"
+CONSISTENCY_INFO_COLS = ["Tournament", "Series", "Court", "Surface", "Best of"]
+
+# Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
+# known, already-reviewed issues (e.g. two same-week tournaments sharing a raw id).
+KNOWN_TOURNAMENT_INCONSISTENCY_YEARS = {2023}
+KNOWN_REUSED_TOURNAMENT_ID_YEARS = {2023}
+
 # Re-exported for callers that still reach these via `atp_cols.*`.
 NUMBERED_ROUNDS_ASCENDING = common.NUMBERED_ROUNDS_ASCENDING
 BRACKET_CODES_FROM_QF = common.BRACKET_CODES_FROM_QF

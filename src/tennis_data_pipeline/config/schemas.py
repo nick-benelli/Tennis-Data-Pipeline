@@ -185,6 +185,13 @@ class TennisDataUKConfig(StrictModel):
     raw_dir_name: str = "uk"
     raw_filename_template: str = "uk_{tour}_singles_raw_{year}.csv"
 
+    # Stage-4 clean checkpoint naming: written to
+    # <paths.clean>/<clean_dir_name>/<tour>/<clean_filename_template>.
+    clean_dir_name: str = "uk"
+    clean_filename_template: str = "uk_{tour}_singles_clean_{year}.csv"
+    # Shared ATP+WTA quality report, relative to <paths.clean>/<clean_dir_name>/.
+    quality_report_relpath: str = "analysis/uk_quality_report.csv"
+
     @field_validator("request_timeout_seconds", mode="before")
     @classmethod
     def normalize_request_timeout(cls, value: Any) -> float:
@@ -224,6 +231,7 @@ class TennisDataUKConfig(StrictModel):
     @field_validator(
         "path_prefix", "github_user", "github_repo",
         "raw_dir_name", "raw_filename_template",
+        "clean_dir_name", "clean_filename_template", "quality_report_relpath",
         mode="before",
     )
     @classmethod
