@@ -37,4 +37,9 @@ tennis_data_uk:
   # Not ${VAR:default}-wrapped: the {tour}/{year} placeholders themselves use
   # brace syntax, which would confuse the env-var substitution's own ${VAR:default} parsing.
   raw_filename_template: "uk_{tour}_singles_raw_{year}.csv"
+  # Stage-4 clean checkpoint naming: written to <paths.clean>/<clean_dir_name>/<tour>/<clean_filename_template>.
+  clean_dir_name: ${TENNIS_DATA_UK_CLEAN_DIR_NAME:uk}
+  clean_filename_template: "uk_{tour}_singles_clean_{year}.csv"
+  # Shared ATP+WTA quality report, relative to <paths.clean>/<clean_dir_name>/.
+  quality_report_relpath: ${TENNIS_DATA_UK_QUALITY_REPORT_RELPATH:analysis/uk_quality_report.csv}
 

@@ -1,8 +1,27 @@
+from pathlib import Path
+
 import pandas as pd
 
 from tennis_data_pipeline.handler.uk.cleaner import common
+from tennis_data_pipeline.handler.uk.cleaner import known_fixes
 from tennis_data_pipeline.handler.uk.cleaner import quality
 from tennis_data_pipeline.handler.uk.cleaner import wta_cols as cols
+
+
+def load_raw_wta_csv(path: Path, year: int) -> pd.DataFrame:
+    """Safely load one season's raw Tennis-Data UK WTA CSV, ready for cleaning.
+
+    See common.load_raw_uk_csv() for what "safely" means here: parsed dates and
+    proper numeric/category dtypes, still in raw (pre-COLUMN_MAP) column names.
+    """
+    return common.load_raw_uk_csv(
+        path,
+        year,
+        int_cols=cols.RAW_INT_COLS,
+        category_cols=cols.RAW_CATEGORY_COLS,
+        float_cols=cols.RAW_FLOAT_COLS,
+        pre_dtype_hook=known_fixes.fix_wta_category_typos,
+    )
 
 
 def add_source_event_key(df: pd.DataFrame) -> pd.DataFrame:
@@ -23,6 +42,30 @@ def normalize_key_value(series: pd.Series) -> pd.Series:
 
 def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
     return common.add_source_match_key(df)
+
+
+def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
+    """Apply hand-verified single-match fixes registered for this year."""
+    return known_fixes.apply_match_fixes(df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES)
+
+
+def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
+    """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
+    common.check_tournament_consistency(
+        df, year,
+        id_col=cols.ID_COL,
+        info_cols=cols.CONSISTENCY_INFO_COLS,
+        known_exception_years=cols.KNOWN_TOURNAMENT_INCONSISTENCY_YEARS,
+    )
+
+
+def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
+    """Raise if a WTA tournament id is reused across genuinely different tournaments."""
+    common.check_reused_tournament_ids(
+        df, year,
+        id_col=cols.ID_COL,
+        known_exception_years=cols.KNOWN_REUSED_TOURNAMENT_ID_YEARS,
+    )
 
 
 def validate_clean_uk_wta_data(df: pd.DataFrame) -> None:
@@ -145,8 +188,25 @@ def build_uk_wta_quality_report(df: pd.DataFrame) -> pd.DataFrame:
     return quality.build_uk_quality_report(df, tour="wta")
 
 
+def clean_wta_season(df: pd.DataFrame, year: int) -> pd.DataFrame:
+    """Run the full known-fixes + validation + clean pipeline for one already-loaded raw WTA season.
+
+    Fixes run before the consistency checks (not after) so a fix that resolves
+    a tournament-id issue actually prevents that check from failing.
+    """
+    df = apply_known_match_fixes(df, year)
+
+    check_tournament_consistency(df, year)
+    check_reused_tournament_ids(df, year)
+
+    df = common.fix_bad_odds(df)
+
+    return clean_uk_wta_data(df)
+
+
 __all__ = [
     "build_uk_wta_quality_report",
     "clean_uk_wta_data",
+    "clean_wta_season",
     "summarize_uk_wta_quality",
 ]

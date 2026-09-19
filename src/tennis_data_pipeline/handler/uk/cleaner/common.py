@@ -2,9 +2,22 @@
 
 from __future__ import annotations
 
+import logging
 import re
+from collections.abc import Callable
+from pathlib import Path
 
 import pandas as pd
+
+from tennis_data_pipeline.handler.uk.validatior.tournaments import (
+    find_uk_inconsistent_tournaments,
+    find_uk_reused_tournament_ids,
+)
+
+logger = logging.getLogger(__name__)
+
+# Raw string columns present (and left untouched) for both tours.
+RAW_STRING_COLS = ["Location", "Tournament", "Winner", "Loser"]
 
 # Round codes shared by both tours; each tour's cols module merges in its own
 # extras on top (e.g. WTA's "Third Place").
@@ -150,10 +163,59 @@ def fix_bad_odds(df: pd.DataFrame, raw_odds_cols: list[str] | None = None) -> pd
         if col not in df.columns:
             continue
         bad_odds = df[col] < 1
-        if bad_odds.any():
+        bad_count = int(bad_odds.sum())
+        if bad_count:
+            logger.warning("%s: nulling %d odds < 1", col, bad_count)
             df.loc[bad_odds, col] = pd.NA
 
     return df
+
+
+def check_tournament_consistency(
+    df: pd.DataFrame,
+    year: int,
+    *,
+    id_col: str,
+    info_cols: list[str],
+    known_exception_years: set[int] = frozenset(),
+) -> None:
+    """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
+    if year in known_exception_years:
+        logger.info("Skipping tournament-consistency check for %s (known exception).", year)
+        return
+
+    metrics, affected_rows = find_uk_inconsistent_tournaments(
+        df, key_columns=[id_col, "Year", "Location"], info_cols=info_cols,
+    )
+
+    if not metrics.empty and not affected_rows.empty:
+        raise ValueError(
+            f"{len(metrics)} inconsistent tournament(s) found in {year} "
+            f"({len(affected_rows)} row(s) affected)."
+        )
+
+
+def check_reused_tournament_ids(
+    df: pd.DataFrame,
+    year: int,
+    *,
+    id_col: str,
+    known_exception_years: set[int] = frozenset(),
+) -> None:
+    """Raise if a tournament id is reused across genuinely different tournaments."""
+    if year in known_exception_years:
+        logger.info("Skipping reused-tournament-id check for %s (known exception).", year)
+        return
+
+    metrics, affected_rows = find_uk_reused_tournament_ids(
+        df=df, id_col=id_col, disambiguating_cols=["Location", "Tournament"],
+    )
+
+    if not metrics.empty and not affected_rows.empty:
+        raise ValueError(
+            f"{len(metrics)} reused {id_col} tournament id(s) found in {year} "
+            f"({len(affected_rows)} row(s) affected)."
+        )
 
 
 def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
@@ -175,3 +237,58 @@ def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
 def ensure_odds_columns(df: pd.DataFrame, odds_cols: list[str] | None = None) -> pd.DataFrame:
     """Backfill (post-rename) odds columns missing due to bookmaker coverage drift."""
     return ensure_columns(df, odds_cols if odds_cols is not None else ODDS_COLS)
+
+
+def load_raw_uk_csv(
+    path: Path,
+    year: int,
+    *,
+    int_cols: list[str],
+    category_cols: list[str],
+    float_cols: list[str] | None = None,
+    pre_dtype_hook: Callable[[pd.DataFrame], pd.DataFrame] | None = None,
+) -> pd.DataFrame:
+    """Safely load one season's raw Tennis-Data UK CSV: parsed dates, proper numeric/category dtypes.
+
+    Still in raw (pre-`COLUMN_MAP`) column names/values otherwise - this is the
+    well-typed starting point the tour-specific cleaning in atp.py/wta.py builds
+    on, not the final clean output.
+
+    `pre_dtype_hook` runs right after `Date`/`Year` are set but before any
+    numeric/category coercion, e.g. WTA's category-typo fixes, which must run
+    before the affected raw values are cast to an immutable category dtype.
+    """
+    if not path.exists():
+        raise FileNotFoundError(f"No raw data file for {year}: {path}")
+
+    df = pd.read_csv(path)
+
+    # Date format drifts across seasons (e.g. "1/1/23" vs. "2000-01-03").
+    df["Date"] = pd.to_datetime(df["Date"], format="mixed", dayfirst=False)
+    df["Year"] = year
+
+    if pre_dtype_hook is not None:
+        df = pre_dtype_hook(df)
+
+    float_cols = float_cols or []
+
+    # Nullable ints: ranks/points/set-scores are whole numbers but can be
+    # missing (e.g. retired matches).
+    for col in int_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
+
+    for col in float_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Everything left over is bookmaker odds; which bookmakers are present varies by year.
+    known_cols = {"Date", *RAW_STRING_COLS, *int_cols, *float_cols, *category_cols}
+    odds_cols = [col for col in df.columns if col not in known_cols]
+    df[odds_cols] = df[odds_cols].apply(pd.to_numeric, errors="coerce")
+
+    for col in category_cols:
+        if col in df.columns:
+            df[col] = df[col].astype("category")
+
+    return df

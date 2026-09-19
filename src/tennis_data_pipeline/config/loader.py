@@ -39,13 +39,24 @@ def _get_default_config_path() -> Path:
     Raises:
         FileNotFoundError: If no config file found in any location
     """
-    # Load .env file first so TENNIS_DATA_PIPELINE_CONFIG is available
-    load_dotenv()
+    # Load .env file first so TENNIS_DATA_PIPELINE_CONFIG is available. Resolve
+    # it explicitly (rather than relying on load_dotenv()'s own upward search)
+    # so a relative TENNIS_DATA_PIPELINE_CONFIG value can be anchored to the
+    # .env file's directory below - otherwise it resolves against the caller's
+    # cwd, which breaks for notebooks that don't live at the repo root.
+    dotenv_path = find_dotenv()
+    if dotenv_path:
+        load_dotenv(dotenv_path)
+    else:
+        load_dotenv()
 
     # 1. Check environment variable (highest priority)
     env_config = os.getenv("TENNIS_DATA_PIPELINE_CONFIG")
     if env_config:
-        path = Path(env_config).expanduser().resolve()
+        path = Path(env_config).expanduser()
+        if not path.is_absolute() and dotenv_path:
+            path = Path(dotenv_path).parent / path
+        path = path.resolve()
         if path.exists():
             return path
         raise FileNotFoundError(

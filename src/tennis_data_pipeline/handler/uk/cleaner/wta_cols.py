@@ -42,6 +42,27 @@ ROUND_MAP = {
     "Third Place": "BR",
 }
 
+# Raw (pre-COLUMN_MAP) dtypes for common.load_raw_uk_csv(). WTA singles is
+# always best-of-3, so there's no W4/L4/W5/L5. WPts/LPts are kept as plain
+# floats (not RAW_INT_COLS): 2007's ranking-points formula produced fractional
+# values (e.g. 332.25).
+RAW_INT_COLS = [
+    "WTA", "Year", "Best of",
+    "WRank", "LRank",
+    "W1", "L1", "W2", "L2", "W3", "L3",
+    "Wsets", "Lsets",
+]
+RAW_FLOAT_COLS = ["WPts", "LPts"]
+RAW_CATEGORY_COLS = ["Tier", "Court", "Surface", "Round", "Comment"]
+
+ID_COL = "WTA"
+CONSISTENCY_INFO_COLS = ["Tournament", "Tier", "Court", "Surface", "Best of"]
+
+# Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
+# known, already-reviewed issues. None found for WTA yet.
+KNOWN_TOURNAMENT_INCONSISTENCY_YEARS: set[int] = set()
+KNOWN_REUSED_TOURNAMENT_ID_YEARS: set[int] = set()
+
 # Re-exported for callers that still reach these via `wta_cols.*`.
 NUMBERED_ROUNDS_ASCENDING = common.NUMBERED_ROUNDS_ASCENDING
 BRACKET_CODES_FROM_QF = common.BRACKET_CODES_FROM_QF
