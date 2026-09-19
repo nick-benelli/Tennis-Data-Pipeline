@@ -1,6 +1,0 @@
-(Tennis-Data-Pipeline) Nicks-MacBook-Air:Tennis-Data-Pipeline nickbenelli$ uv run scripts/uk/call_tennis_data_uk.py --tour atp --start-year 2000 --end-year 206
-      Built tennis-data-pipeline @ file:///Users/nickbenelli/Workspace/repos/GitHub/-Sports/-Tennis/Tennis-Data-Pipeline
-Uninstalled 1 package in 4ms
-Installed 3 packages in 19ms
-[ATP 2026] wrote snapshot to /Users/nickbenelli/Workspace/repos/GitHub/-Sports/-Tennis/Tennis-Data-Pipeline/data/raw/uk/atp/atp_singles_results_2026.csv
-(Tennis-Data-Pipeline) Nicks-MacBook-Air:Tennis-Data-Pipeline nickbenelli$ 
