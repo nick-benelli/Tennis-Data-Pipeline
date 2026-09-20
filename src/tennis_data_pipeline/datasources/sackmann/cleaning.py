@@ -9,10 +9,10 @@ from .schema import (
     DOUBLES_FLOAT_COLUMNS,
     DOUBLES_INT_COLUMNS,
     DOUBLES_STRING_COLUMNS,
-    MATCH_CATEGORY_COLUMNS,
-    MATCH_FLOAT_COLUMNS,
-    MATCH_INT_COLUMNS,
-    MATCH_STRING_COLUMNS,
+    SINGLES_CATEGORY_COLUMNS,
+    SINGLES_FLOAT_COLUMNS,
+    SINGLES_INT_COLUMNS,
+    SINGLES_STRING_COLUMNS,
 )
 
 
@@ -62,10 +62,10 @@ def clean_matches(
     result = _parse_tourney_date(df.copy())
     result = _coerce_columns(
         result,
-        int_columns=MATCH_INT_COLUMNS,
-        float_columns=MATCH_FLOAT_COLUMNS,
-        string_columns=MATCH_STRING_COLUMNS,
-        category_columns=MATCH_CATEGORY_COLUMNS,
+        int_columns=SINGLES_INT_COLUMNS,
+        float_columns=SINGLES_FLOAT_COLUMNS,
+        string_columns=SINGLES_STRING_COLUMNS,
+        category_columns=SINGLES_CATEGORY_COLUMNS,
     )
     return result.reset_index(drop=True)
 

@@ -18,6 +18,7 @@ from .schema import (
     MATCH_FILE_TEMPLATE,
     PLAYER_FILE,
     RANKINGS_CURRENT_FILE,
+    WTA_MATCHES_QUAL_ITF_FILE_TEMPLATE,
 )
 
 
@@ -175,6 +176,18 @@ class SackmannClient:
 
         return self.load_csv(
             tour=Tour.ATP,
+            filename=filename,
+        )
+
+    def load_wta_qual_itf_matches(
+        self,
+        year: int,
+    ) -> pd.DataFrame:
+        """Load one season of WTA qualifying + ITF singles matches."""
+        filename = WTA_MATCHES_QUAL_ITF_FILE_TEMPLATE.format(year=year)
+
+        return self.load_csv(
+            tour=Tour.WTA,
             filename=filename,
         )
 
