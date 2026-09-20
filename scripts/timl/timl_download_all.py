@@ -2,7 +2,6 @@ from pathlib import Path
 
 from tennis_data_pipeline.datasources.tennis_is_my_life.client import TennisMyLifeClient
 
-
 OUTPUT_DIR = Path("data/raw/tennis_my_life")
 
 

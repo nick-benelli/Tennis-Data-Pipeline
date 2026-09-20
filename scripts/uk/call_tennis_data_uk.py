@@ -26,7 +26,7 @@ import datetime as dt
 import sys
 
 from tennis_data_pipeline.datasources.tennis_data_uk.client import TennisDataUKClient
-from tennis_data_pipeline.workflows.tennis_data_uk import fetch_and_checkpoint_year
+from tennis_data_pipeline.workflows.uk import fetch_and_checkpoint_year
 
 _DEFAULT_START_YEAR = {"atp": 2000, "wta": 2007}
 

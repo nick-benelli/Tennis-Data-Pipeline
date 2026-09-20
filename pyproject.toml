@@ -31,11 +31,13 @@ build-backend = "hatchling.build"
 dev = [
     "ipykernel>=7.3.0",
     "mypy>=2.3.1",
+    "pandas-stubs>=3.0.5.260914",
     "pre-commit>=4.6.2",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "ruff>=0.16.7",
     "truststore>=0.10.4",
+    "types-pyyaml>=6.0.12.20260906",
 ]
 
 [tool.ruff]

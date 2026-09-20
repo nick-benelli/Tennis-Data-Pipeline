@@ -2,7 +2,6 @@ from pathlib import Path
 
 import requests
 
-
 API_URL = "https://stats.tennismylife.org/api/data-files"
 OUTPUT_DIR = Path("data/raw/tennis_my_life")
 

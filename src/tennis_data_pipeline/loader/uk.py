@@ -105,7 +105,7 @@ def load_clean_uk_year(
 
     Directory/filename come from `tennis_data_uk.clean_dir_name`/
     `clean_filename_template` (config.yaml) under `settings.paths.clean` -
-    the same config workflows.tennis_data_uk.clean_checkpoint_path() uses, so
+    the same config workflows.uk.clean_checkpoint_path() uses, so
     the two stay in sync. `project_dir` defaults to `settings.paths.project_dir`
     (override via the TENNIS_DATA_PIPELINE_PROJECT_DIR env var); pass it to
     load from a different project root's `paths.clean_dir`.

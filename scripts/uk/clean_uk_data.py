@@ -1,6 +1,6 @@
 """Clean Tennis-Data UK season CSVs (raw -> validated -> clean) from the CLI.
 
-Thin CLI wrapper around `tennis_data_pipeline.workflows.tennis_data_uk.clean_years`
+Thin CLI wrapper around `tennis_data_pipeline.workflows.uk.clean_years`
 - all the actual known-fixes/validation/cleaning logic lives in the package
   (`handler/uk/cleaner/atp.py`/`wta.py`) so it's reusable outside this script too.
 
@@ -18,7 +18,7 @@ import logging
 import sys
 from pathlib import Path
 
-from tennis_data_pipeline.workflows.tennis_data_uk import clean_years, log_clean_summary
+from tennis_data_pipeline.workflows.uk import clean_years, log_clean_summary
 
 logger = logging.getLogger(__name__)
 
@@ -96,13 +96,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """
-    Clean UK tennis data for the specified tour and years.
+    """Clean UK tennis data for the specified tour and years.
+
     Args:
         argv: Optional list of command-line arguments to parse. If None, defaults to sys.argv.
 
     Returns:
         Exit code: 0 if all years were processed successfully, 1 if any year failed, 2 if there was an argument parsing error.
+
     """
     args = _parse_args(argv)
     logging.basicConfig(

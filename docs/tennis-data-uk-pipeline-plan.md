@@ -1,11 +1,12 @@
 # Tennis-Data.co.uk Pipeline Plan
 
 Status: implemented. The unified `handler/uk/cleaner` pipeline described below
-is in place (Stage 1-5, `workflows/tennis_data_uk.py`); item 9's retirement of
-the old `datasources/tennis_data_uk/{schema,cleaning}.py` near-original schema
-is done - `atp.py`/`wta.py`/`cleaning.py`/`schema.py` under `datasources/tennis_data_uk/`
-have been deleted along with their tests. The rest of this doc is kept as
-historical design context.
+is in place (Stage 1-6, `workflows/uk/` - split into `fetch.py`/`clean.py`/
+`tournaments.py`/`update.py`, re-exported flat from `workflows/uk/__init__.py`);
+item 9's retirement of the old `datasources/tennis_data_uk/{schema,cleaning}.py`
+near-original schema is done - `atp.py`/`wta.py`/`cleaning.py`/`schema.py` under
+`datasources/tennis_data_uk/` have been deleted along with their tests. The
+rest of this doc is kept as historical design context.
 
 ## 1. Motivation
 

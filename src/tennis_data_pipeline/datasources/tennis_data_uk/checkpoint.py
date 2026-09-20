@@ -114,7 +114,7 @@ def fetch_and_checkpoint(
     """Download one season live and persist it as a Stage-2 raw checkpoint.
 
     This is the "how does the client grab the data and write the raw
-    snapshot CSV" entry point - see `workflows.tennis_data_uk` for a
+    snapshot CSV" entry point - see `workflows.uk` for a
     higher-level, multi-year wrapper around this.
     """
     tour = Tour(str(tour).lower())

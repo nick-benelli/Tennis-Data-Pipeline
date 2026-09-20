@@ -1,6 +1,6 @@
 """Build/update the Tennis-Data UK tournament-summary table from Stage-4 clean checkpoints.
 
-Thin CLI wrapper around `tennis_data_pipeline.workflows.tennis_data_uk.build_uk_tournaments`
+Thin CLI wrapper around `tennis_data_pipeline.workflows.uk.build_uk_tournaments`
 - all the actual grouping/summarizing logic lives in the package
   (`handler/uk/cleaner/tournaments.py`) so it's reusable outside this script too.
 
@@ -24,7 +24,7 @@ import logging
 import sys
 from pathlib import Path
 
-from tennis_data_pipeline.workflows.tennis_data_uk import build_uk_tournaments
+from tennis_data_pipeline.workflows.uk import build_uk_tournaments
 
 logger = logging.getLogger(__name__)
 
@@ -91,14 +91,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """
-    Build/update the tournament-summary table for the specified tour and years.
+    """Build/update the tournament-summary table for the specified tour and years.
 
     Args:
         argv: Optional list of command-line arguments to parse. If None, defaults to sys.argv.
 
     Returns:
         Exit code: 0 on success, 2 if there was an argument parsing error.
+
     """
     args = _parse_args(argv)
     logging.basicConfig(
