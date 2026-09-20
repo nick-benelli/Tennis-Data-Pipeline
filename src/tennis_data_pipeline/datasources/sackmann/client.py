@@ -117,8 +117,14 @@ class SackmannClient:
         except requests.RequestException as error:
             raise SackmannDownloadError(f"Failed to download {url}") from error
 
+        # index_col=False: some archive files (e.g. atp_matches_doubles_*.csv)
+        # have trailing blank fields on every data row beyond the declared
+        # header. Without this, pandas' default "more data columns than header
+        # columns" heuristic treats the extra fields as an implicit leading
+        # index, silently shifting every named column's values left.
         return pd.read_csv(
             StringIO(response.text),
+            index_col=False,
         )
 
     def load_matches(
