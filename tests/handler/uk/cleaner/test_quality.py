@@ -22,6 +22,7 @@ def _clean_df(year: int) -> pd.DataFrame:
 
 
 def test_build_uk_quality_report_keys_by_tour_and_year() -> None:
+    """The one-row report is indexed as 'Metric_<tour>_<year>' with tour/year columns."""
     report = quality.build_uk_quality_report(_clean_df(2024), tour="atp")
     assert report.index.tolist() == ["Metric_atp_2024"]
     assert report.loc["Metric_atp_2024", "tour"] == "atp"
@@ -29,6 +30,7 @@ def test_build_uk_quality_report_keys_by_tour_and_year() -> None:
 
 
 def test_update_quality_report_does_not_collide_across_tours(tmp_path: Path) -> None:
+    """ATP and WTA rows for the same year coexist in one shared report file."""
     report_path = tmp_path / "report.csv"
 
     atp_report = quality.build_uk_quality_report(_clean_df(2024), tour="atp")
@@ -45,6 +47,7 @@ def test_update_quality_report_does_not_collide_across_tours(tmp_path: Path) -> 
 def test_update_quality_report_overwrites_only_its_own_tour_year(
     tmp_path: Path,
 ) -> None:
+    """Re-running one tour/year updates only that row, leaving other rows untouched."""
     report_path = tmp_path / "report.csv"
 
     quality.update_quality_report(

@@ -24,6 +24,7 @@ def _match_row(**overrides: object) -> dict:
 
 
 def test_single_tournament_produces_one_row_with_date_range() -> None:
+    """All matches for one tournament collapse to a single row with a Start/End date range."""
     df = pd.DataFrame(
         [
             _match_row(Date="2023-01-01"),
@@ -43,6 +44,7 @@ def test_single_tournament_produces_one_row_with_date_range() -> None:
 
 
 def test_reused_tournament_number_is_split_by_location() -> None:
+    """Two same-week tournaments sharing a raw id are split apart by Location."""
     df = pd.DataFrame(
         [
             _match_row(
@@ -61,6 +63,7 @@ def test_reused_tournament_number_is_split_by_location() -> None:
 
 
 def test_inconsistent_attribute_is_flagged_but_mode_wins() -> None:
+    """A varying attribute is reported as inconsistent, but the mode still fills the row."""
     df = pd.DataFrame(
         [
             _match_row(**{"Best of": 5}),
@@ -78,6 +81,7 @@ def test_inconsistent_attribute_is_flagged_but_mode_wins() -> None:
 
 
 def test_source_year_key_is_derived_from_date_when_missing() -> None:
+    """source_year is derived from the date column when not already present."""
     df = pd.DataFrame(
         [
             _match_row(Date="2023-01-01"),
@@ -93,6 +97,7 @@ def test_source_year_key_is_derived_from_date_when_missing() -> None:
 
 
 def test_existing_source_year_column_is_not_overwritten() -> None:
+    """A pre-existing source_year column is kept as-is, not recomputed from the date."""
     df = pd.DataFrame(
         [
             _match_row(Date="2023-01-01", source_year=1999),
@@ -107,6 +112,7 @@ def test_existing_source_year_column_is_not_overwritten() -> None:
 
 
 def test_missing_required_column_raises_key_error() -> None:
+    """A missing required attribute/key/date column raises KeyError."""
     df = pd.DataFrame([_match_row()]).drop(columns=["Surface"])
 
     with pytest.raises(KeyError):

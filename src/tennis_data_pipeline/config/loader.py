@@ -38,6 +38,7 @@ def _get_default_config_path() -> Path:
 
     Raises:
         FileNotFoundError: If no config file found in any location
+
     """
     # Load .env file first so TENNIS_DATA_PIPELINE_CONFIG is available. Resolve
     # it explicitly (rather than relying on load_dotenv()'s own upward search)
@@ -99,6 +100,7 @@ def resolve_config_path(path: str | Path | None = None) -> Path:
 
     Returns:
         Resolved absolute Path to config file
+
     """
     if path is not None:
         return Path(path).expanduser().resolve()
@@ -152,14 +154,14 @@ def get_config_dict(path: str | Path | None = None) -> dict[str, Any]:
 
 
 def get_project_root() -> Path:
-    """
-    Find the project root directory.
+    """Find the project root directory.
 
     Returns:
         Path to project root (where pyproject.toml lives)
 
     Raises:
         FileNotFoundError: If pyproject.toml cannot be found
+
     """
     pyproject_path = find_dotenv("pyproject.toml")
     if not pyproject_path:

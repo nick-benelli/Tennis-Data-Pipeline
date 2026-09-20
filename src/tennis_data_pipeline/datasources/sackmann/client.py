@@ -12,6 +12,8 @@ from urllib3.util import Retry
 
 
 class Tour(StrEnum):
+    """Supported professional tennis tours."""
+
     ATP = "atp"
     WTA = "wta"
 
@@ -36,6 +38,7 @@ class SackmannClient:
         timeout: float = 30.0,
         retries: int = 3,
     ) -> None:
+        """Initialize the client with a request timeout and retry count."""
         self.timeout = timeout
 
         retry = Retry(

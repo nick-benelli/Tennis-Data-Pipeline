@@ -19,7 +19,6 @@ def _is_unresolved_env_placeholder(value: Any) -> bool:
 
 def _field_default(model_cls: type[BaseModel], field_name: str) -> Any:
     """Return a model field default in a type-checker-friendly way."""
-
     return model_cls.__pydantic_fields__[field_name].default
 
 
@@ -53,8 +52,7 @@ class ApiConfig(StrictModel):
     @field_validator("verify_ssl", "retry_insecure_on_ssl_error", mode="before")
     @classmethod
     def normalize_bool_defaults(cls, value: Any, info: Any) -> bool:
-        """
-        If the value is None or an unresolved env placeholder, return the default.
+        """If the value is None or an unresolved env placeholder, return the default.
         This allows users to set env vars to empty or leave them unset to use defaults.
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -64,8 +62,7 @@ class ApiConfig(StrictModel):
     @field_validator("timeout_seconds", mode="before")
     @classmethod
     def normalize_timeout(cls, value: Any) -> float:
-        """
-        If the value is None or an unresolved env placeholder, return the default.
+        """If the value is None or an unresolved env placeholder, return the default.
         This allows users to set env vars to empty or leave them unset to use defaults.
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -78,8 +75,7 @@ class ApiConfig(StrictModel):
     @field_validator("max_retries", mode="before")
     @classmethod
     def normalize_max_retries(cls, value: Any) -> int:
-        """
-        If the value is None or an unresolved env placeholder, return the default.
+        """If the value is None or an unresolved env placeholder, return the default.
         This allows users to set env vars to empty or leave them unset to use defaults.
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -92,8 +88,7 @@ class ApiConfig(StrictModel):
     @field_validator("backoff_seconds", mode="before")
     @classmethod
     def normalize_backoff_seconds(cls, value: Any) -> float:
-        """
-        If the value is None or an unresolved env placeholder, return the default.
+        """If the value is None or an unresolved env placeholder, return the default.
         This allows users to set env vars to empty or leave them unset to use defaults.
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -122,8 +117,7 @@ class PathsConfig(StrictModel):
     @field_validator("project_dir", mode="before")
     @classmethod
     def normalize_project_dir(cls, value: Any) -> Any:
-        """
-        If the value is None or an unresolved env placeholder, fall back to the
+        """If the value is None or an unresolved env placeholder, fall back to the
         auto-detected project root (the repo containing pyproject.toml).
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -133,8 +127,7 @@ class PathsConfig(StrictModel):
     @field_validator("data_dir", "raw_dir", "clean_dir", "archive_dir", mode="before")
     @classmethod
     def normalize_dir_defaults(cls, value: Any, info: Any) -> str:
-        """
-        If the value is None or an unresolved env placeholder, return the default.
+        """If the value is None or an unresolved env placeholder, return the default.
         This allows users to set env vars to empty or leave them unset to use defaults.
         """
         if value is None or _is_unresolved_env_placeholder(value):
@@ -192,9 +185,18 @@ class TennisDataUKConfig(StrictModel):
     # Shared ATP+WTA quality report, relative to <paths.clean>/<clean_dir_name>/.
     quality_report_relpath: str = "analysis/uk_quality_report.csv"
 
+    # Tournament-summary table: written to
+    # <paths.clean>/<clean_dir_name>/<tour>/<tournament_dir_name>/<tournament_filename_template>.
+    tournament_dir_name: str = "tournaments"
+    tournament_filename_template: str = "uk_{tour}_tournaments.csv"
+    tournament_inconsistencies_filename_template: str = (
+        "uk_{tour}_tournament_inconsistencies.csv"
+    )
+
     @field_validator("request_timeout_seconds", mode="before")
     @classmethod
     def normalize_request_timeout(cls, value: Any) -> float:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate > 0."""
         if value is None or _is_unresolved_env_placeholder(value):
             return _field_default(cls, "request_timeout_seconds")
         timeout = float(value)
@@ -207,6 +209,7 @@ class TennisDataUKConfig(StrictModel):
     @field_validator("retry_total", mode="before")
     @classmethod
     def normalize_retry_total(cls, value: Any) -> int:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate >= 0."""
         if value is None or _is_unresolved_env_placeholder(value):
             return _field_default(cls, "retry_total")
         retries = int(value)
@@ -219,6 +222,7 @@ class TennisDataUKConfig(StrictModel):
     @field_validator("retry_backoff_factor", mode="before")
     @classmethod
     def normalize_retry_backoff_factor(cls, value: Any) -> float:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate >= 0."""
         if value is None or _is_unresolved_env_placeholder(value):
             return _field_default(cls, "retry_backoff_factor")
         backoff = float(value)
@@ -241,6 +245,7 @@ class TennisDataUKConfig(StrictModel):
     )
     @classmethod
     def normalize_string_defaults(cls, value: Any, info: Any) -> str:
+        """Fall back to the field's default if unset or an unresolved env placeholder."""
         if value is None or _is_unresolved_env_placeholder(value):
             return _field_default(cls, info.field_name)
         return str(value)

@@ -1,3 +1,5 @@
+"""ATP-specific raw/clean column names, dtypes, and category maps for Tennis-Data UK."""
+
 from tennis_data_pipeline.handler.uk.cleaner import common
 
 COLUMN_MAP = {
@@ -68,7 +70,12 @@ RAW_INT_COLS = [
 RAW_CATEGORY_COLS = ["Series", "Court", "Surface", "Round", "Comment"]
 
 ID_COL = "ATP"
-CONSISTENCY_INFO_COLS = ["Tournament", "Series", "Court", "Surface", "Best of"]
+# "Best of" deliberately excluded: unlike Tournament/Series/Court/Surface
+# (which describe the event itself and must be constant), it's a per-match
+# attribute that legitimately varies by round for pre-2008 Masters Series
+# events (best-of-5 final, best-of-3 everywhere else) - see
+# atp.apply_known_best_of_fixes() for the corresponding value-level fix.
+CONSISTENCY_INFO_COLS = ["Tournament", "Series", "Court", "Surface"]
 
 # Years where find_uk_inconsistent_tournaments/find_uk_reused_tournament_ids flag
 # known, already-reviewed issues (e.g. two same-week tournaments sharing a raw id).
@@ -76,8 +83,6 @@ KNOWN_TOURNAMENT_INCONSISTENCY_YEARS = {2023}
 KNOWN_REUSED_TOURNAMENT_ID_YEARS = {2023}
 
 # Re-exported for callers that still reach these via `atp_cols.*`.
-NUMBERED_ROUNDS_ASCENDING = common.NUMBERED_ROUNDS_ASCENDING
-BRACKET_CODES_FROM_QF = common.BRACKET_CODES_FROM_QF
 SURFACE_MAP = common.SURFACE_MAP
 COURT_MAP = common.COURT_MAP
 STATUS_MAP = dict(common.BASE_STATUS_MAP)
@@ -108,6 +113,7 @@ COLUMN_ORDER = [
     "is_outdoor",
     "surface",
     "round",
+    "players_remaining",
     "best_of",
     "winner_name",
     "loser_name",

@@ -103,14 +103,24 @@ def load_clean_uk_year(
 ) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP/WTA matches CSV by year.
 
-    `project_dir` defaults to `settings.paths.project_dir` (override via the
-    TENNIS_DATA_PIPELINE_PROJECT_DIR env var) when not given.
+    Directory/filename come from `tennis_data_uk.clean_dir_name`/
+    `clean_filename_template` (config.yaml) under `settings.paths.clean` -
+    the same config workflows.tennis_data_uk.clean_checkpoint_path() uses, so
+    the two stay in sync. `project_dir` defaults to `settings.paths.project_dir`
+    (override via the TENNIS_DATA_PIPELINE_PROJECT_DIR env var); pass it to
+    load from a different project root's `paths.clean_dir`.
     """
-    project_dir = (
-        Path(project_dir) if project_dir is not None else settings.paths.project_dir
+    tennis_data_uk_settings = settings.tennis_data_uk
+    clean_root = (
+        Path(project_dir) / settings.paths.clean_dir
+        if project_dir is not None
+        else settings.paths.clean
     )
-    path = project_dir / f"data/clean/uk/{tour}/uk_{tour}_singles_clean_{year}.csv"
-    return load_clean_uk_data(path, tour)
+    clean_dir = clean_root / tennis_data_uk_settings.clean_dir_name
+    filename = tennis_data_uk_settings.clean_filename_template.format(
+        tour=tour, year=year
+    )
+    return load_clean_uk_data(clean_dir / tour / filename, tour)
 
 
 def load_clean_uk_data_range(

@@ -22,6 +22,7 @@ def _response(status_code: int, content: bytes = b"") -> requests.Response:
 
 
 def test_build_url_atp() -> None:
+    """ATP URLs use the plain year as the directory (no 'w' suffix)."""
     client = TennisDataUKClient()
     assert client.build_url(2024, Tour.ATP, extension="xlsx") == (
         f"https://www.tennis-data.co.uk/{client.path_prefix}/2024/2024.xlsx"
@@ -29,6 +30,7 @@ def test_build_url_atp() -> None:
 
 
 def test_build_url_wta() -> None:
+    """WTA URLs use '<year>w' as the directory."""
     client = TennisDataUKClient()
     assert client.build_url(2024, Tour.WTA, extension="xlsx") == (
         f"https://www.tennis-data.co.uk/{client.path_prefix}/2024w/2024.xlsx"
@@ -36,6 +38,7 @@ def test_build_url_wta() -> None:
 
 
 def test_build_url_uses_custom_path_prefix() -> None:
+    """An explicit path_prefix overrides the client's last-known default."""
     client = TennisDataUKClient(path_prefix="custom-id")
     assert client.build_url(2024, Tour.ATP, extension="xlsx") == (
         "https://www.tennis-data.co.uk/custom-id/2024/2024.xlsx"
@@ -43,12 +46,14 @@ def test_build_url_uses_custom_path_prefix() -> None:
 
 
 def test_build_url_invalid_tour_raises() -> None:
+    """An unrecognized tour string raises ValueError."""
     client = TennisDataUKClient()
     with pytest.raises(ValueError):
         client.build_url(2024, "juniors")
 
 
 def test_download_year_prefers_xlsx_for_recent_year() -> None:
+    """Post-cutoff seasons try .xlsx first."""
     client = TennisDataUKClient()
     requested: list[str] = []
 
@@ -64,6 +69,7 @@ def test_download_year_prefers_xlsx_for_recent_year() -> None:
 
 
 def test_download_year_prefers_xls_for_legacy_year() -> None:
+    """Pre-cutoff seasons try .xls first, falling back to .xlsx if that 404s."""
     client = TennisDataUKClient()
     requested: list[str] = []
 
@@ -82,6 +88,7 @@ def test_download_year_prefers_xls_for_legacy_year() -> None:
 
 
 def test_download_year_https_success_no_fallback() -> None:
+    """A successful HTTPS request never falls back to HTTP."""
     client = TennisDataUKClient()
     with patch.object(
         client.session, "get", return_value=_response(200, b"ok")
@@ -93,6 +100,7 @@ def test_download_year_https_success_no_fallback() -> None:
 
 
 def test_download_year_https_failure_falls_back_to_http() -> None:
+    """An HTTPS failure falls back to HTTP when allow_http_fallback is set."""
     client = TennisDataUKClient()
 
     def side_effect(url: str, timeout: float) -> requests.Response:
@@ -107,6 +115,7 @@ def test_download_year_https_failure_falls_back_to_http() -> None:
 
 
 def test_download_year_total_failure_raises_with_both_contexts() -> None:
+    """When both HTTPS and HTTP fail, the error message includes both sets of attempts."""
     client = TennisDataUKClient()
 
     with (
@@ -123,6 +132,7 @@ def test_download_year_total_failure_raises_with_both_contexts() -> None:
 
 
 def test_download_year_skips_http_fallback_on_definitive_404() -> None:
+    """A definitive 404 on every HTTPS attempt skips the HTTP fallback entirely."""
     client = TennisDataUKClient()
 
     def side_effect(url: str, timeout: float) -> requests.Response:
@@ -140,6 +150,7 @@ def test_download_year_skips_http_fallback_on_definitive_404() -> None:
 
 
 def test_discover_path_prefix_updates_client() -> None:
+    """discover_path_prefix() scrapes the data page and updates client.path_prefix."""
     client = TennisDataUKClient()
     html = (
         '<a href="new-id-abc123/2024/2024.xlsx">2024</a>'
@@ -156,6 +167,7 @@ def test_discover_path_prefix_updates_client() -> None:
 
 
 def test_discover_path_prefix_raises_when_not_found() -> None:
+    """No matching link on the data page raises TennisDataUKDownloadError."""
     client = TennisDataUKClient()
 
     with (
@@ -168,6 +180,7 @@ def test_discover_path_prefix_raises_when_not_found() -> None:
 
 
 def test_discover_path_prefix_raises_on_request_failure() -> None:
+    """A network failure fetching the data page raises TennisDataUKDownloadError."""
     client = TennisDataUKClient()
 
     with (

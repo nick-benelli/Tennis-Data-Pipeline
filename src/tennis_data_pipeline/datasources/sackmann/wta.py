@@ -31,6 +31,7 @@ def load_year(
     -------
     pandas.DataFrame
         WTA matches for the requested year.
+
     """
     client = client or SackmannClient()
 
@@ -70,6 +71,7 @@ def load_years(
     -------
     pandas.DataFrame
         Combined WTA match data.
+
     """
     client = client or SackmannClient()
 
@@ -121,6 +123,7 @@ def load_range(
     ------
     ValueError
         If end_year is earlier than start_year.
+
     """
     if end_year < start_year:
         raise ValueError("end_year must be greater than or equal to start_year.")

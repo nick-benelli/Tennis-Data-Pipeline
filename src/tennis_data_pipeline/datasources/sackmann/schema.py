@@ -1,3 +1,5 @@
+"""File-naming conventions and column schema for Jeff Sackmann's tennis-data GitHub mirror."""
+
 MATCH_FILE_TEMPLATE = "{tour}_matches_{year}.csv"
 
 PLAYER_FILE = {

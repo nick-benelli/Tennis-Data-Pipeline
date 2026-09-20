@@ -123,16 +123,3 @@ def fetch_and_checkpoint(
     df = client.load_year(year=year, tour=tour)
     write_raw_checkpoint(df, tour, year, raw_dir)
     return df
-
-
-def read_raw_checkpoint(
-    tour: Tour | str, year: int, raw_dir: Path | None = None
-) -> pd.DataFrame:
-    """Read back a previously-saved raw checkpoint CSV."""
-    tour = Tour(str(tour).lower())
-    path = raw_checkpoint_path(tour, year, raw_dir)
-    if not path.exists():
-        raise FileNotFoundError(
-            f"No raw checkpoint for {tour.value.upper()} {year}: {path}"
-        )
-    return pd.read_csv(path, low_memory=False)

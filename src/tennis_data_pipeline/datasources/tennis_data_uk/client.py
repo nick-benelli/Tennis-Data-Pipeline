@@ -55,8 +55,7 @@ class TennisDataUKClient:
         allow_http_fallback: bool = True,
         path_prefix: str | None = None,
     ) -> None:
-        """
-        Initialize the TennisDataUKClient.
+        """Initialize the TennisDataUKClient.
 
         Args:
             timeout (float | None): The request timeout in seconds.
@@ -66,6 +65,7 @@ class TennisDataUKClient:
             path_prefix (str | None): The randomized path segment tennis-data.co.uk
                 inserts before each season's file. Defaults to the configured/last-known
                 value; call `discover_path_prefix()` if downloads start 404ing.
+
         """
         tennis_data_uk_settings = settings.tennis_data_uk
 
@@ -135,8 +135,7 @@ class TennisDataUKClient:
         year: int,
         tour: Tour,
     ) -> str:
-        """
-        Get the directory name for a given year and tour.
+        """Get the directory name for a given year and tour.
         ATP: "http://tennis-data.co.uk/{year}/{year}.xlsx",
         WTA: "http://tennis-data.co.uk/{year}w/{year}.xlsx",
 
@@ -148,6 +147,7 @@ class TennisDataUKClient:
 
         Returns:
             str: The directory name corresponding to the year and tour.
+
         """
         if tour == Tour.ATP:
             return str(year)
@@ -170,8 +170,7 @@ class TennisDataUKClient:
         scheme: str = "https",
         extension: str = "xlsx",
     ) -> str:
-        """
-        Build the URL for downloading a specific year's data for the given tour.
+        """Build the URL for downloading a specific year's data for the given tour.
 
         Args:
             year (int): The year of the data to download.
@@ -181,6 +180,7 @@ class TennisDataUKClient:
 
         Returns:
             str: The constructed URL.
+
         """
         tour = Tour(tour.lower())
 
@@ -195,8 +195,7 @@ class TennisDataUKClient:
         )
 
     def discover_path_prefix(self) -> str:
-        """
-        Scrape `DATA_PAGE_URL` for the current randomized path segment and update
+        """Scrape `DATA_PAGE_URL` for the current randomized path segment and update
         `self.path_prefix` with it. Tennis-Data.co.uk has changed this segment
         before with no advance notice, so call this (and update
         `TENNIS_DATA_UK_PATH_PREFIX`/settings) if downloads start failing with 404s.
@@ -207,6 +206,7 @@ class TennisDataUKClient:
         Raises:
             TennisDataUKDownloadError: If the data page can't be fetched or no
                 season-file link matching the expected pattern is found on it.
+
         """
         try:
             response = self.session.get(self.DATA_PAGE_URL, timeout=self.timeout)
@@ -273,6 +273,7 @@ class TennisDataUKClient:
         year: int,
         tour: Tour | str,
     ) -> bytes:
+        """Download one tour/season's raw xls/xlsx file content, trying HTTPS then HTTP."""
         tour = Tour(tour.lower())
         extensions = self._extension_order(year)
 
@@ -309,8 +310,7 @@ class TennisDataUKClient:
         year: int,
         tour: Tour | str,
     ) -> pd.DataFrame:
-        """
-        Load the data for a given year and tour as a pandas DataFrame.
+        """Load the data for a given year and tour as a pandas DataFrame.
 
         Args:
             year (int): The year of the data to load.
@@ -318,6 +318,7 @@ class TennisDataUKClient:
 
         Returns:
             pd.DataFrame: The loaded data.
+
         """
         contents = self.download_year(
             year=year,

@@ -1,7 +1,11 @@
 # Tennis-Data.co.uk Pipeline Plan
 
-Status: draft / not yet implemented. This document defines the target
-architecture; nothing in this file has been built yet unless noted.
+Status: implemented. The unified `handler/uk/cleaner` pipeline described below
+is in place (Stage 1-5, `workflows/tennis_data_uk.py`); item 9's retirement of
+the old `datasources/tennis_data_uk/{schema,cleaning}.py` near-original schema
+is done - `atp.py`/`wta.py`/`cleaning.py`/`schema.py` under `datasources/tennis_data_uk/`
+have been deleted along with their tests. The rest of this doc is kept as
+historical design context.
 
 ## 1. Motivation
 
@@ -116,7 +120,7 @@ open questions), taking a raw `DataFrame` and returning the canonical clean
 3. **Validate structural invariants** - tournament-id consistency, no reused
    ids across different tournaments, expected surfaces/rounds, odds &ge; 1,
    completed matches have plausible set scores. (Tour-agnostic already:
-   `handler/uk/validatior/tournaments.py`.)
+   `handler/uk/validator/tournaments.py`.)
 4. **Rename & normalize to the canonical schema** - see &sect;4.
 5. **Add provenance/key columns** - `source`, `tour`, `source_event_key`,
    `source_match_key`.

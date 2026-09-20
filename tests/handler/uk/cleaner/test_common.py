@@ -48,12 +48,14 @@ def _raw_event_rows() -> pd.DataFrame:
 
 
 def test_add_source_event_key_uses_given_id_column() -> None:
+    """source_event_key is built from year/id/location/tournament, slugified."""
     df = _raw_event_rows()
     result = common.add_source_event_key(df, id_column="ATP")
     assert (result["source_event_key"] == "2024_1_example_example_open").all()
 
 
 def test_assign_round_codes_counts_backward_from_qf() -> None:
+    """Numbered rounds map to bracket codes by counting backward from QF."""
     df = common.add_source_event_key(_raw_event_rows(), id_column="ATP")
     result = common.assign_round_codes(df, common.BASE_ROUND_MAP)
 
@@ -78,10 +80,12 @@ def test_assign_round_codes_scales_with_draw_size() -> None:
 
 
 def test_add_source_match_key() -> None:
+    """source_match_key combines event key, date, round, and normalized player names."""
     df = pd.DataFrame(
         {
             "source_event_key": ["2024_1_example_example_open"],
             "match_date": pd.to_datetime(["2024-01-15"]),
+            "round": ["F"],
             "winner_name": ["Player A."],
             "loser_name": ["Player B."],
         }
@@ -89,11 +93,12 @@ def test_add_source_match_key() -> None:
     result = common.add_source_match_key(df)
     assert (
         result.loc[0, "source_match_key"]
-        == "2024_1_example_example_open_2024-01-15_player_a_player_b"
+        == "2024_1_example_example_open_2024-01-15_F_player_a_player_b"
     )
 
 
 def test_fix_bad_odds_nulls_impossible_values() -> None:
+    """Odds below 1.0 are nulled out rather than left as impossible values."""
     df = pd.DataFrame({"B365W": [1.5, 0.8, None], "B365L": [2.5, 3.0, 0.99]})
     result = common.fix_bad_odds(df, raw_odds_cols=["B365W", "B365L"])
 
@@ -103,6 +108,7 @@ def test_fix_bad_odds_nulls_impossible_values() -> None:
 
 
 def test_ensure_columns_backfills_missing_as_nan() -> None:
+    """A missing column is added and filled with NaN; an existing one is untouched."""
     df = pd.DataFrame({"odds_b365_winner": [1.5]})
     result = common.ensure_columns(df, ["odds_b365_winner", "odds_max_winner"])
 
@@ -119,4 +125,5 @@ def test_ensure_columns_backfills_missing_as_nan() -> None:
     ],
 )
 def test_slugify(raw: str, expected: str) -> None:
+    """slugify() lowercases, trims, and collapses non-alphanumerics to underscores."""
     assert common.slugify(raw) == expected

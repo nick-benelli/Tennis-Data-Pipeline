@@ -1,3 +1,5 @@
+"""WTA-specific raw/clean column names, dtypes, and category maps for Tennis-Data UK."""
+
 from tennis_data_pipeline.handler.uk.cleaner import common
 
 COLUMN_MAP = {
@@ -73,8 +75,6 @@ KNOWN_TOURNAMENT_INCONSISTENCY_YEARS: set[int] = set()
 KNOWN_REUSED_TOURNAMENT_ID_YEARS: set[int] = set()
 
 # Re-exported for callers that still reach these via `wta_cols.*`.
-NUMBERED_ROUNDS_ASCENDING = common.NUMBERED_ROUNDS_ASCENDING
-BRACKET_CODES_FROM_QF = common.BRACKET_CODES_FROM_QF
 SURFACE_MAP = common.SURFACE_MAP
 COURT_MAP = common.COURT_MAP
 
@@ -118,6 +118,7 @@ COLUMN_ORDER = [
     "is_outdoor",
     "surface",
     "round",
+    "players_remaining",
     "best_of",
     "winner_name",
     "loser_name",

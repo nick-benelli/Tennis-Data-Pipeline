@@ -5,11 +5,12 @@ from __future__ import annotations
 import logging
 import re
 from collections.abc import Callable
+from collections.abc import Set as AbstractSet
 from pathlib import Path
 
 import pandas as pd
 
-from tennis_data_pipeline.handler.uk.validatior.tournaments import (
+from tennis_data_pipeline.handler.uk.validator.tournaments import (
     find_uk_inconsistent_tournaments,
     find_uk_reused_tournament_ids,
 )
@@ -67,6 +68,23 @@ BASE_STATUS_MAP = {
 EXPECTED_SURFACES = {"hard", "clay", "grass", "carpet"}
 BASE_EXPECTED_ROUNDS = {"R128", "R64", "R32", "R16", "QF", "SF", "F", "RR"}
 
+# Players remaining when a round starts, keyed on the canonical round code.
+# "BR" (third-place playoff, WTA only) is mapped to 4: it's contested by the
+# two semifinal losers, i.e. the other half of the final four. "RR" (round
+# robin) is intentionally omitted here - group size isn't fixed, so it's
+# derived per-event instead; see add_players_remaining() below.
+ROUND_SIZE_MAP = {
+    "R256": 256,
+    "R128": 128,
+    "R64": 64,
+    "R32": 32,
+    "R16": 16,
+    "QF": 8,
+    "SF": 4,
+    "F": 2,
+    "BR": 4,
+}
+
 # Canonical (post-COLUMN_MAP) odds column names; which bookmakers are present
 # varies by year, but these four cover the whole date range for both tours.
 ODDS_COLS = [
@@ -84,12 +102,14 @@ RAW_ODDS_COLS = ["B365W", "B365L", "PSW", "PSL", "MaxW", "MaxL", "AvgW", "AvgL"]
 
 
 def slugify(value: str) -> str:
+    """Lowercase, strip, and collapse non-alphanumeric runs to a single underscore."""
     value = value.strip().lower()
     value = re.sub(r"[^a-z0-9]+", "_", value)
     return value.strip("_")
 
 
 def normalize_key_value(series: pd.Series) -> pd.Series:
+    """Vectorized `slugify()`: lowercase, strip, and slug-ify a string Series for key-building."""
     return (
         series.astype("string")
         .str.lower()
@@ -97,6 +117,60 @@ def normalize_key_value(series: pd.Series) -> pd.Series:
         .str.replace(r"[^a-z0-9]+", "_", regex=True)
         .str.strip("_")
     )
+
+
+def add_players_remaining(df: pd.DataFrame) -> pd.DataFrame:
+    """Add `players_remaining`: the bracket size entering this round (2 for a
+    final, 4 for a semifinal, 8 for a quarterfinal, doubling per earlier round).
+
+    Round-robin ("RR") has no fixed group size, so it's inferred instead from
+    that event's actual matches; see `_infer_round_robin_field_size()`. See
+    ROUND_SIZE_MAP above for the third-place-playoff edge case.
+    """
+    df = df.copy()
+    df["players_remaining"] = df["round"].map(ROUND_SIZE_MAP).astype("Int64")
+
+    rr_mask = df["round"] == "RR"
+    if rr_mask.any():
+        df.loc[rr_mask, "players_remaining"] = _infer_round_robin_field_size(
+            df.loc[rr_mask]
+        )
+
+    return df
+
+
+def _infer_round_robin_field_size(rr: pd.DataFrame) -> pd.Series:
+    """Infer each round-robin event's true field size (players per group x
+    number of groups), robust to alternates who substitute in for a withdrawn
+    player mid-event.
+
+    A withdrawal means the substitute (and the player they replaced) each show
+    up with fewer matches played than a full group participant, so a plain
+    distinct-player count over-counts. Instead: group size = 1 + the most
+    matches anyone in the event played (at least one player almost always
+    completes their full group without a substitution), and the number of
+    groups falls out of the total match count, since a round-robin group of
+    size N plays exactly N*(N-1)/2 matches.
+    """
+    players = pd.concat(
+        [
+            rr[["source_event_key", "winner_name"]].rename(
+                columns={"winner_name": "player"}
+            ),
+            rr[["source_event_key", "loser_name"]].rename(
+                columns={"loser_name": "player"}
+            ),
+        ]
+    )
+    matches_played = players.groupby(["source_event_key", "player"]).size()
+    group_size = matches_played.groupby(level="source_event_key").max() + 1
+
+    total_matches = rr.groupby("source_event_key").size()
+    matches_per_group = group_size * (group_size - 1) // 2
+    num_groups = (total_matches / matches_per_group).round()
+
+    field_size = (num_groups * group_size).astype("Int64")
+    return rr["source_event_key"].map(field_size).astype("Int64")
 
 
 def add_source_event_key(df: pd.DataFrame, id_column: str) -> pd.DataFrame:
@@ -137,7 +211,10 @@ def assign_round_codes(df: pd.DataFrame, round_map: dict[str, str]) -> pd.DataFr
             if r in set(df.loc[group_index, "Round"])
         ]
         round_code_map = dict(round_map)
-        for code, label in zip(BRACKET_CODES_FROM_QF, reversed(rounds_present)):
+        # Deliberately non-strict: BRACKET_CODES_FROM_QF (5) is always >=
+        # rounds_present, and zip's stop-at-shorter is what maps a smaller
+        # draw's fewer numbered rounds correctly.
+        for code, label in zip(BRACKET_CODES_FROM_QF, reversed(rounds_present)):  # noqa: B905
             round_code_map[label] = code
 
         df.loc[group_index, "Round"] = df.loc[group_index, "Round"].map(round_code_map)
@@ -147,14 +224,27 @@ def assign_round_codes(df: pd.DataFrame, round_map: dict[str, str]) -> pd.DataFr
 
 
 def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
+    """Add `source_match_key`: a unique per-match key derived from event/date/round/players."""
     df = df.copy()
 
     winner = normalize_key_value(df["winner_name"])
     loser = normalize_key_value(df["loser_name"])
     match_date = df["match_date"].dt.strftime("%Y-%m-%d")
+    # Round is included so a same-day rematch (e.g. a round-robin pairing that
+    # meets again in the final) stays unique even if the raw source stamps a
+    # whole round-robin event with one date instead of per-match dates.
+    round_code = df["round"].astype("string")
 
     df["source_match_key"] = (
-        df["source_event_key"] + "_" + match_date + "_" + winner + "_" + loser
+        df["source_event_key"]
+        + "_"
+        + match_date
+        + "_"
+        + round_code
+        + "_"
+        + winner
+        + "_"
+        + loser
     )
 
     return df
@@ -185,7 +275,7 @@ def check_tournament_consistency(
     *,
     id_col: str,
     info_cols: list[str],
-    known_exception_years: set[int] = frozenset(),
+    known_exception_years: AbstractSet[int] = frozenset(),
 ) -> None:
     """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
     if year in known_exception_years:
@@ -212,7 +302,7 @@ def check_reused_tournament_ids(
     year: int,
     *,
     id_col: str,
-    known_exception_years: set[int] = frozenset(),
+    known_exception_years: AbstractSet[int] = frozenset(),
 ) -> None:
     """Raise if a tournament id is reused across genuinely different tournaments."""
     if year in known_exception_years:
@@ -255,6 +345,128 @@ def ensure_odds_columns(
 ) -> pd.DataFrame:
     """Backfill (post-rename) odds columns missing due to bookmaker coverage drift."""
     return ensure_columns(df, odds_cols if odds_cols is not None else ODDS_COLS)
+
+
+_REQUIRED_CLEAN_COLS = {
+    "uk_tournament_id",
+    "year",
+    "location",
+    "tournament_name",
+    "match_date",
+    "series",
+    "is_outdoor",
+    "surface",
+    "round",
+    "players_remaining",
+    "best_of",
+    "winner_name",
+    "loser_name",
+    "match_status",
+    "source_event_key",
+    "source_match_key",
+}
+
+
+def validate_clean_uk_data(
+    df: pd.DataFrame,
+    *,
+    expected_surfaces: set[str],
+    expected_rounds: set[str],
+    odds_cols: list[str],
+    valid_best_of: set[int],
+) -> None:
+    """Raise ValueError on any data-quality issue found in cleaned UK match data.
+
+    Shared by `atp.validate_clean_uk_atp_data`/`wta.validate_clean_uk_wta_data`;
+    `valid_best_of` is the only thing that differs by tour (ATP allows 3 or 5,
+    WTA singles is always 3).
+    """
+    missing_cols = _REQUIRED_CLEAN_COLS - set(df.columns)
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {sorted(missing_cols)}")
+
+    unexpected_surfaces = set(df["surface"].dropna().unique()) - expected_surfaces
+    if unexpected_surfaces:
+        raise ValueError(f"Unexpected surfaces: {sorted(unexpected_surfaces)}")
+
+    unexpected_rounds = set(df["round"].dropna().unique()) - expected_rounds
+    if unexpected_rounds:
+        raise ValueError(f"Unexpected rounds: {sorted(unexpected_rounds)}")
+
+    missing_players_remaining = df["round"].notna() & df["players_remaining"].isna()
+    if missing_players_remaining.any():
+        raise ValueError(
+            f"{missing_players_remaining.sum()} rows are missing players_remaining."
+        )
+
+    invalid_players_remaining = df["players_remaining"].notna() & (
+        df["players_remaining"] < 2
+    )
+    if invalid_players_remaining.any():
+        raise ValueError(
+            f"{invalid_players_remaining.sum()} rows have players_remaining < 2."
+        )
+
+    if df["source_match_key"].duplicated().any():
+        raise ValueError("Duplicate source_match_key values found.")
+
+    # Early-season tournaments (e.g. Brisbane, Doha, Auckland, Chennai) often play
+    # their first round in late December of the prior calendar year (the exact
+    # date varies by year, e.g. Dec 30 in 2013, Dec 31 in 2018); treat any
+    # December date in the prior year as valid for the season.
+    match_date = df["match_date"]
+    if match_date.isna().any():
+        raise ValueError(f"{match_date.isna().sum()} rows are missing match_date.")
+    valid_year = (df["year"] == match_date.dt.year) | (
+        (df["year"] == match_date.dt.year + 1) & (match_date.dt.month == 12)
+    )
+    # nullable-Int64 `year` compared against a datetime .dt accessor yields pd.NA
+    # (not False) when it mismatches, which `.any()` silently skips; fillna(False)
+    # forces those NA rows to count as invalid rather than passing unnoticed.
+    invalid_year = ~valid_year.fillna(False)
+    if invalid_year.any():
+        raise ValueError(f"{invalid_year.sum()} rows have year != match_date year.")
+
+    same_player = df["winner_name"] == df["loser_name"]
+    if same_player.any():
+        raise ValueError(f"{same_player.sum()} rows have identical winner and loser.")
+
+    invalid_best_of = ~df["best_of"].isin(valid_best_of)
+    if invalid_best_of.any():
+        missing_best_of = df.loc[invalid_best_of, "best_of"].isna().sum()
+        unexpected_values = sorted(df.loc[invalid_best_of, "best_of"].dropna().unique())
+        raise ValueError(
+            f"{invalid_best_of.sum()} rows have an unexpected best_of "
+            f"({missing_best_of} missing, unexpected values: {unexpected_values})."
+        )
+
+    completed = df["match_status"] == "completed"
+
+    completed_missing_first_set = completed & (
+        df["winner_set_1_games"].isna() | df["loser_set_1_games"].isna()
+    )
+    if completed_missing_first_set.any():
+        raise ValueError(
+            f"{completed_missing_first_set.sum()} completed matches "
+            "are missing first-set scores."
+        )
+
+    invalid_completed_sets = (
+        completed
+        & df["winner_sets"].notna()
+        & df["loser_sets"].notna()
+        & (df["winner_sets"] <= df["loser_sets"])
+    )
+    if invalid_completed_sets.any():
+        raise ValueError(
+            f"{invalid_completed_sets.sum()} completed matches "
+            "have winner_sets <= loser_sets."
+        )
+
+    for col in odds_cols:
+        invalid_odds = df[col].notna() & (df[col] < 1)
+        if invalid_odds.any():
+            raise ValueError(f"{col} contains {invalid_odds.sum()} odds < 1.")
 
 
 def load_raw_uk_csv(

@@ -1,11 +1,11 @@
+"""ATP-specific Tennis-Data UK cleaning: known fixes, validation, and canonical schema."""
+
 from pathlib import Path
 
 import pandas as pd
 
 from tennis_data_pipeline.handler.uk.cleaner import atp_cols as cols
-from tennis_data_pipeline.handler.uk.cleaner import common
-from tennis_data_pipeline.handler.uk.cleaner import known_fixes
-from tennis_data_pipeline.handler.uk.cleaner import quality
+from tennis_data_pipeline.handler.uk.cleaner import common, known_fixes, quality
 
 ATP_BEST_OF_5_TOURNAMENTS = {
     "Australian Open",
@@ -27,6 +27,7 @@ def load_raw_atp_csv(path: Path, year: int) -> pd.DataFrame:
         year,
         int_cols=cols.RAW_INT_COLS,
         category_cols=cols.RAW_CATEGORY_COLS,
+        pre_dtype_hook=known_fixes.fix_atp_category_typos,
     )
 
 
@@ -44,10 +45,6 @@ def assign_round_codes(df: pd.DataFrame) -> pd.DataFrame:
     return common.assign_round_codes(df, cols.ROUND_MAP)
 
 
-def normalize_key_value(series: pd.Series) -> pd.Series:
-    return common.normalize_key_value(series)
-
-
 def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
     return common.add_source_match_key(df)
 
@@ -60,10 +57,17 @@ def apply_known_best_of_fixes(df: pd.DataFrame) -> pd.DataFrame:
     grand_slam_mask = df["Tournament"].isin(ATP_BEST_OF_5_TOURNAMENTS)
     df.loc[grand_slam_mask, "Best of"] = 5
 
-    # ATP Finals (Masters Cup) is best-of-3 for every round; the raw source omits
-    # "Best of" entirely for these rows rather than mislabeling it.
-    masters_cup_mask = df["Series"] == "Masters Cup"
-    df.loc[masters_cup_mask & df["Best of"].isna(), "Best of"] = 3
+    # Best-of-5 has only ever applied to Grand Slams (always) and Masters
+    # Series finals (only before the 2008 season - see
+    # check_tournament_consistency()/CONSISTENCY_INFO_COLS for why "Best of"
+    # is allowed to vary by round within a Masters event). Every other ATP
+    # match, at any level (including Masters Cup, which is best-of-3 even in
+    # the final), has always been best-of-3; the raw source occasionally
+    # mislabels a single match instead of following this - e.g. the 2000
+    # Lisbon Masters Cup final, or a handful of ATP250/500 finals in the
+    # early-2000s data.
+    always_best_of_3 = ~grand_slam_mask & (df["Series"] != "Masters")
+    df.loc[always_best_of_3, "Best of"] = 3
 
     return df
 
@@ -102,92 +106,18 @@ def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
 
 
 def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
-    """Raise ValueError on any data-quality issue found in cleaned UK ATP match data."""
-    required_cols = {
-        "uk_tournament_id",
-        "year",
-        "location",
-        "tournament_name",
-        "match_date",
-        "series",
-        "is_outdoor",
-        "surface",
-        "round",
-        "best_of",
-        "winner_name",
-        "loser_name",
-        "match_status",
-        "source_event_key",
-        "source_match_key",
-    }
-    missing_cols = required_cols - set(df.columns)
-    if missing_cols:
-        raise ValueError(f"Missing required columns: {sorted(missing_cols)}")
+    """Raise ValueError on any data-quality issue found in cleaned UK ATP match data.
 
-    unexpected_surfaces = set(df["surface"].dropna().unique()) - cols.EXPECTED_SURFACES
-    if unexpected_surfaces:
-        raise ValueError(f"Unexpected surfaces: {sorted(unexpected_surfaces)}")
-
-    unexpected_rounds = set(df["round"].dropna().unique()) - cols.EXPECTED_ROUNDS
-    if unexpected_rounds:
-        raise ValueError(f"Unexpected rounds: {sorted(unexpected_rounds)}")
-
-    if df["source_match_key"].duplicated().any():
-        raise ValueError("Duplicate source_match_key values found.")
-
-    # Early-season tournaments (e.g. Brisbane, Doha, Pune) often play their first
-    # Early-season tournaments (e.g. Brisbane, Doha, Chennai, Pune) often play their
-    # first round in late December of the prior calendar year (the exact date varies
-    # by year, e.g. Dec 30 in 2013, Dec 31 in 2018); treat any December date in the
-    # prior year as valid for the season.
-    match_date = df["match_date"]
-    valid_year = (df["year"] == match_date.dt.year) | (
-        (df["year"] == match_date.dt.year + 1) & (match_date.dt.month == 12)
+    ATP allows best_of 3 or 5 (Grand Slams/pre-2008 Masters finals are best-of-5);
+    see common.validate_clean_uk_data() for the checks shared with WTA.
+    """
+    common.validate_clean_uk_data(
+        df,
+        expected_surfaces=cols.EXPECTED_SURFACES,
+        expected_rounds=cols.EXPECTED_ROUNDS,
+        odds_cols=cols.ODDS_COLS,
+        valid_best_of={3, 5},
     )
-    invalid_year = ~valid_year
-    if invalid_year.any():
-        raise ValueError(f"{invalid_year.sum()} rows have year != match_date year.")
-
-    same_player = df["winner_name"] == df["loser_name"]
-    if same_player.any():
-        raise ValueError(f"{same_player.sum()} rows have identical winner and loser.")
-
-    invalid_best_of = ~df["best_of"].isin([3, 5])
-    if invalid_best_of.any():
-        missing_best_of = df.loc[invalid_best_of, "best_of"].isna().sum()
-        unexpected_values = sorted(df.loc[invalid_best_of, "best_of"].dropna().unique())
-        raise ValueError(
-            f"{invalid_best_of.sum()} rows have an unexpected best_of "
-            f"({missing_best_of} missing, unexpected values: {unexpected_values})."
-        )
-
-    completed = df["match_status"] == "completed"
-
-    completed_missing_first_set = completed & (
-        df["winner_set_1_games"].isna() | df["loser_set_1_games"].isna()
-    )
-    if completed_missing_first_set.any():
-        raise ValueError(
-            f"{completed_missing_first_set.sum()} completed matches "
-            "are missing first-set scores."
-        )
-
-    invalid_completed_sets = (
-        completed
-        & df["winner_sets"].notna()
-        & df["loser_sets"].notna()
-        & (df["winner_sets"] <= df["loser_sets"])
-    )
-    if invalid_completed_sets.any():
-        raise ValueError(
-            f"{invalid_completed_sets.sum()} completed matches "
-            "have winner_sets <= loser_sets."
-        )
-
-    for col in cols.ODDS_COLS:
-        invalid_odds = df[col].notna() & (df[col] < 1)
-        if invalid_odds.any():
-            raise ValueError(f"{col} contains {invalid_odds.sum()} odds < 1.")
 
 
 def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -203,11 +133,14 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     # Only ever Indoor/Outdoor, so map straight to a nullable bool rather than a category.
     df["is_outdoor"] = df["is_outdoor"].map(cols.COURT_MAP).astype("boolean")
     df["match_status"] = df["match_status"].cat.rename_categories(cols.STATUS_MAP)
+    df = common.add_players_remaining(df)
 
     df = add_source_match_key(df)
 
     df["source"] = "tennis_data_uk"
     df["tour"] = "atp"
+    # WPts/LPts don't exist at all in the raw source before 2005.
+    df = common.ensure_columns(df, ["winner_rank_points", "loser_rank_points"])
     df = common.ensure_odds_columns(df, cols.ODDS_COLS)
     df = df[cols.COLUMN_ORDER]
 
@@ -217,6 +150,7 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize_uk_atp_quality(df: pd.DataFrame) -> None:
+    """Print a quick human-readable data-quality summary for cleaned UK ATP data."""
     quality.summarize_uk_quality(df)
 
 

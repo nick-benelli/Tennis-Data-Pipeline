@@ -1,4 +1,10 @@
+"""Tournament-level structural-consistency checks for Tennis-Data UK match data."""
+
+import logging
+
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 def find_uk_inconsistent_tournaments(
@@ -12,6 +18,7 @@ def find_uk_inconsistent_tournaments(
         metrics: distinct-value count per info column, one row per inconsistent key.
         affected_rows: the original df_uk rows belonging to those inconsistent keys,
             for manual review/fixing in the source data.
+
     """
     key_columns = key_columns or ["ATP", "Location"]
     info_cols = info_cols or ["Tournament", "Series", "Court", "Surface", "Best of"]
@@ -20,10 +27,10 @@ def find_uk_inconsistent_tournaments(
     metrics = nunique_per_key[(nunique_per_key > 1).any(axis=1)]
 
     if metrics.empty:
-        print("All tournament attributes are consistent.")
+        logger.debug("All tournament attributes are consistent.")
         return metrics, df.iloc[0:0]
 
-    print(f"Warning: {len(metrics)} tournament(s) have inconsistent attributes:")
+    logger.warning("%d tournament(s) have inconsistent attributes.", len(metrics))
 
     affected_rows = df.merge(
         metrics.reset_index()[key_columns], on=key_columns, how="inner"
@@ -48,6 +55,7 @@ def find_uk_reused_tournament_ids(
         metrics: distinct-value count of `disambiguating_cols` per id, one
             row per id used by more than one tournament.
         affected_rows: the original df_uk rows for those reused ids.
+
     """
     disambiguating_cols = disambiguating_cols or ["Location", "Tournament"]
 
@@ -55,11 +63,11 @@ def find_uk_reused_tournament_ids(
     metrics = nunique_per_id[(nunique_per_id > 1).any(axis=1)]
 
     if metrics.empty:
-        print(f"Every {id_col} id maps to exactly one tournament.")
+        logger.debug("Every %s id maps to exactly one tournament.", id_col)
         return metrics, df.iloc[0:0]
 
-    print(
-        f"Warning: {len(metrics)} {id_col} id(s) are reused across different tournaments:"
+    logger.warning(
+        "%d %s id(s) are reused across different tournaments.", len(metrics), id_col
     )
 
     affected_rows = df.merge(metrics.reset_index()[[id_col]], on=id_col, how="inner")

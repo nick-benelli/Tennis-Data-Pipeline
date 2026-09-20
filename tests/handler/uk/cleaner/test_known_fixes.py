@@ -23,6 +23,7 @@ def _sample_df() -> pd.DataFrame:
 
 
 def test_match_fix_applies_when_exactly_one_row_matches() -> None:
+    """apply_to() calls the fix's apply() when the match mask hits exactly one row."""
     applied: list[bool] = []
 
     fix = known_fixes.MatchFix(
@@ -39,6 +40,7 @@ def test_match_fix_applies_when_exactly_one_row_matches() -> None:
 
 
 def test_match_fix_raises_when_zero_rows_match() -> None:
+    """apply_to() raises instead of silently no-op'ing when the fix no longer matches."""
     fix = known_fixes.MatchFix(
         tour="atp",
         year=2024,
@@ -53,6 +55,7 @@ def test_match_fix_raises_when_zero_rows_match() -> None:
 
 
 def test_match_fix_raises_when_multiple_rows_match() -> None:
+    """apply_to() raises when the match mask is ambiguous (more than one row)."""
     fix = known_fixes.MatchFix(
         tour="atp",
         year=2024,
@@ -67,6 +70,7 @@ def test_match_fix_raises_when_multiple_rows_match() -> None:
 
 
 def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
+    """apply_match_fixes() only runs fixes whose tour/year match the requested ones."""
     calls: list[str] = []
     df = _sample_df()
 
@@ -110,6 +114,7 @@ def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
 def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(
     fix: known_fixes.MatchFix,
 ) -> None:
+    """Every registered ATP MatchFix still matches exactly one row of its real checkpoint."""
     path = PROJECT_DIR / "data/raw/uk/atp" / f"uk_atp_singles_raw_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")
@@ -124,6 +129,7 @@ def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(
 def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(
     fix: known_fixes.MatchFix,
 ) -> None:
+    """Every registered WTA MatchFix still matches exactly one row of its real checkpoint."""
     path = PROJECT_DIR / "data/raw/uk/wta" / f"uk_wta_singles_raw_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")
@@ -133,6 +139,7 @@ def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(
 
 
 def test_fix_wta_category_typos() -> None:
+    """Known WTA category typos (Tier/Comment/Surface/Best of) are corrected."""
     df = pd.DataFrame(
         {
             "Tier": ["WTA250", "WTA263", "Premier"],

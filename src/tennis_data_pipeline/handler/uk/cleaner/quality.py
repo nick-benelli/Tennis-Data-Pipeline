@@ -77,6 +77,7 @@ def update_quality_report(report_path: Path, quality_report: pd.DataFrame) -> Pa
 
 
 def summarize_uk_quality(df: pd.DataFrame) -> None:
+    """Print a quick human-readable data-quality summary (rows, dupes, status, missingness)."""
     print("Rows:", len(df))
     print("Duplicate match keys:", df["source_match_key"].duplicated().sum())
 

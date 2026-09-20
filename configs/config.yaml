@@ -42,4 +42,8 @@ tennis_data_uk:
   clean_filename_template: "uk_{tour}_singles_clean_{year}.csv"
   # Shared ATP+WTA quality report, relative to <paths.clean>/<clean_dir_name>/.
   quality_report_relpath: ${TENNIS_DATA_UK_QUALITY_REPORT_RELPATH:analysis/uk_quality_report.csv}
+  # Tournament-summary table: written to <paths.clean>/<clean_dir_name>/<tour>/<tournament_dir_name>/<tournament_filename_template>.
+  tournament_dir_name: ${TENNIS_DATA_UK_TOURNAMENT_DIR_NAME:tournaments}
+  tournament_filename_template: "uk_{tour}_tournaments.csv"
+  tournament_inconsistencies_filename_template: "uk_{tour}_tournament_inconsistencies.csv"
 
