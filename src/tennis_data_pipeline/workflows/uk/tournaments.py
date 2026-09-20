@@ -14,6 +14,7 @@ from ...handler.uk.cleaner.tournaments import (
     build_uk_tournament_table,
 )
 from ...loader.uk import load_clean_uk_data
+from .._csv_upsert import upsert_csv
 from .clean import clean_checkpoint_path
 
 logger = logging.getLogger(__name__)
@@ -47,34 +48,6 @@ def tournament_inconsistencies_path(tour: Tour | str, clean_dir: Path | None = N
         tour=tour.value
     )
     return clean_dir / tour.value / tennis_data_uk_settings.tournament_dir_name / filename
-
-
-def _upsert_csv(
-    path: Path,
-    rows: pd.DataFrame,
-    *,
-    key_columns: list[str],
-    date_columns: list[str] | None = None,
-) -> pd.DataFrame:
-    """Merge `rows` into the CSV at `path`, keyed on `key_columns` (new rows win on conflict)."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-
-    if path.exists():
-        existing = pd.read_csv(path, parse_dates=date_columns or [])
-        combined = pd.concat([existing, rows], ignore_index=True)
-    else:
-        combined = rows
-
-    combined = combined.drop_duplicates(subset=key_columns, keep="last")
-
-    # A "num_*" column absent from one side of the concat (e.g. a match status
-    # that only shows up in some runs) means "none seen", not "unknown".
-    count_cols = [c for c in combined.columns if c.startswith("num_")]
-    combined[count_cols] = combined[count_cols].fillna(0)
-
-    combined = combined.sort_values(key_columns).reset_index(drop=True)
-    combined.to_csv(path, index=False)
-    return combined
 
 
 def build_uk_tournaments(
@@ -126,7 +99,7 @@ def build_uk_tournaments(
     result = build_uk_tournament_table(df)
 
     table_path = tournament_table_path(tour, clean_dir)
-    combined = _upsert_csv(
+    combined = upsert_csv(
         table_path,
         result.tournaments,
         key_columns=CLEAN_TOURNAMENT_KEY_COLUMNS,
@@ -136,7 +109,7 @@ def build_uk_tournaments(
 
     if not result.inconsistencies.empty:
         inconsistencies_path = tournament_inconsistencies_path(tour, clean_dir)
-        _upsert_csv(
+        upsert_csv(
             inconsistencies_path,
             result.inconsistencies.reset_index(),
             key_columns=CLEAN_TOURNAMENT_KEY_COLUMNS,

@@ -249,6 +249,15 @@ class SackmannConfig(StrictModel):
     retry_total: int = 3
     retry_backoff_factor: float = 1.0
 
+    # Tournament-summary table: written to
+    # <paths.clean>/<clean_dir_name>/<tour>/<tournament_dir_name>/<tournament_filename_template>.
+    clean_dir_name: str = "sackmann"
+    tournament_dir_name: str = "tournaments"
+    tournament_filename_template: str = "sackmann_{tour}_tournaments.csv"
+    tournament_inconsistencies_filename_template: str = (
+        "sackmann_{tour}_tournament_inconsistencies.csv"
+    )
+
     @field_validator("base_url", mode="before")
     @classmethod
     def normalize_base_url(cls, value: Any) -> str:
