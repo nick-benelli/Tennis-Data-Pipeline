@@ -42,9 +42,7 @@ def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
 
 def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """Apply hand-verified single-match fixes registered for this year."""
-    return known_fixes.apply_match_fixes(
-        df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES
-    )
+    return known_fixes.apply_match_fixes(df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES)
 
 
 def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:

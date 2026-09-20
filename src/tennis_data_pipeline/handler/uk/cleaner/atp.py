@@ -79,9 +79,7 @@ def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
     the Wikipedia sources backing each of these; the fixes themselves live in
     `known_fixes.py`.
     """
-    return known_fixes.apply_match_fixes(
-        df, tour="atp", year=year, fixes=known_fixes.ATP_MATCH_FIXES
-    )
+    return known_fixes.apply_match_fixes(df, tour="atp", year=year, fixes=known_fixes.ATP_MATCH_FIXES)
 
 
 def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:

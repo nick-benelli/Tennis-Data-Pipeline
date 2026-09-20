@@ -98,9 +98,7 @@ def _update_one_year(
     # last week) - and so last season's checkpoint keeps getting re-cleaned
     # even after this year's fetch starts succeeding.
     try:
-        clean_path, rows = _clean_and_write_year(
-            tour, year, raw_dir=raw_dir, clean_dir=clean_dir
-        )
+        clean_path, rows = _clean_and_write_year(tour, year, raw_dir=raw_dir, clean_dir=clean_dir)
     except Exception as exc:  # pylint: disable=broad-exception-caught  # noqa: BLE001
         logger.error(
             "[%s %s] FAILED to clean - likely needs a known_fixes entry or a "
@@ -160,9 +158,7 @@ def update_current_season(
 
     for tour in resolved_tours:
         cleaned_years = [
-            result.year
-            for result in results
-            if result.tour == tour.value and result.cleaned
+            result.year for result in results if result.tour == tour.value and result.cleaned
         ]
         if not cleaned_years:
             continue

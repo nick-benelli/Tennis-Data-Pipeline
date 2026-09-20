@@ -70,14 +70,10 @@ class TennisDataUKClient:
         tennis_data_uk_settings = settings.tennis_data_uk
 
         self.timeout = (
-            timeout
-            if timeout is not None
-            else tennis_data_uk_settings.request_timeout_seconds
+            timeout if timeout is not None else tennis_data_uk_settings.request_timeout_seconds
         )
 
-        retries = (
-            retries if retries is not None else tennis_data_uk_settings.retry_total
-        )
+        retries = retries if retries is not None else tennis_data_uk_settings.retry_total
 
         backoff_factor = (
             backoff_factor
@@ -90,11 +86,7 @@ class TennisDataUKClient:
         # An explicit blank in config.yaml means "no override configured";
         # fall back to the last-known-good default rather than an empty string
         # (which would build a broken URL like ".../<host>//2024/2024.xlsx").
-        self.path_prefix = (
-            path_prefix
-            or tennis_data_uk_settings.path_prefix
-            or self.DEFAULT_PATH_PREFIX
-        )
+        self.path_prefix = path_prefix or tennis_data_uk_settings.path_prefix or self.DEFAULT_PATH_PREFIX
 
         self.session = self._create_session(
             retries=retries,
@@ -189,10 +181,7 @@ class TennisDataUKClient:
             tour,
         )
 
-        return (
-            f"{scheme}://{self.BASE_HOST}/"
-            f"{self.path_prefix}/{directory}/{year}.{extension}"
-        )
+        return f"{scheme}://{self.BASE_HOST}/{self.path_prefix}/{directory}/{year}.{extension}"
 
     def discover_path_prefix(self) -> str:
         """Scrape `DATA_PAGE_URL` for the current randomized path segment and update
@@ -278,8 +267,7 @@ class TennisDataUKClient:
         extensions = self._extension_order(year)
 
         https_urls = [
-            self.build_url(year, tour, scheme="https", extension=extension)
-            for extension in extensions
+            self.build_url(year, tour, scheme="https", extension=extension) for extension in extensions
         ]
         content, https_errors, all_not_found = self._try_urls(https_urls)
 
@@ -292,8 +280,7 @@ class TennisDataUKClient:
             )
 
         http_urls = [
-            self.build_url(year, tour, scheme="http", extension=extension)
-            for extension in extensions
+            self.build_url(year, tour, scheme="http", extension=extension) for extension in extensions
         ]
         content, http_errors, _ = self._try_urls(http_urls)
 

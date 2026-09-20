@@ -95,9 +95,7 @@ class ApiConfig(StrictModel):
             return _field_default(cls, "backoff_seconds")
         backoff = float(value)
         if backoff < 0:
-            raise ValueError(
-                "api.backoff_seconds must be greater than or equal to zero"
-            )
+            raise ValueError("api.backoff_seconds must be greater than or equal to zero")
         return backoff
 
 
@@ -189,9 +187,7 @@ class TennisDataUKConfig(StrictModel):
     # <paths.clean>/<clean_dir_name>/<tour>/<tournament_dir_name>/<tournament_filename_template>.
     tournament_dir_name: str = "tournaments"
     tournament_filename_template: str = "uk_{tour}_tournaments.csv"
-    tournament_inconsistencies_filename_template: str = (
-        "uk_{tour}_tournament_inconsistencies.csv"
-    )
+    tournament_inconsistencies_filename_template: str = "uk_{tour}_tournament_inconsistencies.csv"
 
     @field_validator("request_timeout_seconds", mode="before")
     @classmethod
@@ -201,9 +197,7 @@ class TennisDataUKConfig(StrictModel):
             return _field_default(cls, "request_timeout_seconds")
         timeout = float(value)
         if timeout <= 0:
-            raise ValueError(
-                "tennis_data_uk.request_timeout_seconds must be greater than zero"
-            )
+            raise ValueError("tennis_data_uk.request_timeout_seconds must be greater than zero")
         return timeout
 
     @field_validator("retry_total", mode="before")
@@ -214,9 +208,7 @@ class TennisDataUKConfig(StrictModel):
             return _field_default(cls, "retry_total")
         retries = int(value)
         if retries < 0:
-            raise ValueError(
-                "tennis_data_uk.retry_total must be greater than or equal to zero"
-            )
+            raise ValueError("tennis_data_uk.retry_total must be greater than or equal to zero")
         return retries
 
     @field_validator("retry_backoff_factor", mode="before")
@@ -227,9 +219,7 @@ class TennisDataUKConfig(StrictModel):
             return _field_default(cls, "retry_backoff_factor")
         backoff = float(value)
         if backoff < 0:
-            raise ValueError(
-                "tennis_data_uk.retry_backoff_factor must be greater than or equal to zero"
-            )
+            raise ValueError("tennis_data_uk.retry_backoff_factor must be greater than or equal to zero")
         return backoff
 
     @field_validator(
@@ -267,9 +257,7 @@ class LoggingConfig(StrictModel):
             return _field_default(cls, "output")
         output = str(value).lower()
         if output not in {"console", "file", "both"}:
-            raise ValueError(
-                f"logging.output must be 'console', 'file', or 'both', got: {output}"
-            )
+            raise ValueError(f"logging.output must be 'console', 'file', or 'both', got: {output}")
         return output
 
     @field_validator("file_path", mode="before")
@@ -289,9 +277,7 @@ class LoggingConfig(StrictModel):
         level = str(value).upper()
         valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
         if level not in valid_levels:
-            raise ValueError(
-                f"logging.level must be one of {valid_levels}, got: {level}"
-            )
+            raise ValueError(f"logging.level must be one of {valid_levels}, got: {level}")
         return level
 
     @field_validator("format", mode="before")

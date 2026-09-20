@@ -65,13 +65,9 @@ def fetch_and_checkpoint_years(
     written: list[Path] = []
     for year in years:
         try:
-            written.append(
-                fetch_and_checkpoint_year(tour, year, client=client, raw_dir=raw_dir)
-            )
+            written.append(fetch_and_checkpoint_year(tour, year, client=client, raw_dir=raw_dir))
         except Exception:  # pylint: disable=broad-exception-caught  # noqa: BLE001
-            logger.exception(
-                "[%s %s] Failed to fetch/checkpoint", tour.value.upper(), year
-            )
+            logger.exception("[%s %s] Failed to fetch/checkpoint", tour.value.upper(), year)
             if fail_fast:
                 raise
 

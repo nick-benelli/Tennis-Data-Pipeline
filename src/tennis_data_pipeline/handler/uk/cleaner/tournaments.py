@@ -160,9 +160,7 @@ def build_tournament_table(
     df = df.copy()
 
     if "source_year" in key_columns and "source_year" not in df.columns:
-        df["source_year"] = pd.to_datetime(
-            df[date_column], format="mixed", errors="coerce"
-        ).dt.year
+        df["source_year"] = pd.to_datetime(df[date_column], format="mixed", errors="coerce").dt.year
 
     required_columns = [*key_columns, *attribute_columns, date_column]
     missing = [column for column in required_columns if column not in df.columns]
@@ -180,28 +178,24 @@ def build_tournament_table(
     inconsistencies = nunique[(nunique > 1).any(axis=1)]
 
     info = grouped_attrs.agg(_mode_or_na)
-    date_range = grouped["_parsed_date"].agg(
-        **{start_date_column: "min", end_date_column: "max"}
-    )
+    date_range = grouped["_parsed_date"].agg(["min", "max"])
+    date_range.columns = [start_date_column, end_date_column]
     num_matches = grouped.size().rename("num_matches")
 
     tournaments = info.join([date_range, num_matches])
 
     has_round = round_column and round_column in df.columns
     has_winner_loser = (
-        winner_column
-        and loser_column
-        and winner_column in df.columns
-        and loser_column in df.columns
+        winner_column and loser_column and winner_column in df.columns and loser_column in df.columns
     )
 
     if has_round:
+        # has_round already confirmed round_column is a real column, so it can't be None.
+        assert round_column is not None
         tournaments = tournaments.join(grouped[round_column].nunique().rename("num_rounds"))
 
     if match_status_column and match_status_column in df.columns:
-        status_counts = (
-            grouped[match_status_column].value_counts().unstack(fill_value=0)
-        )
+        status_counts = grouped[match_status_column].value_counts().unstack(fill_value=0)
         status_counts.columns = [f"num_{status}_matches" for status in status_counts.columns]
         tournaments = tournaments.join(status_counts)
 
@@ -217,9 +211,7 @@ def build_tournament_table(
                 df[[*key_columns, loser_column]].rename(columns={loser_column: "_player"}),
             ]
         )
-        num_players = participants.groupby(key_columns)["_player"].nunique().rename(
-            "num_players"
-        )
+        num_players = participants.groupby(key_columns)["_player"].nunique().rename("num_players")
         tournaments = tournaments.join(num_players)
 
         if has_round:

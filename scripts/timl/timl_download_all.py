@@ -1,3 +1,5 @@
+"""Download all available data files from Tennis Abstract's tennisismylife API."""
+
 from pathlib import Path
 
 from tennis_data_pipeline.datasources.tennis_is_my_life.client import TennisMyLifeClient
@@ -6,6 +8,7 @@ OUTPUT_DIR = Path("data/raw/tennis_my_life")
 
 
 def main() -> None:
+    """Download every file listed by the TennisMyLife API into OUTPUT_DIR."""
     client = TennisMyLifeClient()
 
     for file in client.list_files():

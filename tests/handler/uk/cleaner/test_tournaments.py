@@ -47,16 +47,12 @@ def test_reused_tournament_number_is_split_by_location() -> None:
     """Two same-week tournaments sharing a raw id are split apart by Location."""
     df = pd.DataFrame(
         [
-            _match_row(
-                TournamentNumber=58, Location="Stockholm", Tournament="Nordic Open"
-            ),
+            _match_row(TournamentNumber=58, Location="Stockholm", Tournament="Nordic Open"),
             _match_row(TournamentNumber=58, Location="Tokyo", Tournament="Japan Open"),
         ]
     )
 
-    tournaments, _ = build_tournament_table(
-        df, key_columns=["TournamentNumber", "Location"]
-    )
+    tournaments, _ = build_tournament_table(df, key_columns=["TournamentNumber", "Location"])
 
     assert len(tournaments) == 2
     assert sorted(tournaments["Tournament"]) == ["Japan Open", "Nordic Open"]

@@ -135,9 +135,7 @@ def fix_wta_category_typos(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    tier_typo = df["Tier"].astype("string").str.fullmatch(r"WTA2[5-7]\d") & df[
-        "Tier"
-    ].ne("WTA250")
+    tier_typo = df["Tier"].astype("string").str.fullmatch(r"WTA2[5-7]\d") & df["Tier"].ne("WTA250")
     df.loc[tier_typo.fillna(False), "Tier"] = "WTA250"
 
     df.loc[df["Comment"] == "Walkoer", "Comment"] = "Walkover"

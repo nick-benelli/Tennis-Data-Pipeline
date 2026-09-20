@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any, cast
 
 import pandas as pd
 
@@ -32,9 +33,7 @@ class MatchFix:
         self.apply(df, mask)
 
 
-def apply_match_fixes(
-    df: pd.DataFrame, tour: str, year: int, fixes: list[MatchFix]
-) -> pd.DataFrame:
+def apply_match_fixes(df: pd.DataFrame, tour: str, year: int, fixes: list[MatchFix]) -> pd.DataFrame:
     """Apply every registered single-match fix for `tour`/`year`, on a copy."""
     df = df.copy()
     for fix in fixes:
@@ -50,4 +49,6 @@ def set_values(df: pd.DataFrame, mask: pd.Series, values: dict[str, object]) -> 
     """
     for col, value in values.items():
         col_value = str(value) if isinstance(df[col].dtype, pd.StringDtype) else value
-        df.loc[mask, col] = col_value
+        # `values` is deliberately heterogeneous (int/float/str corrections),
+        # which pandas-stubs' .loc setter overloads can't express precisely.
+        df.loc[mask, col] = cast(Any, col_value)

@@ -61,9 +61,7 @@ def test_write_raw_checkpoint_warns_on_schema_drift(
     df = pd.DataFrame({"ATP": [1], "Winner": ["Player A."]})
     write_raw_checkpoint(df, Tour.ATP, 2024, raw_dir=tmp_path)
 
-    df_with_extra_col = pd.DataFrame(
-        {"ATP": [1], "Winner": ["Player A."], "BFEW": [1.5]}
-    )
+    df_with_extra_col = pd.DataFrame({"ATP": [1], "Winner": ["Player A."], "BFEW": [1.5]})
 
     with caplog.at_level("WARNING"):
         write_raw_checkpoint(df_with_extra_col, Tour.ATP, 2024, raw_dir=tmp_path)

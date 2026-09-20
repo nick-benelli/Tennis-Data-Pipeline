@@ -19,9 +19,7 @@ from ...handler.uk.cleaner import atp, quality, wta
 logger = logging.getLogger(__name__)
 
 
-def clean_checkpoint_path(
-    tour: Tour | str, year: int, clean_dir: Path | None = None
-) -> Path:
+def clean_checkpoint_path(tour: Tour | str, year: int, clean_dir: Path | None = None) -> Path:
     """Path for one tour/season's Stage-4 clean checkpoint CSV.
 
     `clean_dir` defaults to `settings.paths.clean / tennis_data_uk.clean_dir_name`;
@@ -35,9 +33,7 @@ def clean_checkpoint_path(
         if clean_dir is not None
         else settings.paths.clean / tennis_data_uk_settings.clean_dir_name
     )
-    filename = tennis_data_uk_settings.clean_filename_template.format(
-        tour=tour.value, year=year
-    )
+    filename = tennis_data_uk_settings.clean_filename_template.format(tour=tour.value, year=year)
     return clean_dir / tour.value / filename
 
 
@@ -92,12 +88,8 @@ def clean_year(
     Returns the path the clean CSV was written to.
     """
     tour = Tour(str(tour).lower())
-    clean_path, rows = _clean_and_write_year(
-        tour, year, raw_dir=raw_dir, clean_dir=clean_dir
-    )
-    logger.info(
-        "[%s %s] Wrote %d rows to %s", tour.value.upper(), year, rows, clean_path
-    )
+    clean_path, rows = _clean_and_write_year(tour, year, raw_dir=raw_dir, clean_dir=clean_dir)
+    logger.info("[%s %s] Wrote %d rows to %s", tour.value.upper(), year, rows, clean_path)
     return clean_path
 
 

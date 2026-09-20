@@ -43,9 +43,7 @@ def _resolve_years(
     years: set[int] = set()
 
     if start_year is not None or end_year is not None:
-        range_start = (
-            start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
-        )
+        range_start = start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
         range_end = end_year if end_year is not None else (year or current_year)
         if range_end < range_start:
             raise ValueError(
@@ -73,9 +71,7 @@ def fetch_years(tour: str, years: list[int], *, write: bool) -> None:
             print(f"[{tour.upper()} {year}] wrote snapshot to {path}")
         else:
             df = client.load_year(year=year, tour=tour)
-            print(
-                f"[{tour.upper()} {year}] downloaded {len(df):,} rows (not written; --no-write)"
-            )
+            print(f"[{tour.upper()} {year}] downloaded {len(df):,} rows (not written; --no-write)")
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:

@@ -20,9 +20,7 @@ from .schemas import AppConfig
 # Matches ${VAR} or ${VAR:default}. Unlike `string.Template`, this supports a
 # shell-style `:default` fallback so config.yaml can document per-key defaults
 # directly, instead of only relying on the pydantic model's own defaults.
-_ENV_VAR_PATTERN = re.compile(
-    r"\$\{(?P<name>[A-Za-z_][A-Za-z0-9_]*)(?::(?P<default>[^}]*))?\}"
-)
+_ENV_VAR_PATTERN = re.compile(r"\$\{(?P<name>[A-Za-z_][A-Za-z0-9_]*)(?::(?P<default>[^}]*))?\}")
 
 
 def _get_default_config_path() -> Path:
@@ -60,9 +58,7 @@ def _get_default_config_path() -> Path:
         path = path.resolve()
         if path.exists():
             return path
-        raise FileNotFoundError(
-            f"Config path from TENNIS_DATA_PIPELINE_CONFIG not found: {path}"
-        )
+        raise FileNotFoundError(f"Config path from TENNIS_DATA_PIPELINE_CONFIG not found: {path}")
 
     # 2. Check project-relative path (works for repo checkouts, GitHub Actions)
     pyproject_path = find_dotenv("pyproject.toml")
@@ -78,9 +74,7 @@ def _get_default_config_path() -> Path:
 
     # 4. Nothing found - provide helpful error
     project_str = (
-        str(project_config)
-        if pyproject_path
-        else "configs/config.yaml (no pyproject.toml found)"
+        str(project_config) if pyproject_path else "configs/config.yaml (no pyproject.toml found)"
     )
     raise FileNotFoundError(
         f"No config file found. Tried:\n"
@@ -165,9 +159,7 @@ def get_project_root() -> Path:
     """
     pyproject_path = find_dotenv("pyproject.toml")
     if not pyproject_path:
-        raise FileNotFoundError(
-            "Could not find pyproject.toml. Unable to determine project root."
-        )
+        raise FileNotFoundError("Could not find pyproject.toml. Unable to determine project root.")
     return Path(pyproject_path).parent
 
 

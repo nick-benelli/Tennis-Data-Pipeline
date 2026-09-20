@@ -29,15 +29,11 @@ def tournament_table_path(tour: Tour | str, clean_dir: Path | None = None) -> Pa
         if clean_dir is not None
         else settings.paths.clean / tennis_data_uk_settings.clean_dir_name
     )
-    filename = tennis_data_uk_settings.tournament_filename_template.format(
-        tour=tour.value
-    )
+    filename = tennis_data_uk_settings.tournament_filename_template.format(tour=tour.value)
     return clean_dir / tour.value / tennis_data_uk_settings.tournament_dir_name / filename
 
 
-def tournament_inconsistencies_path(
-    tour: Tour | str, clean_dir: Path | None = None
-) -> Path:
+def tournament_inconsistencies_path(tour: Tour | str, clean_dir: Path | None = None) -> Path:
     """Path for one tour's tournament-attribute-inconsistencies CSV (never silently dropped)."""
     tour = Tour(str(tour).lower())
     tennis_data_uk_settings = settings.tennis_data_uk
@@ -136,9 +132,7 @@ def build_uk_tournaments(
         key_columns=CLEAN_TOURNAMENT_KEY_COLUMNS,
         date_columns=["start_date", "end_date"],
     )
-    logger.info(
-        "[%s] Wrote %d tournament(s) to %s", tour.value.upper(), len(combined), table_path
-    )
+    logger.info("[%s] Wrote %d tournament(s) to %s", tour.value.upper(), len(combined), table_path)
 
     if not result.inconsistencies.empty:
         inconsistencies_path = tournament_inconsistencies_path(tour, clean_dir)

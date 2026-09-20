@@ -98,9 +98,7 @@ def load_clean_uk_data(path: Path | str, tour: str) -> pd.DataFrame:
     return df
 
 
-def load_clean_uk_year(
-    tour: str, year: int, project_dir: Path | str | None = None
-) -> pd.DataFrame:
+def load_clean_uk_year(tour: str, year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP/WTA matches CSV by year.
 
     Directory/filename come from `tennis_data_uk.clean_dir_name`/
@@ -112,14 +110,10 @@ def load_clean_uk_year(
     """
     tennis_data_uk_settings = settings.tennis_data_uk
     clean_root = (
-        Path(project_dir) / settings.paths.clean_dir
-        if project_dir is not None
-        else settings.paths.clean
+        Path(project_dir) / settings.paths.clean_dir if project_dir is not None else settings.paths.clean
     )
     clean_dir = clean_root / tennis_data_uk_settings.clean_dir_name
-    filename = tennis_data_uk_settings.clean_filename_template.format(
-        tour=tour, year=year
-    )
+    filename = tennis_data_uk_settings.clean_filename_template.format(tour=tour, year=year)
     return load_clean_uk_data(clean_dir / tour / filename, tour)
 
 
@@ -152,9 +146,7 @@ def load_clean_uk_atp_data(path: Path | str) -> pd.DataFrame:
     return load_clean_uk_data(path, tour="atp")
 
 
-def load_clean_uk_atp_year(
-    year: int, project_dir: Path | str | None = None
-) -> pd.DataFrame:
+def load_clean_uk_atp_year(year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP matches CSV by year."""
     return load_clean_uk_year("atp", year, project_dir)
 

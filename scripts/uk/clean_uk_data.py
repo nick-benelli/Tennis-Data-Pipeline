@@ -29,6 +29,7 @@ _TOURS = ("atp", "wta")
 # CLI
 # --------------------------------------------------------------------------- #
 
+
 def _parse_year_token(token: str) -> list[int]:
     """Expand a single CLI token: "2022" -> [2022], "2010-2015" -> [2010..2015]."""
     token = token.strip()
@@ -102,7 +103,8 @@ def main(argv: list[str] | None = None) -> int:
         argv: Optional list of command-line arguments to parse. If None, defaults to sys.argv.
 
     Returns:
-        Exit code: 0 if all years were processed successfully, 1 if any year failed, 2 if there was an argument parsing error.
+        Exit code: 0 if all years were processed successfully, 1 if any year
+        failed, 2 if there was an argument parsing error.
 
     """
     args = _parse_args(argv)
@@ -119,7 +121,10 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     logger.info(
-        "Processing %s, %d year(s): %s", args.tour.upper(), len(years), ", ".join(map(str, years)),
+        "Processing %s, %d year(s): %s",
+        args.tour.upper(),
+        len(years),
+        ", ".join(map(str, years)),
     )
 
     results = clean_years(

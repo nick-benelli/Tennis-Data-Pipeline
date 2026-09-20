@@ -108,9 +108,7 @@ def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
     assert calls == ["atp-2024"]
 
 
-@pytest.mark.parametrize(
-    "fix", known_fixes.ATP_MATCH_FIXES, ids=lambda f: f.description
-)
+@pytest.mark.parametrize("fix", known_fixes.ATP_MATCH_FIXES, ids=lambda f: f.description)
 def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(
     fix: known_fixes.MatchFix,
 ) -> None:
@@ -123,9 +121,7 @@ def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(
     fix.apply_to(df)  # raises if it no longer matches exactly one row
 
 
-@pytest.mark.parametrize(
-    "fix", known_fixes.WTA_MATCH_FIXES, ids=lambda f: f.description
-)
+@pytest.mark.parametrize("fix", known_fixes.WTA_MATCH_FIXES, ids=lambda f: f.description)
 def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(
     fix: known_fixes.MatchFix,
 ) -> None:

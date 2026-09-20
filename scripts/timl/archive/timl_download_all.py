@@ -1,3 +1,5 @@
+"""Archived, pre-client version of the tennisismylife data-file downloader."""
+
 from pathlib import Path
 
 import requests
@@ -7,6 +9,7 @@ OUTPUT_DIR = Path("data/raw/tennis_my_life")
 
 
 def download_all_files() -> None:
+    """Download every file listed by the data-files API into OUTPUT_DIR."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     response = requests.get(API_URL, timeout=30)

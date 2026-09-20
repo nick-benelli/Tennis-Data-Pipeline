@@ -92,8 +92,7 @@ def test_add_source_match_key() -> None:
     )
     result = common.add_source_match_key(df)
     assert (
-        result.loc[0, "source_match_key"]
-        == "2024_1_example_example_open_2024-01-15_F_player_a_player_b"
+        result.loc[0, "source_match_key"] == "2024_1_example_example_open_2024-01-15_F_player_a_player_b"
     )
 
 

@@ -29,9 +29,7 @@ class SackmannDownloadError(SackmannError):
 class SackmannClient:
     """Client for the Aneeshers Sackmann archive mirror."""
 
-    BASE_URL = (
-        "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main"
-    )
+    BASE_URL = "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main"
 
     def __init__(
         self,

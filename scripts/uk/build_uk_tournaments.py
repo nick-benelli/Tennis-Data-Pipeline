@@ -35,6 +35,7 @@ _TOURS = ("atp", "wta")
 # CLI
 # --------------------------------------------------------------------------- #
 
+
 def _parse_year_token(token: str) -> list[int]:
     """Expand a single CLI token: "2022" -> [2022], "2010-2015" -> [2010..2015]."""
     token = token.strip()

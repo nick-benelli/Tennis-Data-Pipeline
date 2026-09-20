@@ -132,9 +132,7 @@ def add_players_remaining(df: pd.DataFrame) -> pd.DataFrame:
 
     rr_mask = df["round"] == "RR"
     if rr_mask.any():
-        df.loc[rr_mask, "players_remaining"] = _infer_round_robin_field_size(
-            df.loc[rr_mask]
-        )
+        df.loc[rr_mask, "players_remaining"] = _infer_round_robin_field_size(df.loc[rr_mask])
 
     return df
 
@@ -154,12 +152,8 @@ def _infer_round_robin_field_size(rr: pd.DataFrame) -> pd.Series:
     """
     players = pd.concat(
         [
-            rr[["source_event_key", "winner_name"]].rename(
-                columns={"winner_name": "player"}
-            ),
-            rr[["source_event_key", "loser_name"]].rename(
-                columns={"loser_name": "player"}
-            ),
+            rr[["source_event_key", "winner_name"]].rename(columns={"winner_name": "player"}),
+            rr[["source_event_key", "loser_name"]].rename(columns={"loser_name": "player"}),
         ]
     )
     matches_played = players.groupby(["source_event_key", "player"]).size()
@@ -205,11 +199,7 @@ def assign_round_codes(df: pd.DataFrame, round_map: dict[str, str]) -> pd.DataFr
     df["Round"] = df["Round"].astype(object)
 
     for _, group_index in df.groupby("source_event_key").groups.items():
-        rounds_present = [
-            r
-            for r in NUMBERED_ROUNDS_ASCENDING
-            if r in set(df.loc[group_index, "Round"])
-        ]
+        rounds_present = [r for r in NUMBERED_ROUNDS_ASCENDING if r in set(df.loc[group_index, "Round"])]
         round_code_map = dict(round_map)
         # Deliberately non-strict: BRACKET_CODES_FROM_QF (5) is always >=
         # rounds_present, and zip's stop-at-shorter is what maps a smaller
@@ -236,23 +226,13 @@ def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
     round_code = df["round"].astype("string")
 
     df["source_match_key"] = (
-        df["source_event_key"]
-        + "_"
-        + match_date
-        + "_"
-        + round_code
-        + "_"
-        + winner
-        + "_"
-        + loser
+        df["source_event_key"] + "_" + match_date + "_" + round_code + "_" + winner + "_" + loser
     )
 
     return df
 
 
-def fix_bad_odds(
-    df: pd.DataFrame, raw_odds_cols: list[str] | None = None
-) -> pd.DataFrame:
+def fix_bad_odds(df: pd.DataFrame, raw_odds_cols: list[str] | None = None) -> pd.DataFrame:
     """Null out impossible (<1.0) decimal odds instead of guessing the intended value."""
     df = df.copy()
     raw_odds_cols = raw_odds_cols if raw_odds_cols is not None else RAW_ODDS_COLS
@@ -279,9 +259,7 @@ def check_tournament_consistency(
 ) -> None:
     """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
     if year in known_exception_years:
-        logger.info(
-            "Skipping tournament-consistency check for %s (known exception).", year
-        )
+        logger.info("Skipping tournament-consistency check for %s (known exception).", year)
         return
 
     metrics, affected_rows = find_uk_inconsistent_tournaments(
@@ -306,9 +284,7 @@ def check_reused_tournament_ids(
 ) -> None:
     """Raise if a tournament id is reused across genuinely different tournaments."""
     if year in known_exception_years:
-        logger.info(
-            "Skipping reused-tournament-id check for %s (known exception).", year
-        )
+        logger.info("Skipping reused-tournament-id check for %s (known exception).", year)
         return
 
     metrics, affected_rows = find_uk_reused_tournament_ids(
@@ -340,9 +316,7 @@ def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     return df
 
 
-def ensure_odds_columns(
-    df: pd.DataFrame, odds_cols: list[str] | None = None
-) -> pd.DataFrame:
+def ensure_odds_columns(df: pd.DataFrame, odds_cols: list[str] | None = None) -> pd.DataFrame:
     """Backfill (post-rename) odds columns missing due to bookmaker coverage drift."""
     return ensure_columns(df, odds_cols if odds_cols is not None else ODDS_COLS)
 
@@ -395,17 +369,11 @@ def validate_clean_uk_data(
 
     missing_players_remaining = df["round"].notna() & df["players_remaining"].isna()
     if missing_players_remaining.any():
-        raise ValueError(
-            f"{missing_players_remaining.sum()} rows are missing players_remaining."
-        )
+        raise ValueError(f"{missing_players_remaining.sum()} rows are missing players_remaining.")
 
-    invalid_players_remaining = df["players_remaining"].notna() & (
-        df["players_remaining"] < 2
-    )
+    invalid_players_remaining = df["players_remaining"].notna() & (df["players_remaining"] < 2)
     if invalid_players_remaining.any():
-        raise ValueError(
-            f"{invalid_players_remaining.sum()} rows have players_remaining < 2."
-        )
+        raise ValueError(f"{invalid_players_remaining.sum()} rows have players_remaining < 2.")
 
     if df["source_match_key"].duplicated().any():
         raise ValueError("Duplicate source_match_key values found.")
@@ -447,8 +415,7 @@ def validate_clean_uk_data(
     )
     if completed_missing_first_set.any():
         raise ValueError(
-            f"{completed_missing_first_set.sum()} completed matches "
-            "are missing first-set scores."
+            f"{completed_missing_first_set.sum()} completed matches are missing first-set scores."
         )
 
     invalid_completed_sets = (
@@ -459,8 +426,7 @@ def validate_clean_uk_data(
     )
     if invalid_completed_sets.any():
         raise ValueError(
-            f"{invalid_completed_sets.sum()} completed matches "
-            "have winner_sets <= loser_sets."
+            f"{invalid_completed_sets.sum()} completed matches have winner_sets <= loser_sets."
         )
 
     for col in odds_cols:
