@@ -4,54 +4,82 @@ from __future__ import annotations
 
 import pandas as pd
 
+from .schema import (
+    DOUBLES_CATEGORY_COLUMNS,
+    DOUBLES_FLOAT_COLUMNS,
+    DOUBLES_INT_COLUMNS,
+    DOUBLES_STRING_COLUMNS,
+    MATCH_CATEGORY_COLUMNS,
+    MATCH_FLOAT_COLUMNS,
+    MATCH_INT_COLUMNS,
+    MATCH_STRING_COLUMNS,
+)
+
+
+def _parse_tourney_date(df: pd.DataFrame) -> pd.DataFrame:
+    """Parse the shared YYYYMMDD tourney_date column in place, if present."""
+    if "tourney_date" in df.columns:
+        df["tourney_date"] = pd.to_datetime(
+            df["tourney_date"].astype("Int64").astype(str),
+            format="%Y%m%d",
+            errors="coerce",
+        )
+    return df
+
+
+def _coerce_columns(
+    df: pd.DataFrame,
+    *,
+    int_columns: tuple[str, ...],
+    float_columns: tuple[str, ...],
+    string_columns: tuple[str, ...],
+    category_columns: tuple[str, ...],
+) -> pd.DataFrame:
+    """Coerce each present column to its declared dtype, in place."""
+    for column in int_columns:
+        if column in df.columns:
+            df[column] = pd.to_numeric(df[column], errors="coerce").astype("Int64")
+
+    for column in float_columns:
+        if column in df.columns:
+            df[column] = pd.to_numeric(df[column], errors="coerce").astype("Float64")
+
+    for column in string_columns:
+        if column in df.columns:
+            df[column] = df[column].astype("string")
+
+    for column in category_columns:
+        if column in df.columns:
+            df[column] = df[column].astype("category")
+
+    return df
+
 
 def clean_matches(
     df: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Clean Sackmann match-level data without altering its semantics."""
-    result = df.copy()
+    """Clean Sackmann singles match data (tour-level, qual/challenger, futures)."""
+    result = _parse_tourney_date(df.copy())
+    result = _coerce_columns(
+        result,
+        int_columns=MATCH_INT_COLUMNS,
+        float_columns=MATCH_FLOAT_COLUMNS,
+        string_columns=MATCH_STRING_COLUMNS,
+        category_columns=MATCH_CATEGORY_COLUMNS,
+    )
+    return result.reset_index(drop=True)
 
-    if "tourney_date" in result.columns:
-        result["tourney_date"] = pd.to_datetime(
-            result["tourney_date"].astype("Int64").astype(str),
-            format="%Y%m%d",
-            errors="coerce",
-        )
 
-    numeric_columns = [
-        "winner_rank",
-        "loser_rank",
-        "winner_rank_points",
-        "loser_rank_points",
-        "winner_age",
-        "loser_age",
-        "winner_ht",
-        "loser_ht",
-        "w_ace",
-        "w_df",
-        "w_svpt",
-        "w_1stIn",
-        "w_1stWon",
-        "w_2ndWon",
-        "w_SvGms",
-        "w_bpSaved",
-        "w_bpFaced",
-        "l_ace",
-        "l_df",
-        "l_svpt",
-        "l_1stIn",
-        "l_1stWon",
-        "l_2ndWon",
-        "l_SvGms",
-        "l_bpSaved",
-        "l_bpFaced",
-    ]
-
-    for column in numeric_columns:
-        if column in result.columns:
-            result[column] = pd.to_numeric(
-                result[column],
-                errors="coerce",
-            )
-
+def clean_doubles_matches(
+    df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean Sackmann ATP doubles match data (per-team stats, two players a side)."""
+    result = _parse_tourney_date(df.copy())
+    result = _coerce_columns(
+        result,
+        int_columns=DOUBLES_INT_COLUMNS,
+        float_columns=DOUBLES_FLOAT_COLUMNS,
+        string_columns=DOUBLES_STRING_COLUMNS,
+        category_columns=DOUBLES_CATEGORY_COLUMNS,
+    )
     return result.reset_index(drop=True)

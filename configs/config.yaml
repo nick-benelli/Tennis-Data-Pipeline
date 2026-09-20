@@ -47,3 +47,10 @@ tennis_data_uk:
   tournament_filename_template: "uk_{tour}_tournaments.csv"
   tournament_inconsistencies_filename_template: "uk_{tour}_tournament_inconsistencies.csv"
 
+# Jeff Sackmann tennis archive (Aneeshers/tennis-sackmann-archive mirror) settings
+sackmann:
+  base_url: ${SACKMANN_BASE_URL:https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main}
+  request_timeout_seconds: ${SACKMANN_TIMEOUT_SECONDS:30.0}
+  retry_total: ${SACKMANN_RETRY_TOTAL:3}
+  retry_backoff_factor: ${SACKMANN_RETRY_BACKOFF_FACTOR:1.0}
+

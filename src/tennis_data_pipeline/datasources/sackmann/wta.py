@@ -8,6 +8,7 @@ import pandas as pd
 
 from .cleaning import clean_matches
 from .client import SackmannClient, Tour
+from .schema import MatchLevel
 
 
 def load_year(
@@ -46,6 +47,8 @@ def load_year(
     df = df.copy()
     df["source_year"] = year
     df["tour"] = Tour.WTA.value
+    df["match_type"] = "singles"
+    df["match_level"] = MatchLevel.MAIN.value
 
     return df
 

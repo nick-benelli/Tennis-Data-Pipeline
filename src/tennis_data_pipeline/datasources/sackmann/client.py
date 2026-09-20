@@ -10,6 +10,16 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
+from ...config import settings
+from .schema import (
+    ATP_MATCHES_DOUBLES_FILE_TEMPLATE,
+    ATP_MATCHES_FUTURES_FILE_TEMPLATE,
+    ATP_MATCHES_QUAL_CHALL_FILE_TEMPLATE,
+    MATCH_FILE_TEMPLATE,
+    PLAYER_FILE,
+    RANKINGS_CURRENT_FILE,
+)
+
 
 class Tour(StrEnum):
     """Supported professional tennis tours."""
@@ -29,22 +39,39 @@ class SackmannDownloadError(SackmannError):
 class SackmannClient:
     """Client for the Aneeshers Sackmann archive mirror."""
 
-    BASE_URL = "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main"
-
     def __init__(
         self,
-        timeout: float = 30.0,
-        retries: int = 3,
+        base_url: str | None = None,
+        timeout: float | None = None,
+        retries: int | None = None,
+        backoff_factor: float | None = None,
     ) -> None:
-        """Initialize the client with a request timeout and retry count."""
-        self.timeout = timeout
+        """Initialize the client with a request timeout and retry count.
+
+        Args:
+            base_url: Override for the archive's raw-content base URL. Defaults
+                to the configured value (see `sackmann.base_url` in config.yaml).
+            timeout: Request timeout in seconds.
+            retries: Total retry attempts for transient failures.
+            backoff_factor: Exponential backoff factor applied between retries.
+
+        """
+        sackmann_settings = settings.sackmann
+
+        self.base_url = base_url if base_url is not None else sackmann_settings.base_url
+        self.timeout = timeout if timeout is not None else sackmann_settings.request_timeout_seconds
+
+        retries = retries if retries is not None else sackmann_settings.retry_total
+        backoff_factor = (
+            backoff_factor if backoff_factor is not None else sackmann_settings.retry_backoff_factor
+        )
 
         retry = Retry(
             total=retries,
             connect=retries,
             read=retries,
             status=retries,
-            backoff_factor=1.0,
+            backoff_factor=backoff_factor,
             status_forcelist=(429, 500, 502, 503, 504),
             allowed_methods=("GET",),
         )
@@ -67,7 +94,7 @@ class SackmannClient:
         """Build a raw GitHub URL."""
         tour = Tour(tour.lower())
 
-        return f"{self.BASE_URL}/{tour.value}/{filename}"
+        return f"{self.base_url}/{tour.value}/{filename}"
 
     def load_csv(
         self,
@@ -102,9 +129,69 @@ class SackmannClient:
         """Load tour-level singles matches for one year."""
         tour = Tour(tour.lower())
 
-        filename = f"{tour.value}_matches_{year}.csv"
+        filename = MATCH_FILE_TEMPLATE.format(tour=tour.value, year=year)
 
         return self.load_csv(
             tour=tour,
             filename=filename,
+        )
+
+    def load_atp_qual_chall_matches(
+        self,
+        year: int,
+    ) -> pd.DataFrame:
+        """Load one season of ATP qualifying + Challenger singles matches."""
+        filename = ATP_MATCHES_QUAL_CHALL_FILE_TEMPLATE.format(year=year)
+
+        return self.load_csv(
+            tour=Tour.ATP,
+            filename=filename,
+        )
+
+    def load_atp_futures_matches(
+        self,
+        year: int,
+    ) -> pd.DataFrame:
+        """Load one season of ATP Futures/ITF World Tennis Tour singles matches."""
+        filename = ATP_MATCHES_FUTURES_FILE_TEMPLATE.format(year=year)
+
+        return self.load_csv(
+            tour=Tour.ATP,
+            filename=filename,
+        )
+
+    def load_atp_doubles_matches(
+        self,
+        year: int,
+    ) -> pd.DataFrame:
+        """Load one season of ATP doubles matches (archive only covers 2000-2020)."""
+        filename = ATP_MATCHES_DOUBLES_FILE_TEMPLATE.format(year=year)
+
+        return self.load_csv(
+            tour=Tour.ATP,
+            filename=filename,
+        )
+
+    def load_players(
+        self,
+        tour: Tour | str,
+    ) -> pd.DataFrame:
+        """Load the player biography table for a tour."""
+        tour = Tour(tour.lower())
+
+        return self.load_csv(
+            tour=tour,
+            filename=PLAYER_FILE[tour.value],
+        )
+
+    def load_rankings_current(
+        self,
+        tour: Tour | str,
+    ) -> pd.DataFrame:
+        """Load the most recent rankings snapshot for a tour."""
+        tour = Tour(tour.lower())
+
+        return self.load_csv(
+            tour=tour,
+            filename=RANKINGS_CURRENT_FILE[tour.value],
         )

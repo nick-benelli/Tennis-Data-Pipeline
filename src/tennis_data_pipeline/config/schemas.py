@@ -241,6 +241,56 @@ class TennisDataUKConfig(StrictModel):
         return str(value)
 
 
+class SackmannConfig(StrictModel):
+    """Sackmann tennis archive mirror (Aneeshers/tennis-sackmann-archive) settings."""
+
+    base_url: str = "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main"
+    request_timeout_seconds: float = 30.0
+    retry_total: int = 3
+    retry_backoff_factor: float = 1.0
+
+    @field_validator("base_url", mode="before")
+    @classmethod
+    def normalize_base_url(cls, value: Any) -> str:
+        """Fall back to the default if unset or an unresolved env placeholder."""
+        if value is None or _is_unresolved_env_placeholder(value):
+            return _field_default(cls, "base_url")
+        return str(value)
+
+    @field_validator("request_timeout_seconds", mode="before")
+    @classmethod
+    def normalize_request_timeout(cls, value: Any) -> float:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate > 0."""
+        if value is None or _is_unresolved_env_placeholder(value):
+            return _field_default(cls, "request_timeout_seconds")
+        timeout = float(value)
+        if timeout <= 0:
+            raise ValueError("sackmann.request_timeout_seconds must be greater than zero")
+        return timeout
+
+    @field_validator("retry_total", mode="before")
+    @classmethod
+    def normalize_retry_total(cls, value: Any) -> int:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate >= 0."""
+        if value is None or _is_unresolved_env_placeholder(value):
+            return _field_default(cls, "retry_total")
+        retries = int(value)
+        if retries < 0:
+            raise ValueError("sackmann.retry_total must be greater than or equal to zero")
+        return retries
+
+    @field_validator("retry_backoff_factor", mode="before")
+    @classmethod
+    def normalize_retry_backoff_factor(cls, value: Any) -> float:
+        """Fall back to the default if unset/an unresolved env placeholder, else validate >= 0."""
+        if value is None or _is_unresolved_env_placeholder(value):
+            return _field_default(cls, "retry_backoff_factor")
+        backoff = float(value)
+        if backoff < 0:
+            raise ValueError("sackmann.retry_backoff_factor must be greater than or equal to zero")
+        return backoff
+
+
 class LoggingConfig(StrictModel):
     """Logging configuration."""
 
@@ -296,3 +346,4 @@ class AppConfig(StrictModel):
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     paths: PathsConfig = Field(default_factory=PathsConfig)
     tennis_data_uk: TennisDataUKConfig = Field(default_factory=TennisDataUKConfig)
+    sackmann: SackmannConfig = Field(default_factory=SackmannConfig)
