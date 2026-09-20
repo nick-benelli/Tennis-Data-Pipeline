@@ -45,10 +45,25 @@ ROUND_MAP = dict(common.BASE_ROUND_MAP)
 # Raw (pre-COLUMN_MAP) dtypes for common.load_raw_uk_csv(); ATP has no fractional
 # rank-points seasons, so ranks/points/set-scores are all nullable ints.
 RAW_INT_COLS = [
-    "ATP", "Year", "Best of",
-    "WRank", "LRank", "WPts", "LPts",
-    "W1", "L1", "W2", "L2", "W3", "L3", "W4", "L4", "W5", "L5",
-    "Wsets", "Lsets",
+    "ATP",
+    "Year",
+    "Best of",
+    "WRank",
+    "LRank",
+    "WPts",
+    "LPts",
+    "W1",
+    "L1",
+    "W2",
+    "L2",
+    "W3",
+    "L3",
+    "W4",
+    "L4",
+    "W5",
+    "L5",
+    "Wsets",
+    "Lsets",
 ]
 RAW_CATEGORY_COLS = ["Series", "Court", "Surface", "Round", "Comment"]
 
@@ -86,7 +101,6 @@ COLUMN_ORDER = [
     "tour",
     "year",
     "uk_tournament_id",
-
     "tournament_name",
     "location",
     "match_date",
@@ -95,18 +109,14 @@ COLUMN_ORDER = [
     "surface",
     "round",
     "best_of",
-
     "winner_name",
     "loser_name",
-
     "winner_rank",
     "loser_rank",
     "winner_rank_points",
     "loser_rank_points",
-
     "winner_sets",
     "loser_sets",
-
     "winner_set_1_games",
     "loser_set_1_games",
     "winner_set_2_games",
@@ -117,12 +127,8 @@ COLUMN_ORDER = [
     "loser_set_4_games",
     "winner_set_5_games",
     "loser_set_5_games",
-
     "match_status",
-
     *ODDS_COLS,
-
     "source_event_key",
     "source_match_key",
 ]
-

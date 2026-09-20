@@ -23,7 +23,10 @@ def load_raw_atp_csv(path: Path, year: int) -> pd.DataFrame:
     proper numeric/category dtypes, still in raw (pre-COLUMN_MAP) column names.
     """
     return common.load_raw_uk_csv(
-        path, year, int_cols=cols.RAW_INT_COLS, category_cols=cols.RAW_CATEGORY_COLS,
+        path,
+        year,
+        int_cols=cols.RAW_INT_COLS,
+        category_cols=cols.RAW_CATEGORY_COLS,
     )
 
 
@@ -72,13 +75,16 @@ def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
     the Wikipedia sources backing each of these; the fixes themselves live in
     `known_fixes.py`.
     """
-    return known_fixes.apply_match_fixes(df, tour="atp", year=year, fixes=known_fixes.ATP_MATCH_FIXES)
+    return known_fixes.apply_match_fixes(
+        df, tour="atp", year=year, fixes=known_fixes.ATP_MATCH_FIXES
+    )
 
 
 def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
     """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
     common.check_tournament_consistency(
-        df, year,
+        df,
+        year,
         id_col=cols.ID_COL,
         info_cols=cols.CONSISTENCY_INFO_COLS,
         known_exception_years=cols.KNOWN_TOURNAMENT_INCONSISTENCY_YEARS,
@@ -88,7 +94,8 @@ def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
 def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
     """Raise if an ATP tournament id is reused across genuinely different tournaments."""
     common.check_reused_tournament_ids(
-        df, year,
+        df,
+        year,
         id_col=cols.ID_COL,
         known_exception_years=cols.KNOWN_REUSED_TOURNAMENT_ID_YEARS,
     )
@@ -97,10 +104,21 @@ def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
 def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     """Raise ValueError on any data-quality issue found in cleaned UK ATP match data."""
     required_cols = {
-        "uk_tournament_id", "year", "location", "tournament_name", "match_date",
-        "series", "is_outdoor", "surface", "round", "best_of",
-        "winner_name", "loser_name", "match_status",
-        "source_event_key", "source_match_key",
+        "uk_tournament_id",
+        "year",
+        "location",
+        "tournament_name",
+        "match_date",
+        "series",
+        "is_outdoor",
+        "surface",
+        "round",
+        "best_of",
+        "winner_name",
+        "loser_name",
+        "match_status",
+        "source_event_key",
+        "source_match_key",
     }
     missing_cols = required_cols - set(df.columns)
     if missing_cols:
@@ -124,8 +142,7 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
     # prior year as valid for the season.
     match_date = df["match_date"]
     valid_year = (df["year"] == match_date.dt.year) | (
-        (df["year"] == match_date.dt.year + 1)
-        & (match_date.dt.month == 12)
+        (df["year"] == match_date.dt.year + 1) & (match_date.dt.month == 12)
     )
     invalid_year = ~valid_year
     if invalid_year.any():
@@ -172,6 +189,7 @@ def validate_clean_uk_atp_data(df: pd.DataFrame) -> None:
         if invalid_odds.any():
             raise ValueError(f"{col} contains {invalid_odds.sum()} odds < 1.")
 
+
 def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     """Rename raw Tennis-Data UK columns/categories to canonical names and add key columns."""
     df = add_source_event_key(df)
@@ -196,6 +214,7 @@ def clean_uk_atp_data(df: pd.DataFrame) -> pd.DataFrame:
     validate_clean_uk_atp_data(df)
 
     return df
+
 
 def summarize_uk_atp_quality(df: pd.DataFrame) -> None:
     quality.summarize_uk_quality(df)

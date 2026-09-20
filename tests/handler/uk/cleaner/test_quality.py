@@ -42,16 +42,24 @@ def test_update_quality_report_does_not_collide_across_tours(tmp_path: Path) -> 
     assert set(combined["tour"]) == {"atp", "wta"}
 
 
-def test_update_quality_report_overwrites_only_its_own_tour_year(tmp_path: Path) -> None:
+def test_update_quality_report_overwrites_only_its_own_tour_year(
+    tmp_path: Path,
+) -> None:
     report_path = tmp_path / "report.csv"
 
-    quality.update_quality_report(report_path, quality.build_uk_quality_report(_clean_df(2024), tour="atp"))
-    quality.update_quality_report(report_path, quality.build_uk_quality_report(_clean_df(2024), tour="wta"))
+    quality.update_quality_report(
+        report_path, quality.build_uk_quality_report(_clean_df(2024), tour="atp")
+    )
+    quality.update_quality_report(
+        report_path, quality.build_uk_quality_report(_clean_df(2024), tour="wta")
+    )
 
     # Re-running ATP 2024 with different data should not touch the WTA 2024 row.
     updated_atp = _clean_df(2024)
     updated_atp["source_match_key"] = ["a", "a"]  # now has a duplicate
-    quality.update_quality_report(report_path, quality.build_uk_quality_report(updated_atp, tour="atp"))
+    quality.update_quality_report(
+        report_path, quality.build_uk_quality_report(updated_atp, tour="atp")
+    )
 
     combined = pd.read_csv(report_path, index_col=0)
     assert len(combined) == 2

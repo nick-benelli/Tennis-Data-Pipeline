@@ -28,8 +28,7 @@ class SackmannClient:
     """Client for the Aneeshers Sackmann archive mirror."""
 
     BASE_URL = (
-        "https://raw.githubusercontent.com/"
-        "Aneeshers/tennis-sackmann-archive/main"
+        "https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main"
     )
 
     def __init__(
@@ -88,9 +87,7 @@ class SackmannClient:
             response.raise_for_status()
 
         except requests.RequestException as error:
-            raise SackmannDownloadError(
-                f"Failed to download {url}"
-            ) from error
+            raise SackmannDownloadError(f"Failed to download {url}") from error
 
         return pd.read_csv(
             StringIO(response.text),

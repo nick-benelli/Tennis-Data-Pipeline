@@ -33,7 +33,13 @@ BASE_ROUND_MAP = {
 # backward from the quarterfinals per tournament: the last numbered round before
 # QF is always effectively "R16", and each earlier numbered round doubles the
 # bracket size.
-NUMBERED_ROUNDS_ASCENDING = ["1st Round", "2nd Round", "3rd Round", "4th Round", "5th Round"]
+NUMBERED_ROUNDS_ASCENDING = [
+    "1st Round",
+    "2nd Round",
+    "3rd Round",
+    "4th Round",
+    "5th Round",
+]
 BRACKET_CODES_FROM_QF = ["R16", "R32", "R64", "R128", "R256"]
 
 SURFACE_MAP = {
@@ -85,8 +91,7 @@ def slugify(value: str) -> str:
 
 def normalize_key_value(series: pd.Series) -> pd.Series:
     return (
-        series
-        .astype("string")
+        series.astype("string")
         .str.lower()
         .str.strip()
         .str.replace(r"[^a-z0-9]+", "_", regex=True)
@@ -127,7 +132,8 @@ def assign_round_codes(df: pd.DataFrame, round_map: dict[str, str]) -> pd.DataFr
 
     for _, group_index in df.groupby("source_event_key").groups.items():
         rounds_present = [
-            r for r in NUMBERED_ROUNDS_ASCENDING
+            r
+            for r in NUMBERED_ROUNDS_ASCENDING
             if r in set(df.loc[group_index, "Round"])
         ]
         round_code_map = dict(round_map)
@@ -154,7 +160,9 @@ def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def fix_bad_odds(df: pd.DataFrame, raw_odds_cols: list[str] | None = None) -> pd.DataFrame:
+def fix_bad_odds(
+    df: pd.DataFrame, raw_odds_cols: list[str] | None = None
+) -> pd.DataFrame:
     """Null out impossible (<1.0) decimal odds instead of guessing the intended value."""
     df = df.copy()
     raw_odds_cols = raw_odds_cols if raw_odds_cols is not None else RAW_ODDS_COLS
@@ -181,11 +189,15 @@ def check_tournament_consistency(
 ) -> None:
     """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
     if year in known_exception_years:
-        logger.info("Skipping tournament-consistency check for %s (known exception).", year)
+        logger.info(
+            "Skipping tournament-consistency check for %s (known exception).", year
+        )
         return
 
     metrics, affected_rows = find_uk_inconsistent_tournaments(
-        df, key_columns=[id_col, "Year", "Location"], info_cols=info_cols,
+        df,
+        key_columns=[id_col, "Year", "Location"],
+        info_cols=info_cols,
     )
 
     if not metrics.empty and not affected_rows.empty:
@@ -204,11 +216,15 @@ def check_reused_tournament_ids(
 ) -> None:
     """Raise if a tournament id is reused across genuinely different tournaments."""
     if year in known_exception_years:
-        logger.info("Skipping reused-tournament-id check for %s (known exception).", year)
+        logger.info(
+            "Skipping reused-tournament-id check for %s (known exception).", year
+        )
         return
 
     metrics, affected_rows = find_uk_reused_tournament_ids(
-        df=df, id_col=id_col, disambiguating_cols=["Location", "Tournament"],
+        df=df,
+        id_col=id_col,
+        disambiguating_cols=["Location", "Tournament"],
     )
 
     if not metrics.empty and not affected_rows.empty:
@@ -234,7 +250,9 @@ def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     return df
 
 
-def ensure_odds_columns(df: pd.DataFrame, odds_cols: list[str] | None = None) -> pd.DataFrame:
+def ensure_odds_columns(
+    df: pd.DataFrame, odds_cols: list[str] | None = None
+) -> pd.DataFrame:
     """Backfill (post-rename) odds columns missing due to bookmaker coverage drift."""
     return ensure_columns(df, odds_cols if odds_cols is not None else ODDS_COLS)
 

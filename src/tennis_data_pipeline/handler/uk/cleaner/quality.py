@@ -17,7 +17,9 @@ def build_uk_quality_report(df: pd.DataFrame, tour: str) -> pd.DataFrame:
     missing_pct = missing_pct[missing_pct > 0].add_prefix("missing_pct_")
 
     status_counts = df["match_status"].value_counts(dropna=False)
-    status_counts.index = [f"status_count_{str(status).lower()}" for status in status_counts.index]
+    status_counts.index = [
+        f"status_count_{str(status).lower()}" for status in status_counts.index
+    ]
 
     year_result = df["year"].iloc[0] if df["year"].nunique() == 1 else pd.NA
 
@@ -27,7 +29,10 @@ def build_uk_quality_report(df: pd.DataFrame, tour: str) -> pd.DataFrame:
         "rows": len(df),
         "duplicate_match_keys": df["source_match_key"].duplicated().sum(),
         **status_counts.to_dict(),
-        "completed_missing_odds": df.loc[completed, common.ODDS_COLS].isna().any(axis=1).sum(),
+        "completed_missing_odds": df.loc[completed, common.ODDS_COLS]
+        .isna()
+        .any(axis=1)
+        .sum(),
         **missing_pct.to_dict(),
     }
 
@@ -46,7 +51,9 @@ def update_quality_report(report_path: Path, quality_report: pd.DataFrame) -> Pa
     if report_path.exists():
         existing_report = pd.read_csv(report_path, index_col=0)
         combined_report = pd.concat([existing_report, quality_report])
-        combined_report = combined_report[~combined_report.index.duplicated(keep="last")]
+        combined_report = combined_report[
+            ~combined_report.index.duplicated(keep="last")
+        ]
     else:
         combined_report = quality_report
 
@@ -77,19 +84,9 @@ def summarize_uk_quality(df: pd.DataFrame) -> None:
     print(df["match_status"].value_counts(dropna=False))
 
     print("\nMissingness:")
-    missing_pct = (
-        df.isna()
-        .mean()
-        .mul(100)
-        .sort_values(ascending=False)
-    )
+    missing_pct = df.isna().mean().mul(100).sort_values(ascending=False)
     print(missing_pct[missing_pct > 0])
 
     print("\nCompleted matches with any missing odds:")
     completed = df["match_status"] == "completed"
-    print(
-        df.loc[completed, common.ODDS_COLS]
-        .isna()
-        .any(axis=1)
-        .sum()
-    )
+    print(df.loc[completed, common.ODDS_COLS].isna().any(axis=1).sum())

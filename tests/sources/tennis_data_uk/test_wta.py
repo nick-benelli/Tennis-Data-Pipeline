@@ -9,7 +9,10 @@ import pandas as pd
 import pytest
 
 from tennis_data_pipeline.datasources.tennis_data_uk import atp, wta
-from tennis_data_pipeline.datasources.tennis_data_uk.client import TennisDataUKClient, Tour
+from tennis_data_pipeline.datasources.tennis_data_uk.client import (
+    TennisDataUKClient,
+    Tour,
+)
 
 
 def _raw_frame() -> pd.DataFrame:

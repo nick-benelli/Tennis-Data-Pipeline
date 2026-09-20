@@ -70,9 +70,7 @@ def load_range(
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range."""
     if end_year < start_year:
-        raise ValueError(
-            "end_year must be greater than or equal to start_year."
-        )
+        raise ValueError("end_year must be greater than or equal to start_year.")
 
     return load_years(
         range(start_year, end_year + 1),

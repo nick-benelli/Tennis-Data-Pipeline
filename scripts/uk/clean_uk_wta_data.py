@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 # CLI
 # --------------------------------------------------------------------------- #
 
+
 def _parse_year_token(token: str) -> list[int]:
     """Expand a single CLI token: "2022" -> [2022], "2010-2015" -> [2010..2015]."""
     token = token.strip()
@@ -38,7 +39,9 @@ def _parse_year_token(token: str) -> list[int]:
         except ValueError as exc:
             raise argparse.ArgumentTypeError(f"Invalid year range '{token}'") from exc
         if start > end:
-            raise argparse.ArgumentTypeError(f"Invalid year range '{token}': start > end")
+            raise argparse.ArgumentTypeError(
+                f"Invalid year range '{token}': start > end"
+            )
         return list(range(start, end + 1))
 
     try:
@@ -103,7 +106,11 @@ def main(argv: list[str] | None = None) -> int:
     logger.info("Processing %d year(s): %s", len(years), ", ".join(map(str, years)))
 
     results = clean_years(
-        "wta", years, raw_dir=args.raw_dir, clean_dir=args.clean_dir, fail_fast=args.fail_fast,
+        "wta",
+        years,
+        raw_dir=args.raw_dir,
+        clean_dir=args.clean_dir,
+        fail_fast=args.fail_fast,
     )
     log_clean_summary("wta", results)
 
@@ -112,4 +119,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

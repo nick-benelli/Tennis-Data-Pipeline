@@ -46,13 +46,16 @@ def add_source_match_key(df: pd.DataFrame) -> pd.DataFrame:
 
 def apply_known_match_fixes(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """Apply hand-verified single-match fixes registered for this year."""
-    return known_fixes.apply_match_fixes(df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES)
+    return known_fixes.apply_match_fixes(
+        df, tour="wta", year=year, fixes=known_fixes.WTA_MATCH_FIXES
+    )
 
 
 def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
     """Raise if tournament metadata is inconsistent, unless `year` is a known exception."""
     common.check_tournament_consistency(
-        df, year,
+        df,
+        year,
         id_col=cols.ID_COL,
         info_cols=cols.CONSISTENCY_INFO_COLS,
         known_exception_years=cols.KNOWN_TOURNAMENT_INCONSISTENCY_YEARS,
@@ -62,7 +65,8 @@ def check_tournament_consistency(df: pd.DataFrame, year: int) -> None:
 def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
     """Raise if a WTA tournament id is reused across genuinely different tournaments."""
     common.check_reused_tournament_ids(
-        df, year,
+        df,
+        year,
         id_col=cols.ID_COL,
         known_exception_years=cols.KNOWN_REUSED_TOURNAMENT_ID_YEARS,
     )
@@ -71,10 +75,21 @@ def check_reused_tournament_ids(df: pd.DataFrame, year: int) -> None:
 def validate_clean_uk_wta_data(df: pd.DataFrame) -> None:
     """Raise ValueError on any data-quality issue found in cleaned UK WTA match data."""
     required_cols = {
-        "uk_tournament_id", "year", "location", "tournament_name", "match_date",
-        "series", "is_outdoor", "surface", "round", "best_of",
-        "winner_name", "loser_name", "match_status",
-        "source_event_key", "source_match_key",
+        "uk_tournament_id",
+        "year",
+        "location",
+        "tournament_name",
+        "match_date",
+        "series",
+        "is_outdoor",
+        "surface",
+        "round",
+        "best_of",
+        "winner_name",
+        "loser_name",
+        "match_status",
+        "source_event_key",
+        "source_match_key",
     }
     missing_cols = required_cols - set(df.columns)
     if missing_cols:
@@ -96,8 +111,7 @@ def validate_clean_uk_wta_data(df: pd.DataFrame) -> None:
     # date in the prior year as valid for the season.
     match_date = df["match_date"]
     valid_year = (df["year"] == match_date.dt.year) | (
-        (df["year"] == match_date.dt.year + 1)
-        & (match_date.dt.month == 12)
+        (df["year"] == match_date.dt.year + 1) & (match_date.dt.month == 12)
     )
     invalid_year = ~valid_year
     if invalid_year.any():
@@ -168,10 +182,15 @@ def clean_uk_wta_data(df: pd.DataFrame) -> pd.DataFrame:
     df = common.ensure_columns(df, cols.ODDS_COLS)
     # WTA singles is always best-of-3; keep set_4/set_5 as all-NaN so ATP and
     # WTA share the exact same column set.
-    df = common.ensure_columns(df, [
-        "winner_set_4_games", "loser_set_4_games",
-        "winner_set_5_games", "loser_set_5_games",
-    ])
+    df = common.ensure_columns(
+        df,
+        [
+            "winner_set_4_games",
+            "loser_set_4_games",
+            "winner_set_5_games",
+            "loser_set_5_games",
+        ],
+    )
     df = df[cols.COLUMN_ORDER]
 
     validate_clean_uk_wta_data(df)

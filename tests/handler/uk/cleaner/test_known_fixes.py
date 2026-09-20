@@ -30,7 +30,7 @@ def test_match_fix_applies_when_exactly_one_row_matches() -> None:
         year=2024,
         description="test fix",
         source_url=None,
-        match=lambda df: (df["ATP"] == 2),
+        match=lambda df: df["ATP"] == 2,
         apply=lambda df, mask: applied.append(True),
     )
 
@@ -44,7 +44,7 @@ def test_match_fix_raises_when_zero_rows_match() -> None:
         year=2024,
         description="test fix",
         source_url=None,
-        match=lambda df: (df["ATP"] == 999),
+        match=lambda df: df["ATP"] == 999,
         apply=lambda df, mask: None,
     )
 
@@ -58,7 +58,7 @@ def test_match_fix_raises_when_multiple_rows_match() -> None:
         year=2024,
         description="test fix",
         source_url=None,
-        match=lambda df: (df["ATP"] == 1),
+        match=lambda df: df["ATP"] == 1,
         apply=lambda df, mask: None,
     )
 
@@ -75,17 +75,26 @@ def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
 
     fixes = [
         known_fixes.MatchFix(
-            tour="atp", year=2024, description="a", source_url=None,
+            tour="atp",
+            year=2024,
+            description="a",
+            source_url=None,
             match=unique_mask,
             apply=lambda df, mask: calls.append("atp-2024"),
         ),
         known_fixes.MatchFix(
-            tour="wta", year=2024, description="b", source_url=None,
+            tour="wta",
+            year=2024,
+            description="b",
+            source_url=None,
             match=unique_mask,
             apply=lambda df, mask: calls.append("wta-2024"),
         ),
         known_fixes.MatchFix(
-            tour="atp", year=2023, description="c", source_url=None,
+            tour="atp",
+            year=2023,
+            description="c",
+            source_url=None,
             match=unique_mask,
             apply=lambda df, mask: calls.append("atp-2023"),
         ),
@@ -95,8 +104,12 @@ def test_apply_match_fixes_only_applies_matching_tour_and_year() -> None:
     assert calls == ["atp-2024"]
 
 
-@pytest.mark.parametrize("fix", known_fixes.ATP_MATCH_FIXES, ids=lambda f: f.description)
-def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fixes.MatchFix) -> None:
+@pytest.mark.parametrize(
+    "fix", known_fixes.ATP_MATCH_FIXES, ids=lambda f: f.description
+)
+def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(
+    fix: known_fixes.MatchFix,
+) -> None:
     path = PROJECT_DIR / "data/raw/uk/atp" / f"uk_atp_singles_raw_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")
@@ -105,8 +118,12 @@ def test_atp_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fix
     fix.apply_to(df)  # raises if it no longer matches exactly one row
 
 
-@pytest.mark.parametrize("fix", known_fixes.WTA_MATCH_FIXES, ids=lambda f: f.description)
-def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(fix: known_fixes.MatchFix) -> None:
+@pytest.mark.parametrize(
+    "fix", known_fixes.WTA_MATCH_FIXES, ids=lambda f: f.description
+)
+def test_wta_match_fixes_still_match_exactly_one_row_in_real_data(
+    fix: known_fixes.MatchFix,
+) -> None:
     path = PROJECT_DIR / "data/raw/uk/wta" / f"uk_wta_singles_raw_{fix.year}.csv"
     if not path.exists():
         pytest.skip(f"no raw checkpoint for {fix.year}")

@@ -19,7 +19,7 @@ def download_all_files() -> None:
         url = file["url"]
         name = file["name"]
 
-        output_path : Path = OUTPUT_DIR / name
+        output_path: Path = OUTPUT_DIR / name
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         print(f"Downloading {name}...")

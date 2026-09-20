@@ -229,9 +229,14 @@ class TennisDataUKConfig(StrictModel):
         return backoff
 
     @field_validator(
-        "path_prefix", "github_user", "github_repo",
-        "raw_dir_name", "raw_filename_template",
-        "clean_dir_name", "clean_filename_template", "quality_report_relpath",
+        "path_prefix",
+        "github_user",
+        "github_repo",
+        "raw_dir_name",
+        "raw_filename_template",
+        "clean_dir_name",
+        "clean_filename_template",
+        "quality_report_relpath",
         mode="before",
     )
     @classmethod

@@ -47,10 +47,19 @@ ROUND_MAP = {
 # floats (not RAW_INT_COLS): 2007's ranking-points formula produced fractional
 # values (e.g. 332.25).
 RAW_INT_COLS = [
-    "WTA", "Year", "Best of",
-    "WRank", "LRank",
-    "W1", "L1", "W2", "L2", "W3", "L3",
-    "Wsets", "Lsets",
+    "WTA",
+    "Year",
+    "Best of",
+    "WRank",
+    "LRank",
+    "W1",
+    "L1",
+    "W2",
+    "L2",
+    "W3",
+    "L3",
+    "Wsets",
+    "Lsets",
 ]
 RAW_FLOAT_COLS = ["WPts", "LPts"]
 RAW_CATEGORY_COLS = ["Tier", "Court", "Surface", "Round", "Comment"]
@@ -102,7 +111,6 @@ COLUMN_ORDER = [
     "tour",
     "year",
     "uk_tournament_id",
-
     "tournament_name",
     "location",
     "match_date",
@@ -111,18 +119,14 @@ COLUMN_ORDER = [
     "surface",
     "round",
     "best_of",
-
     "winner_name",
     "loser_name",
-
     "winner_rank",
     "loser_rank",
     "winner_rank_points",
     "loser_rank_points",
-
     "winner_sets",
     "loser_sets",
-
     "winner_set_1_games",
     "loser_set_1_games",
     "winner_set_2_games",
@@ -133,12 +137,8 @@ COLUMN_ORDER = [
     "loser_set_4_games",
     "winner_set_5_games",
     "loser_set_5_games",
-
     "match_status",
-
     *ODDS_COLS,
-
     "source_event_key",
     "source_match_key",
 ]
-

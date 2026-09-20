@@ -25,7 +25,9 @@ def find_uk_inconsistent_tournaments(
 
     print(f"Warning: {len(metrics)} tournament(s) have inconsistent attributes:")
 
-    affected_rows = df.merge(metrics.reset_index()[key_columns], on=key_columns, how="inner")
+    affected_rows = df.merge(
+        metrics.reset_index()[key_columns], on=key_columns, how="inner"
+    )
 
     return metrics, affected_rows
 
@@ -56,10 +58,10 @@ def find_uk_reused_tournament_ids(
         print(f"Every {id_col} id maps to exactly one tournament.")
         return metrics, df.iloc[0:0]
 
-    print(f"Warning: {len(metrics)} {id_col} id(s) are reused across different tournaments:")
+    print(
+        f"Warning: {len(metrics)} {id_col} id(s) are reused across different tournaments:"
+    )
 
     affected_rows = df.merge(metrics.reset_index()[[id_col]], on=id_col, how="inner")
 
     return metrics, affected_rows
-
-

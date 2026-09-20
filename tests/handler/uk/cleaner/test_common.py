@@ -11,11 +11,36 @@ from tennis_data_pipeline.handler.uk.cleaner import common
 def _raw_event_rows() -> pd.DataFrame:
     """A single 32-draw tournament: 1st/2nd Round, QF, SF, Final."""
     rows = [
-        {"ATP": 1, "Location": "Example", "Tournament": "Example Open", "Round": "1st Round"},
-        {"ATP": 1, "Location": "Example", "Tournament": "Example Open", "Round": "2nd Round"},
-        {"ATP": 1, "Location": "Example", "Tournament": "Example Open", "Round": "Quarterfinals"},
-        {"ATP": 1, "Location": "Example", "Tournament": "Example Open", "Round": "Semifinals"},
-        {"ATP": 1, "Location": "Example", "Tournament": "Example Open", "Round": "The Final"},
+        {
+            "ATP": 1,
+            "Location": "Example",
+            "Tournament": "Example Open",
+            "Round": "1st Round",
+        },
+        {
+            "ATP": 1,
+            "Location": "Example",
+            "Tournament": "Example Open",
+            "Round": "2nd Round",
+        },
+        {
+            "ATP": 1,
+            "Location": "Example",
+            "Tournament": "Example Open",
+            "Round": "Quarterfinals",
+        },
+        {
+            "ATP": 1,
+            "Location": "Example",
+            "Tournament": "Example Open",
+            "Round": "Semifinals",
+        },
+        {
+            "ATP": 1,
+            "Location": "Example",
+            "Tournament": "Example Open",
+            "Round": "The Final",
+        },
     ]
     df = pd.DataFrame(rows)
     df["Date"] = "2024-01-01"
@@ -62,7 +87,10 @@ def test_add_source_match_key() -> None:
         }
     )
     result = common.add_source_match_key(df)
-    assert result.loc[0, "source_match_key"] == "2024_1_example_example_open_2024-01-15_player_a_player_b"
+    assert (
+        result.loc[0, "source_match_key"]
+        == "2024_1_example_example_open_2024-01-15_player_a_player_b"
+    )
 
 
 def test_fix_bad_odds_nulls_impossible_values() -> None:

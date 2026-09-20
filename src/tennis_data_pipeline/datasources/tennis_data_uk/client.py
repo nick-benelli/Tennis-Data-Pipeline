@@ -76,9 +76,7 @@ class TennisDataUKClient:
         )
 
         retries = (
-            retries
-            if retries is not None
-            else tennis_data_uk_settings.retry_total
+            retries if retries is not None else tennis_data_uk_settings.retry_total
         )
 
         backoff_factor = (
@@ -146,7 +144,7 @@ class TennisDataUKClient:
             year (int): The year of the data.
             tour (Tour): The tour (ATP or WTA).
 
-        
+
 
         Returns:
             str: The directory name corresponding to the year and tour.
@@ -289,8 +287,7 @@ class TennisDataUKClient:
 
         if not self.allow_http_fallback or all_not_found:
             raise TennisDataUKDownloadError(
-                f"Failed to download {tour.upper()} {year}:\n"
-                + "\n".join(https_errors)
+                f"Failed to download {tour.upper()} {year}:\n" + "\n".join(https_errors)
             )
 
         http_urls = [
@@ -330,4 +327,3 @@ class TennisDataUKClient:
         return pd.read_excel(
             BytesIO(contents),
         )
-    

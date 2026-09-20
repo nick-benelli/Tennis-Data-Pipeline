@@ -83,7 +83,9 @@ def test_download_year_prefers_xls_for_legacy_year() -> None:
 
 def test_download_year_https_success_no_fallback() -> None:
     client = TennisDataUKClient()
-    with patch.object(client.session, "get", return_value=_response(200, b"ok")) as mock_get:
+    with patch.object(
+        client.session, "get", return_value=_response(200, b"ok")
+    ) as mock_get:
         content = client.download_year(2024, Tour.ATP)
 
     assert content == b"ok"
@@ -108,7 +110,9 @@ def test_download_year_total_failure_raises_with_both_contexts() -> None:
     client = TennisDataUKClient()
 
     with (
-        patch.object(client.session, "get", side_effect=requests.ConnectionError("down")),
+        patch.object(
+            client.session, "get", side_effect=requests.ConnectionError("down")
+        ),
         pytest.raises(TennisDataUKDownloadError) as exc_info,
     ):
         client.download_year(2024, Tour.ATP)
@@ -132,9 +136,7 @@ def test_download_year_skips_http_fallback_on_definitive_404() -> None:
 
     # Only the two HTTPS extension attempts should have been made.
     assert mock_get.call_count == 2
-    assert all(
-        call.args[0].startswith("https://") for call in mock_get.call_args_list
-    )
+    assert all(call.args[0].startswith("https://") for call in mock_get.call_args_list)
 
 
 def test_discover_path_prefix_updates_client() -> None:
@@ -144,7 +146,9 @@ def test_discover_path_prefix_updates_client() -> None:
         '<a href="new-id-abc123/2024w/2024.xlsx">2024</a>'
     )
 
-    with patch.object(client.session, "get", return_value=_response(200, html.encode())):
+    with patch.object(
+        client.session, "get", return_value=_response(200, html.encode())
+    ):
         prefix = client.discover_path_prefix()
 
     assert prefix == "new-id-abc123"
@@ -155,7 +159,9 @@ def test_discover_path_prefix_raises_when_not_found() -> None:
     client = TennisDataUKClient()
 
     with (
-        patch.object(client.session, "get", return_value=_response(200, b"<html></html>")),
+        patch.object(
+            client.session, "get", return_value=_response(200, b"<html></html>")
+        ),
         pytest.raises(TennisDataUKDownloadError),
     ):
         client.discover_path_prefix()
@@ -165,7 +171,9 @@ def test_discover_path_prefix_raises_on_request_failure() -> None:
     client = TennisDataUKClient()
 
     with (
-        patch.object(client.session, "get", side_effect=requests.ConnectionError("down")),
+        patch.object(
+            client.session, "get", side_effect=requests.ConnectionError("down")
+        ),
         pytest.raises(TennisDataUKDownloadError),
     ):
         client.discover_path_prefix()

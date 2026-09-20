@@ -248,27 +248,34 @@ easy to scan, and it forces every fix to self-verify it still applies. e.g.:
 class MatchFix:
     tour: Tour
     year: int
-    description: str          # human-readable, one line
-    source_url: str | None    # e.g. a Wikipedia result page backing the fix
-    match: Callable[[pd.DataFrame], pd.Series]        # boolean mask
-    apply: Callable[[pd.DataFrame, pd.Series], None]  # mutates df in place for the matched rows
+    description: str  # human-readable, one line
+    source_url: str | None  # e.g. a Wikipedia result page backing the fix
+    match: Callable[[pd.DataFrame], pd.Series]  # boolean mask
+    apply: Callable[
+        [pd.DataFrame, pd.Series], None
+    ]  # mutates df in place for the matched rows
+
 
 def _fix_metz_final_2019(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, ["W1", "L1", "W2", "L2", "W3", "L3"]] = [6, 7, 7, 6, 6, 3]
     df.loc[mask, ["Wsets", "Lsets"]] = [2, 1]
 
+
 KNOWN_FIXES: list[MatchFix] = [
     MatchFix(
-        tour=Tour.ATP, year=2019,
+        tour=Tour.ATP,
+        year=2019,
         description="Metz final (Tsonga d. Bedene): corrupted set-2 score, missing set 3",
         source_url="https://en.wikipedia.org/wiki/2019_Moselle_Open",
         match=lambda df: (
-            (df["ATP"] == 53) & (df["Winner"] == "Tsonga J.W.")
-            & (df["Loser"] == "Bedene A.") & (df["Date"] == "2019-09-22")
+            (df["ATP"] == 53)
+            & (df["Winner"] == "Tsonga J.W.")
+            & (df["Loser"] == "Bedene A.")
+            & (df["Date"] == "2019-09-22")
         ),
         apply=_fix_metz_final_2019,
     ),
-    ...
+    ...,
 ]
 ```
 

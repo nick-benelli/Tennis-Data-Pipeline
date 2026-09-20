@@ -25,7 +25,9 @@ class RawCheckpointError(Exception):
     """Raised when a downloaded/checkpointed DataFrame doesn't look like the requested tour's data."""
 
 
-def raw_checkpoint_path(tour: Tour | str, year: int, raw_dir: Path | None = None) -> Path:
+def raw_checkpoint_path(
+    tour: Tour | str, year: int, raw_dir: Path | None = None
+) -> Path:
     """Path for one tour/season's Stage-2 raw checkpoint CSV.
 
     `raw_dir` defaults to `settings.paths.raw / tennis_data_uk.raw_dir_name`
@@ -35,8 +37,14 @@ def raw_checkpoint_path(tour: Tour | str, year: int, raw_dir: Path | None = None
     tour = Tour(str(tour).lower())
     tennis_data_uk_settings = settings.tennis_data_uk
 
-    raw_dir = raw_dir if raw_dir is not None else settings.paths.raw / tennis_data_uk_settings.raw_dir_name
-    filename = tennis_data_uk_settings.raw_filename_template.format(tour=tour.value, year=year)
+    raw_dir = (
+        raw_dir
+        if raw_dir is not None
+        else settings.paths.raw / tennis_data_uk_settings.raw_dir_name
+    )
+    filename = tennis_data_uk_settings.raw_filename_template.format(
+        tour=tour.value, year=year
+    )
     return raw_dir / tour.value / filename
 
 
@@ -72,7 +80,9 @@ def _warn_on_schema_drift(df: pd.DataFrame, path: Path) -> None:
     if added or removed:
         logger.warning(
             "Raw schema drift at %s: added=%s removed=%s",
-            path, sorted(added), sorted(removed),
+            path,
+            sorted(added),
+            sorted(removed),
         )
 
 
@@ -115,10 +125,14 @@ def fetch_and_checkpoint(
     return df
 
 
-def read_raw_checkpoint(tour: Tour | str, year: int, raw_dir: Path | None = None) -> pd.DataFrame:
+def read_raw_checkpoint(
+    tour: Tour | str, year: int, raw_dir: Path | None = None
+) -> pd.DataFrame:
     """Read back a previously-saved raw checkpoint CSV."""
     tour = Tour(str(tour).lower())
     path = raw_checkpoint_path(tour, year, raw_dir)
     if not path.exists():
-        raise FileNotFoundError(f"No raw checkpoint for {tour.value.upper()} {year}: {path}")
+        raise FileNotFoundError(
+            f"No raw checkpoint for {tour.value.upper()} {year}: {path}"
+        )
     return pd.read_csv(path, low_memory=False)

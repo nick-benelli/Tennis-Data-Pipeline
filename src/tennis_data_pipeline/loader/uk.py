@@ -98,13 +98,17 @@ def load_clean_uk_data(path: Path | str, tour: str) -> pd.DataFrame:
     return df
 
 
-def load_clean_uk_year(tour: str, year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
+def load_clean_uk_year(
+    tour: str, year: int, project_dir: Path | str | None = None
+) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP/WTA matches CSV by year.
 
     `project_dir` defaults to `settings.paths.project_dir` (override via the
     TENNIS_DATA_PIPELINE_PROJECT_DIR env var) when not given.
     """
-    project_dir = Path(project_dir) if project_dir is not None else settings.paths.project_dir
+    project_dir = (
+        Path(project_dir) if project_dir is not None else settings.paths.project_dir
+    )
     path = project_dir / f"data/clean/uk/{tour}/uk_{tour}_singles_clean_{year}.csv"
     return load_clean_uk_data(path, tour)
 
@@ -138,7 +142,9 @@ def load_clean_uk_atp_data(path: Path | str) -> pd.DataFrame:
     return load_clean_uk_data(path, tour="atp")
 
 
-def load_clean_uk_atp_year(year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
+def load_clean_uk_atp_year(
+    year: int, project_dir: Path | str | None = None
+) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP matches CSV by year."""
     return load_clean_uk_year("atp", year, project_dir)
 

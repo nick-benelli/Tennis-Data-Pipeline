@@ -40,7 +40,10 @@ from pathlib import Path
 import pandas as pd
 
 from ..config import settings
-from ..datasources.tennis_data_uk.checkpoint import fetch_and_checkpoint, raw_checkpoint_path
+from ..datasources.tennis_data_uk.checkpoint import (
+    fetch_and_checkpoint,
+    raw_checkpoint_path,
+)
 from ..datasources.tennis_data_uk.client import TennisDataUKClient, Tour
 from ..handler.uk.cleaner import atp, quality, wta
 
@@ -91,7 +94,9 @@ def fetch_and_checkpoint_years(
                 fetch_and_checkpoint_year(tour, year, client=client, raw_dir=raw_dir)
             )
         except Exception:  # pylint: disable=broad-exception-caught  # noqa: BLE001
-            logger.exception("[%s %s] Failed to fetch/checkpoint", tour.value.upper(), year)
+            logger.exception(
+                "[%s %s] Failed to fetch/checkpoint", tour.value.upper(), year
+            )
             if fail_fast:
                 raise
 
@@ -121,7 +126,10 @@ def load_raw_year(
 # Stage 3-4: clean checkpoint
 # --------------------------------------------------------------------------- #
 
-def clean_checkpoint_path(tour: Tour | str, year: int, clean_dir: Path | None = None) -> Path:
+
+def clean_checkpoint_path(
+    tour: Tour | str, year: int, clean_dir: Path | None = None
+) -> Path:
     """Path for one tour/season's Stage-4 clean checkpoint CSV.
 
     `clean_dir` defaults to `settings.paths.clean / tennis_data_uk.clean_dir_name`;
@@ -131,10 +139,13 @@ def clean_checkpoint_path(tour: Tour | str, year: int, clean_dir: Path | None = 
     tennis_data_uk_settings = settings.tennis_data_uk
 
     clean_dir = (
-        clean_dir if clean_dir is not None
+        clean_dir
+        if clean_dir is not None
         else settings.paths.clean / tennis_data_uk_settings.clean_dir_name
     )
-    filename = tennis_data_uk_settings.clean_filename_template.format(tour=tour.value, year=year)
+    filename = tennis_data_uk_settings.clean_filename_template.format(
+        tour=tour.value, year=year
+    )
     return clean_dir / tour.value / filename
 
 
@@ -142,7 +153,8 @@ def quality_report_path(clean_dir: Path | None = None) -> Path:
     """Path for the shared ATP+WTA data-quality report CSV."""
     tennis_data_uk_settings = settings.tennis_data_uk
     clean_dir = (
-        clean_dir if clean_dir is not None
+        clean_dir
+        if clean_dir is not None
         else settings.paths.clean / tennis_data_uk_settings.clean_dir_name
     )
     return clean_dir / tennis_data_uk_settings.quality_report_relpath
@@ -188,8 +200,12 @@ def clean_year(
     Returns the path the clean CSV was written to.
     """
     tour = Tour(str(tour).lower())
-    clean_path, rows = _clean_and_write_year(tour, year, raw_dir=raw_dir, clean_dir=clean_dir)
-    logger.info("[%s %s] Wrote %d rows to %s", tour.value.upper(), year, rows, clean_path)
+    clean_path, rows = _clean_and_write_year(
+        tour, year, raw_dir=raw_dir, clean_dir=clean_dir
+    )
+    logger.info(
+        "[%s %s] Wrote %d rows to %s", tour.value.upper(), year, rows, clean_path
+    )
     return clean_path
 
 
@@ -222,7 +238,10 @@ def clean_years(
     for year in years:
         try:
             clean_path, rows = _clean_and_write_year(
-                tour, year, raw_dir=raw_dir, clean_dir=clean_dir,
+                tour,
+                year,
+                raw_dir=raw_dir,
+                clean_dir=clean_dir,
             )
         except Exception as exc:  # pylint: disable=broad-exception-caught  # noqa: BLE001
             logger.error("[%s %s] FAILED: %s", tour.value.upper(), year, exc)
@@ -230,7 +249,13 @@ def clean_years(
             if fail_fast:
                 raise
         else:
-            logger.info("[%s %s] Wrote %d rows to %s", tour.value.upper(), year, rows, clean_path)
+            logger.info(
+                "[%s %s] Wrote %d rows to %s",
+                tour.value.upper(),
+                year,
+                rows,
+                clean_path,
+            )
             results.append(CleanYearResult(year=year, success=True, rows=rows))
 
     return results

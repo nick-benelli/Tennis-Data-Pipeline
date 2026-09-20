@@ -43,7 +43,9 @@ def _resolve_years(
     years: set[int] = set()
 
     if start_year is not None or end_year is not None:
-        range_start = start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
+        range_start = (
+            start_year if start_year is not None else _DEFAULT_START_YEAR[tour]
+        )
         range_end = end_year if end_year is not None else (year or current_year)
         if range_end < range_start:
             raise ValueError(
@@ -71,12 +73,21 @@ def fetch_years(tour: str, years: list[int], *, write: bool) -> None:
             print(f"[{tour.upper()} {year}] wrote snapshot to {path}")
         else:
             df = client.load_year(year=year, tour=tour)
-            print(f"[{tour.upper()} {year}] downloaded {len(df):,} rows (not written; --no-write)")
+            print(
+                f"[{tour.upper()} {year}] downloaded {len(df):,} rows (not written; --no-write)"
+            )
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--tour", choices=sorted(_DEFAULT_START_YEAR), required=True, help="Tour to download")
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--tour",
+        choices=sorted(_DEFAULT_START_YEAR),
+        required=True,
+        help="Tour to download",
+    )
     parser.add_argument("--year", type=int, default=None, help="Single season to fetch")
     parser.add_argument(
         "--start-year",
@@ -104,7 +115,12 @@ def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
 
     try:
-        years = _resolve_years(args.tour, year=args.year, start_year=args.start_year, end_year=args.end_year)
+        years = _resolve_years(
+            args.tour,
+            year=args.year,
+            start_year=args.start_year,
+            end_year=args.end_year,
+        )
     except ValueError as exc:
         print(f"Error: {exc}")
         return 2
@@ -115,4 +131,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

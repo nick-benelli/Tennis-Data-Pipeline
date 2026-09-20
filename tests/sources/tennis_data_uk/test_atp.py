@@ -8,7 +8,10 @@ import pandas as pd
 import pytest
 
 from tennis_data_pipeline.datasources.tennis_data_uk import atp
-from tennis_data_pipeline.datasources.tennis_data_uk.client import TennisDataUKClient, Tour
+from tennis_data_pipeline.datasources.tennis_data_uk.client import (
+    TennisDataUKClient,
+    Tour,
+)
 
 
 def _raw_frame() -> pd.DataFrame:
@@ -62,7 +65,9 @@ def test_load_range_invalid_bounds_raises() -> None:
 
 
 def test_load_range_loads_inclusive_years() -> None:
-    with patch.object(TennisDataUKClient, "load_year", return_value=_raw_frame()) as mock_load:
+    with patch.object(
+        TennisDataUKClient, "load_year", return_value=_raw_frame()
+    ) as mock_load:
         result = atp.load_range(2023, 2024)
 
     assert mock_load.call_count == 2

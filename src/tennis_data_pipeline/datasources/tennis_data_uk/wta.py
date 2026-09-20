@@ -87,9 +87,7 @@ def load_range(
 ) -> pd.DataFrame:
     """Load an inclusive range of WTA seasons."""
     if end_year < start_year:
-        raise ValueError(
-            "end_year must be greater than or equal to start_year."
-        )
+        raise ValueError("end_year must be greater than or equal to start_year.")
 
     return load_years(
         years=range(start_year, end_year + 1),

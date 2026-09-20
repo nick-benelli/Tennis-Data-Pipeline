@@ -45,7 +45,9 @@ class MatchFix:
         self.apply(df, mask)
 
 
-def apply_match_fixes(df: pd.DataFrame, tour: str, year: int, fixes: list[MatchFix]) -> pd.DataFrame:
+def apply_match_fixes(
+    df: pd.DataFrame, tour: str, year: int, fixes: list[MatchFix]
+) -> pd.DataFrame:
     """Apply every registered single-match fix for `tour`/`year`, on a copy."""
     df = df.copy()
     for fix in fixes:
@@ -135,6 +137,7 @@ ATP_MATCH_FIXES: list[MatchFix] = [
     ),
 ]
 
+
 def _fix_us_open_final_2021(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "W1"] = 6
 
@@ -214,7 +217,9 @@ def fix_wta_category_typos(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    tier_typo = df["Tier"].astype("string").str.fullmatch(r"WTA2[5-7]\d") & df["Tier"].ne("WTA250")
+    tier_typo = df["Tier"].astype("string").str.fullmatch(r"WTA2[5-7]\d") & df[
+        "Tier"
+    ].ne("WTA250")
     df.loc[tier_typo.fillna(False), "Tier"] = "WTA250"
 
     df.loc[df["Comment"] == "Walkoer", "Comment"] = "Walkover"

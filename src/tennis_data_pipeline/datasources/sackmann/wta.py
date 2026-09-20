@@ -123,9 +123,7 @@ def load_range(
         If end_year is earlier than start_year.
     """
     if end_year < start_year:
-        raise ValueError(
-            "end_year must be greater than or equal to start_year."
-        )
+        raise ValueError("end_year must be greater than or equal to start_year.")
 
     return load_years(
         years=range(start_year, end_year + 1),

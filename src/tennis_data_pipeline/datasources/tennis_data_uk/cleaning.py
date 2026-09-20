@@ -81,4 +81,3 @@ def clean_matches(
         result = result[comment.eq("completed")].copy()
 
     return result.reset_index(drop=True)
-
