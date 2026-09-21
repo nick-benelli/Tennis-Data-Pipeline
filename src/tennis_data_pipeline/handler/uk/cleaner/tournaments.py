@@ -6,6 +6,8 @@ from typing import NamedTuple
 
 import pandas as pd
 
+from tennis_data_pipeline.handler.uk.cleaner import common
+
 # Attributes expected to be constant for every match within a tournament (raw schema).
 _ATTRIBUTE_COLUMNS = ["Tournament", "Series", "Court", "Surface", "Best of"]
 
@@ -184,6 +186,12 @@ def build_tournament_table(
 
     tournaments = info.join([date_range, num_matches])
 
+    # source_event_key (added by common.add_source_event_key) is deterministic per
+    # key_columns group, so carry it through when present - Sackmann data has no
+    # such column, so this is a no-op for that caller.
+    if "source_event_key" in df.columns:
+        tournaments = tournaments.join(grouped["source_event_key"].first())
+
     has_round = round_column and round_column in df.columns
     has_winner_loser = (
         winner_column and loser_column and winner_column in df.columns and loser_column in df.columns
@@ -251,9 +259,13 @@ def build_uk_tournament_table(
     ``num_retired_matches``, ``num_walkover_matches``), and the champion's
     ``champion_avg_rank``/``champion_avg_odds`` across their matches in the
     tournament. ``champion``/``runner_up``/the champion averages are ``NA``
-    for tournaments whose final wasn't played/recorded.
+    for tournaments whose final wasn't played/recorded. Also adds
+    ``location_tournament_key`` (lowercase, slugified ``location`` + ``tournament_name``)
+    - unlike ``source_event_key``, this doesn't include ``year``/``uk_tournament_id``,
+    so it's stable across seasons for the same host city + tournament name and can be
+    used as a cross-year join key (e.g. against another source's tournament table).
     """
-    return build_tournament_table(
+    result = build_tournament_table(
         df,
         key_columns=key_columns or CLEAN_TOURNAMENT_KEY_COLUMNS,
         attribute_columns=attribute_columns or CLEAN_TOURNAMENT_ATTRIBUTE_COLUMNS,
@@ -267,6 +279,15 @@ def build_uk_tournament_table(
         rank_column="winner_rank",
         odds_column="odds_avg_winner",
     )
+
+    tournaments = result.tournaments.copy()
+    tournaments["location_tournament_key"] = (
+        common.normalize_key_value(tournaments["location"])
+        + "_"
+        + common.normalize_key_value(tournaments["tournament_name"])
+    )
+
+    return TournamentTable(tournaments, result.inconsistencies)
 
 
 __all__ = [

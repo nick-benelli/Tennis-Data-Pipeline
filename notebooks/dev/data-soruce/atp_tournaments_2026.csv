@@ -1,0 +1,66 @@
+tournament_id,tournament_name,location,tour_level,event_type,surface,indoor_outdoor,sgl_draw_size,dbl_draw_size,city,country,start_date,end_date,year,tour
+9900,United Cup,"Perth-Sydney, Australia",UC,Tour,hard,Outdoor,18,18,Perth-Sydney,Australia,2026-01-02,2026-01-11,2026,atp
+339,Brisbane International presented by ANZ,"Brisbane, Australia",250,Tour,hard,Outdoor,32,24,Brisbane,Australia,2026-01-04,2026-01-11,2026,atp
+336,Bank of China Hong Kong Tennis Open,"Hong Kong, Hong Kong",250,Tour,hard,Outdoor,28,16,Hong Kong,Hong Kong,2026-01-05,2026-01-11,2026,atp
+8998,Adelaide International,"Adelaide, Australia",250,Tour,hard,Outdoor,28,24,Adelaide,Australia,2026-01-12,2026-01-17,2026,atp
+301,ASB Classic,"Auckland, New Zealand",250,Tour,hard,Outdoor,28,16,Auckland,New Zealand,2026-01-12,2026-01-17,2026,atp
+580,Australian Open,"Melbourne, Australia",GS,GS,hard,Outdoor,128,64,Melbourne,Australia,2026-01-18,2026-02-01,2026,atp
+375,Open Occitanie,"Montpellier, France",250,Tour,hard,Indoor,28,16,Montpellier,France,2026-02-02,2026-02-08,2026,atp
+8096,Davis Cup Qualifiers 1st Rd,Davis Cup,DCR,Other,,Indoor,4,1,Davis Cup,,2026-02-05,2026-02-08,2026,atp
+424,Nexo Dallas Open,"Dallas, United States",500,Tour,hard,Indoor,32,16,Dallas,United States,2026-02-09,2026-02-15,2026,atp
+407,ABN AMRO Open,"Rotterdam, Netherlands",500,Tour,hard,Indoor,32,16,Rotterdam,Netherlands,2026-02-09,2026-02-15,2026,atp
+506,IEB+ Argentina Open,"Buenos Aires, Argentina",250,Tour,clay,Outdoor,28,16,Buenos Aires,Argentina,2026-02-09,2026-02-15,2026,atp
+451,Qatar ExxonMobil Open,"Doha, Qatar",500,Tour,hard,Outdoor,32,16,Doha,Qatar,2026-02-16,2026-02-21,2026,atp
+6932,Rio Open presented by Claro,"Rio de Janeiro, Brazil",500,Tour,clay,Outdoor,32,16,Rio de Janeiro,Brazil,2026-02-16,2026-02-22,2026,atp
+499,Delray Beach Open,"Delray Beach, United States",250,Tour,hard,Outdoor,28,16,Delray Beach,United States,2026-02-16,2026-02-22,2026,atp
+807,Abierto Mexicano Telcel presentado por HSBC,"Acapulco, Mexico",500,Tour,hard,Outdoor,32,16,Acapulco,Mexico,2026-02-23,2026-02-28,2026,atp
+8996,BCI Seguros Chile Open,"Santiago, Chile",250,Tour,clay,Outdoor,28,16,Santiago,Chile,2026-02-23,2026-03-01,2026,atp
+495,Dubai Duty Free Tennis Championships,"Dubai, United Arab Emirates",500,Tour,hard,Outdoor,32,16,Dubai,United Arab Emirates,2026-02-23,2026-02-28,2026,atp
+404,BNP Paribas Open,"Indian Wells, United States",1000,Tour,hard,Outdoor,96,32,Indian Wells,United States,2026-03-04,2026-03-15,2026,atp
+403,Miami Open presented by Itau,"Miami, United States",1000,Tour,hard,Outdoor,96,32,Miami,United States,2026-03-18,2026-03-29,2026,atp
+717,Fayez Sarofim & Co. U.S. Men's Clay Court Championship,"Houston, United States",250,Tour,clay,Outdoor,28,16,Houston,United States,2026-03-30,2026-04-05,2026,atp
+360,Grand Prix Hassan II,"Marrakech, Morocco",250,Tour,clay,Outdoor,28,16,Marrakech,Morocco,2026-03-30,2026-04-05,2026,atp
+4462,Tiriac Open presented by UniCredit Bank,"Bucharest, Romania",250,Tour,clay,Outdoor,28,16,Bucharest,Romania,2026-03-30,2026-04-05,2026,atp
+410,Rolex Monte-Carlo Masters,"Monte-Carlo, Monaco",1000,Tour,clay,Outdoor,56,28,Monte-Carlo,Monaco,2026-04-05,2026-04-12,2026,atp
+308,BMW Open by Bitpanda,"Munich, Germany",500,Tour,clay,Outdoor,32,16,Munich,Germany,2026-04-13,2026-04-19,2026,atp
+425,Barcelona Open Banc Sabadell,"Barcelona, Spain",500,Tour,clay,Outdoor,32,16,Barcelona,Spain,2026-04-13,2026-04-19,2026,atp
+1536,Mutua Madrid Open,"Madrid, Spain",1000,Tour,clay,Outdoor,96,32,Madrid,Spain,2026-04-22,2026-05-03,2026,atp
+416,Internazionali BNL d'Italia,"Rome, Italy",1000,Tour,clay,Outdoor,96,32,Rome,Italy,2026-05-06,2026-05-17,2026,atp
+414,Bitpanda Hamburg Open,"Hamburg, Germany",500,Tour,clay,Outdoor,32,16,Hamburg,Germany,2026-05-17,2026-05-23,2026,atp
+322,Gonet Geneva Open,"Geneva, Switzerland",250,Tour,clay,Outdoor,28,16,Geneva,Switzerland,2026-05-17,2026-05-23,2026,atp
+520,Roland Garros,"Paris, France",GS,GS,clay,Outdoor,128,64,Paris,France,2026-05-24,2026-06-07,2026,atp
+440,Libema Open,"'s-Hertogenbosch, Netherlands",250,Tour,grass,Outdoor,28,16,'s-Hertogenbosch,Netherlands,2026-06-08,2026-06-14,2026,atp
+321,BOSS OPEN,"Stuttgart, Germany",250,Tour,grass,Outdoor,28,16,Stuttgart,Germany,2026-06-08,2026-06-14,2026,atp
+500,Terra Wortmann Open,"Halle, Germany",500,Tour,grass,Outdoor,32,16,Halle,Germany,2026-06-15,2026-06-21,2026,atp
+311,HSBC Championships,"London, Great Britain",500,Tour,grass,Outdoor,32,16,London,Great Britain,2026-06-15,2026-06-21,2026,atp
+8994,Vanda Pharmaceuticals Mallorca Championships,"Mallorca, Spain",250,Tour,grass,Outdoor,28,16,Mallorca,Spain,2026-06-21,2026-06-27,2026,atp
+741,Lexus Eastbourne Open,"Eastbourne, Great Britain",250,Tour,grass,Outdoor,28,16,Eastbourne,Great Britain,2026-06-22,2026-06-27,2026,atp
+540,Wimbledon,"London, Great Britain",GS,GS,grass,Outdoor,128,64,London,Great Britain,2026-06-29,2026-07-12,2026,atp
+314,EFG Swiss Open Gstaad,"Gstaad, Switzerland",250,Tour,clay,Outdoor,28,16,Gstaad,Switzerland,2026-07-13,2026-07-19,2026,atp
+316,Nordea Open,"Bastad, Sweden",250,Tour,clay,Outdoor,28,16,Bastad,Sweden,2026-07-13,2026-07-19,2026,atp
+439,Plava Laguna Croatia Open Umag,"Umag, Croatia",250,Tour,clay,Outdoor,28,16,Umag,Croatia,2026-07-13,2026-07-18,2026,atp
+319,Generali Open,"Kitzbuhel, Austria",250,Tour,clay,Outdoor,28,16,Kitzbuhel,Austria,2026-07-20,2026-07-25,2026,atp
+7290,Millennium Estoril Open,"Estoril, Portugal",250,Tour,clay,Outdoor,28,16,Estoril,Portugal,2026-07-20,2026-07-26,2026,atp
+418,Mubadala DC Open,"Washington, United States",500,Tour,hard,Outdoor,32,16,Washington,United States,2026-07-27,2026-08-02,2026,atp
+7480,Mifel Tennis Open by Telcel Oppo,"Los Cabos, Mexico",250,Tour,hard,Outdoor,28,16,Los Cabos,Mexico,2026-07-27,2026-08-01,2026,atp
+421,Omnium Banque Nationale présenté par Rogers,"Montreal, Canada",1000,Tour,hard,Outdoor,96,32,Montreal,Canada,2026-08-02,2026-08-13,2026,atp
+422,Cincinnati Open,"Cincinnati, United States",1000,Tour,hard,Outdoor,96,32,Cincinnati,United States,2026-08-13,2026-08-23,2026,atp
+6242,Winston-Salem Open,"Winston-Salem, United States",250,Tour,hard,Outdoor,48,16,Winston-Salem,United States,2026-08-23,2026-08-29,2026,atp
+560,US Open,"New York, United States",GS,GS,hard,Outdoor,128,64,New York,United States,2026-08-30,2026-09-13,2026,atp
+8097,Davis Cup Qualifiers 2nd Rd,Davis Cup,DCR,Other,hard,Indoor,2,1,Davis Cup,,2026-09-18,2026-09-20,2026,atp
+4713,AITO Hangzhou Open,"Hangzhou, China",250,Tour,hard,Outdoor,28,16,Hangzhou,China,2026-09-23,2026-09-29,2026,atp
+7581,Chengdu Open,"Chengdu, China",250,Tour,hard,Outdoor,28,16,Chengdu,China,2026-09-23,2026-09-29,2026,atp
+9210,Laver Cup,"London, Great Britain",LVR,Tour,hard,Indoor,12,12,London,Great Britain,2026-09-25,2026-09-27,2026,atp
+747,China Open,"Beijing, China",500,Tour,hard,Outdoor,32,16,Beijing,China,2026-09-30,2026-10-06,2026,atp
+329,Kinoshita Group Japan Open Tennis Championships,"Tokyo, Japan",500,Tour,hard,Outdoor,32,16,Tokyo,Japan,2026-09-30,2026-10-06,2026,atp
+5014,Rolex Shanghai Masters,"Shanghai, China",1000,Tour,hard,Outdoor,96,32,Shanghai,China,2026-10-07,2026-10-18,2026,atp
+9410,Almaty Open,"Almaty, Kazakhstan",250,Tour,hard,Indoor,28,16,Almaty,Kazakhstan,2026-10-19,2026-10-25,2026,atp
+496,Grand Prix Auvergne-Rhone-Alpes,"Lyon, France",250,Tour,hard,Indoor,28,16,Lyon,France,2026-10-19,2026-10-25,2026,atp
+7485,BNP Paribas Fortis European Open,"Brussels, Belgium",250,Tour,hard,Indoor,28,16,Brussels,Belgium,2026-10-19,2026-10-25,2026,atp
+337,Erste Bank Open,"Vienna, Austria",500,Tour,hard,Indoor,32,16,Vienna,Austria,2026-10-26,2026-11-01,2026,atp
+328,Swiss Indoors Basel,"Basel, Switzerland",500,Tour,hard,Indoor,32,16,Basel,Switzerland,2026-10-26,2026-11-01,2026,atp
+352,Rolex Paris Masters,"Paris, France",1000,Tour,hard,Indoor,56,24,Paris,France,2026-11-02,2026-11-08,2026,atp
+429,Bybit Stockholm Open,"Stockholm, Sweden",250,Tour,hard,Indoor,28,16,Stockholm,Sweden,2026-11-08,2026-11-14,2026,atp
+605,Nitto ATP Finals,"Turin, Italy",WC,Tour,hard,Indoor,8,0,Turin,Italy,2026-11-15,2026-11-22,2026,atp
+8099,Davis Cup Finals,"Bologna, Italy",DCR,Other,hard,Indoor,2,1,Bologna,Italy,2026-11-23,2026-11-29,2026,atp
+7696,Next Gen ATP Finals,"Reggio Calabria, Italy",XXI,Tour,hard,Indoor,8,0,Reggio Calabria,Italy,2026-12-09,2026-12-13,2026,atp
