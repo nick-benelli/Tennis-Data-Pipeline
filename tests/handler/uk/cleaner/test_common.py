@@ -126,3 +126,24 @@ def test_ensure_columns_backfills_missing_as_nan() -> None:
 def test_slugify(raw: str, expected: str) -> None:
     """slugify() lowercases, trims, and collapses non-alphanumerics to underscores."""
     assert common.slugify(raw) == expected
+
+
+def test_load_raw_uk_csv_strips_whitespace_from_raw_string_cols(tmp_path) -> None:
+    """Stray whitespace in Location/Tournament/Winner/Loser (e.g. "Dubai ") is stripped on load."""
+    path = tmp_path / "raw.csv"
+    pd.DataFrame(
+        {
+            "Date": ["2024-01-01"],
+            "Location": ["Dubai "],
+            "Tournament": [" Dubai Tennis Championships"],
+            "Winner": ["Player A "],
+            "Loser": [" Player B"],
+        }
+    ).to_csv(path, index=False)
+
+    result = common.load_raw_uk_csv(path, 2024, int_cols=[], category_cols=[])
+
+    assert result.loc[0, "Location"] == "Dubai"
+    assert result.loc[0, "Tournament"] == "Dubai Tennis Championships"
+    assert result.loc[0, "Winner"] == "Player A"
+    assert result.loc[0, "Loser"] == "Player B"

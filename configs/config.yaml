@@ -8,6 +8,7 @@ paths:
   raw_dir: ${TENNIS_DATA_PIPELINE_RAW_DIR:data/raw}
   clean_dir: ${TENNIS_DATA_PIPELINE_CLEAN_DIR:data/clean}
   archive_dir: ${TENNIS_DATA_PIPELINE_ARCHIVE_DIR:data/archive}
+  mapping_dir: ${TENNIS_DATA_PIPELINE_MAPPING_DIR:data/mapping}
 
 # API Client Settings (defaults shared by data sources)
 api:
@@ -58,5 +59,23 @@ sackmann:
   tournament_dir_name: tournaments
   tournament_filename_template: "sackmann_{tour}_tournaments.csv"
   tournament_inconsistencies_filename_template: "sackmann_{tour}_tournament_inconsistencies.csv"
+
+# Cross-source tournament id mapping (data/mapping/) - see mapper/tournaments.py
+mapping:
+  tournament_dir_name: tournaments
+  crosswalk_filename_template: "{tour}_tournament_crosswalk.csv"
+  source_links_filename_template: "{tour}_tournament_source_links.csv"
+  manual_matches_filename_template: "{tour}_tournament_manual_matches.csv"
+  min_match_score: ${MAPPING_MIN_MATCH_SCORE:0.5}
+
+# WTA tournaments API (api.wtatennis.com) settings - no API key/auth required
+wta_api:
+  base_url: ${WTA_API_BASE_URL:https://api.wtatennis.com}
+  request_timeout_seconds: ${WTA_API_TIMEOUT_SECONDS:30.0}
+  retry_total: ${WTA_API_RETRY_TOTAL:3}
+  retry_backoff_factor: ${WTA_API_RETRY_BACKOFF_FACTOR:0.5}
+  page_size: ${WTA_API_PAGE_SIZE:1000}
+  # The site's TLS certificate fails verification as of 2026-09.
+  verify_ssl: ${WTA_API_VERIFY_SSL:false}
 
 

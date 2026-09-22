@@ -17,6 +17,7 @@ from .schemas import (
     LoggingConfig,
     PathsConfig,
     TennisDataUKConfig,
+    WtaApiConfig,
 )
 
 __all__ = [
@@ -25,6 +26,7 @@ __all__ = [
     "LoggingConfig",
     "PathsConfig",
     "TennisDataUKConfig",
+    "WtaApiConfig",
     "clear_config_cache",
     "get_config_dict",
     "get_project_root",

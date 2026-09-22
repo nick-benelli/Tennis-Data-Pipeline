@@ -17,7 +17,7 @@ from tennis_data_pipeline.handler.uk.validator.tournaments import (
 
 logger = logging.getLogger(__name__)
 
-# Raw string columns present (and left untouched) for both tours.
+# Raw string columns present for both tours (whitespace-stripped, otherwise untouched).
 RAW_STRING_COLS = ["Location", "Tournament", "Winner", "Loser"]
 
 # Round codes shared by both tours; each tour's cols module merges in its own
@@ -458,6 +458,11 @@ def load_raw_uk_csv(
         raise FileNotFoundError(f"No raw data file for {year}: {path}")
 
     df = pd.read_csv(path)
+
+    # Source rows occasionally carry stray leading/trailing whitespace (e.g. "Dubai ").
+    for col in RAW_STRING_COLS:
+        if col in df.columns:
+            df[col] = df[col].str.strip()
 
     # Date format drifts across seasons (e.g. "1/1/23" vs. "2000-01-03").
     df["Date"] = pd.to_datetime(df["Date"], format="mixed", dayfirst=False)

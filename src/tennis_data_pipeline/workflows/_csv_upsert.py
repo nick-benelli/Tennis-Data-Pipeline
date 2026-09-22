@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 import pandas as pd
 
@@ -13,8 +14,15 @@ def upsert_csv(
     *,
     key_columns: list[str],
     date_columns: list[str] | None = None,
+    keep: Literal["first", "last"] = "last",
 ) -> pd.DataFrame:
-    """Merge `rows` into the CSV at `path`, keyed on `key_columns` (new rows win on conflict)."""
+    """Merge `rows` into the CSV at `path`, keyed on `key_columns`.
+
+    `keep="last"` (default) means `rows` wins on conflict - the usual case for
+    re-cleaned/re-derived data. Pass `keep="first"` when existing rows on disk
+    may have been hand-corrected and should never be overwritten by a rerun
+    (e.g. a crosswalk a human has edited directly).
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
 
     if path.exists():
@@ -23,7 +31,7 @@ def upsert_csv(
     else:
         combined = rows
 
-    combined = combined.drop_duplicates(subset=key_columns, keep="last")
+    combined = combined.drop_duplicates(subset=key_columns, keep=keep)
 
     # A "num_*" column absent from one side of the concat (e.g. a match status
     # that only shows up in some runs) means "none seen", not "unknown".
