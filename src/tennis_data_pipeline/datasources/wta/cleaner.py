@@ -40,5 +40,9 @@ def flatten_tournament(entry: dict[str, Any]) -> dict[str, Any]:
         "singles_draw_size": entry["singlesDrawSize"],
         "doubles_draw_size": entry["doublesDrawSize"],
         "prize_money": entry["prizeMoney"],
+        "prize_money_currency": entry["prizeMoneyCurrency"],
         "singles_champion": singles_winner,
+        # "past"/"future"/"inProgress"/"live" - useful for the current season,
+        # where most rows haven't been played yet.
+        "status": entry["status"],
     }

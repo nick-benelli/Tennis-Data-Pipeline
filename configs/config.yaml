@@ -74,8 +74,17 @@ wta_api:
   request_timeout_seconds: ${WTA_API_TIMEOUT_SECONDS:30.0}
   retry_total: ${WTA_API_RETRY_TOTAL:3}
   retry_backoff_factor: ${WTA_API_RETRY_BACKOFF_FACTOR:0.5}
-  page_size: ${WTA_API_PAGE_SIZE:1000}
+  # The server caps pageSize at 100 regardless of what's requested.
+  page_size: ${WTA_API_PAGE_SIZE:100}
   # The site's TLS certificate fails verification as of 2026-09.
   verify_ssl: ${WTA_API_VERIFY_SSL:false}
+  # Tournament-summary table: written to <paths.clean>/<clean_dir_name>/<tournament_dir_name>/<tournament_filename>.
+  clean_dir_name: wta_api
+  tournament_dir_name: tournaments
+  tournament_filename: wta_api_tournaments.csv
+  # Raw checkpoint (unmodified column names, one file per season): written to
+  # <paths.raw>/<raw_dir_name>/<tournament_dir_name>/<raw_filename_template>.
+  raw_dir_name: official/wta
+  raw_filename_template: wta_api_tournaments_{year}.csv
 
 

@@ -1,9 +1,12 @@
 """WTA tournaments API data source configuration schema."""
 
 from __future__ import annotations
+
 from typing import Any
+
 from pydantic import field_validator
-from .base import StrictModel, _is_unresolved_env_placeholder, _field_default, _normalize_bool
+
+from .base import StrictModel, _field_default, _is_unresolved_env_placeholder, _normalize_bool
 
 
 class WtaApiConfig(StrictModel):
@@ -13,10 +16,24 @@ class WtaApiConfig(StrictModel):
     request_timeout_seconds: float = 30.0
     retry_total: int = 3
     retry_backoff_factor: float = 0.5
-    page_size: int = 1000
+    # The server caps pageSize at 100 regardless of what's requested (verified
+    # empirically) - pagination still works correctly with a larger value here,
+    # it just wastes a query param, so default to what the server actually honors.
+    page_size: int = 100
     # The site's TLS certificate fails verification as of 2026-09; disable
     # verification rather than silently retry insecurely per-request.
     verify_ssl: bool = False
+
+    # Tournament-summary table: written to
+    # <paths.clean>/<clean_dir_name>/<tournament_dir_name>/<tournament_filename>.
+    clean_dir_name: str = "wta_api"
+    tournament_dir_name: str = "tournaments"
+    tournament_filename: str = "wta_api_tournaments.csv"
+
+    # Raw checkpoint (unmodified column names, one file per season): written to
+    # <paths.raw>/<raw_dir_name>/<tournament_dir_name>/<raw_filename_template>.
+    raw_dir_name: str = "official/wta"
+    raw_filename_template: str = "wta_api_tournaments_{year}.csv"
 
     @field_validator("base_url", mode="before")
     @classmethod

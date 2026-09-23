@@ -26,6 +26,8 @@ _TOURNAMENT_ENTRY = {
     "singlesDrawSize": 96,
     "doublesDrawSize": 32,
     "prizeMoney": 9489532,
+    "prizeMoneyCurrency": "USD",
+    "status": "past",
     "winners": [
         {
             "singles": {"player": {"fullName": "Mirra Andreeva"}},
