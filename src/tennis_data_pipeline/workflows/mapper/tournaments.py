@@ -31,48 +31,20 @@ from typing import NamedTuple
 import pandas as pd
 
 from ...config import settings
+from ...loader.mapper import (
+    crosswalk_path,
+    load_tournament_crosswalk,
+    load_tournament_manual_matches,
+    load_tournament_source_links,
+    manual_matches_path,
+    source_links_path,
+)
 from ...mapper import tournaments as mapper_tournaments
 from .._csv_upsert import upsert_csv
 from ..sackmann.tournaments import tournament_table_path as sackmann_tournament_table_path
 from ..uk.tournaments import tournament_table_path as uk_tournament_table_path
 
 logger = logging.getLogger(__name__)
-
-
-def crosswalk_path(tour: str, mapping_dir: Path | None = None) -> Path:
-    """Path for one tour's shared `location_key -> official_tournament_id` crosswalk CSV."""
-    tour = str(tour).lower()
-    mapping_settings = settings.mapping
-    mapping_dir = mapping_dir if mapping_dir is not None else settings.paths.mapping
-    filename = mapping_settings.crosswalk_filename_template.format(tour=tour)
-    return mapping_dir / mapping_settings.tournament_dir_name / filename
-
-
-def source_links_path(tour: str, mapping_dir: Path | None = None) -> Path:
-    """Path for one tour's shared per-source tournament id links CSV."""
-    tour = str(tour).lower()
-    mapping_settings = settings.mapping
-    mapping_dir = mapping_dir if mapping_dir is not None else settings.paths.mapping
-    filename = mapping_settings.source_links_filename_template.format(tour=tour)
-    return mapping_dir / mapping_settings.tournament_dir_name / filename
-
-
-def manual_matches_path(tour: str, mapping_dir: Path | None = None) -> Path:
-    """Path for one tour's hand-maintained match-override CSV (read-only to this workflow)."""
-    tour = str(tour).lower()
-    mapping_settings = settings.mapping
-    mapping_dir = mapping_dir if mapping_dir is not None else settings.paths.mapping
-    filename = mapping_settings.manual_matches_filename_template.format(tour=tour)
-    return mapping_dir / mapping_settings.tournament_dir_name / filename
-
-
-def _load_manual_matches(path: Path) -> pd.DataFrame:
-    """Read the manual-match override CSV, or an empty frame with the right columns if absent."""
-    if not path.exists():
-        return pd.DataFrame(columns=mapper_tournaments.MANUAL_MATCH_COLUMNS)
-    df = pd.read_csv(path)
-    df["official_tournament_id"] = df["official_tournament_id"].astype("Int64")
-    return df
 
 
 def _merge_source_links(
@@ -187,7 +159,7 @@ def build_tournament_mapping(
         (df_sackmann["year"] == year) & (df_sackmann["tourney_level"] != "D")
     ].reset_index(drop=True)
 
-    manual_matches = _load_manual_matches(manual_matches_path(tour, mapping_dir))
+    manual_matches = load_tournament_manual_matches(tour, mapping_dir)
 
     match_result = mapper_tournaments.match_uk_to_sackmann_tourneys(
         df_uk, df_sackmann, year, min_match_score=min_match_score, manual_matches=manual_matches
@@ -197,7 +169,9 @@ def build_tournament_mapping(
 
     crosswalk_csv_path = crosswalk_path(tour, mapping_dir)
     if crosswalk_csv_path.exists():
-        _warn_on_crosswalk_conflicts(pd.read_csv(crosswalk_csv_path), crosswalk_result.crosswalk)
+        _warn_on_crosswalk_conflicts(
+            load_tournament_crosswalk(tour, mapping_dir), crosswalk_result.crosswalk
+        )
     upsert_csv(
         crosswalk_csv_path, crosswalk_result.crosswalk, key_columns=["location_key"], keep="first"
     )
@@ -205,8 +179,8 @@ def build_tournament_mapping(
     source_links_csv_path = source_links_path(tour, mapping_dir)
     source_links_csv_path.parent.mkdir(parents=True, exist_ok=True)
     key_columns = ["source", "year", "source_tournament_id"]
-    if source_links_csv_path.exists():
-        existing_source_links = pd.read_csv(source_links_csv_path)
+    existing_source_links = load_tournament_source_links(tour, mapping_dir)
+    if not existing_source_links.empty:
         source_links = _merge_source_links(existing_source_links, source_links, key_columns)
     else:
         source_links = source_links.sort_values(key_columns).reset_index(drop=True)
