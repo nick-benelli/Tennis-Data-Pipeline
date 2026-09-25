@@ -64,6 +64,19 @@ The data in this repository comes from the following third-party sources:
 
 Each dataset retains attribution to its original source, and the respective owners hold all rights. Please review each source's terms and conditions for more details on how their data can be used.
 
+## Data Storage
+
+`data/` (raw checkpoints, clean checkpoints, cross-source mapping/linkage
+tables) is intentionally committed to git, not gitignored. This mirrors the
+same pattern upstream sources like Jeff Sackmann's own
+[`tennis_atp`](https://github.com/JeffSackmann/tennis_atp)/[`tennis_wta`](https://github.com/JeffSackmann/tennis_wta)
+repos use: the versioned CSVs *are* the distribution mechanism, not a build
+artifact to regenerate on demand. This repo exists specifically to keep that
+data separate from any downstream modeling work (e.g. a tennis ML project
+pulling from here), rather than mixing raw/clean data and models in one repo.
+Expect `data/` to keep growing every season - that's expected, not a sign
+something's wrong.
+
 ## Documentation
 
 See [docs/](docs/README.md) for architecture, per-pipeline process docs, data-source references, and a CLI reference for every script.
