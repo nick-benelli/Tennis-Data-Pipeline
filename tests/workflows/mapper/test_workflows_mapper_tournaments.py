@@ -7,6 +7,7 @@ import logging
 import pandas as pd
 
 from tennis_data_pipeline.workflows.mapper.tournaments import (
+    _manual_force_keys,
     _merge_source_links,
     _warn_on_crosswalk_conflicts,
 )
@@ -61,6 +62,85 @@ def test_merge_source_links_keeps_unrelated_rows_from_both_sides() -> None:
 
     assert len(merged) == 2
     assert set(merged["source_tournament_id"]) == {"2016-M006", "2016-M007"}
+
+
+def test_merge_source_links_force_key_overrides_a_wrong_existing_non_blank_id() -> None:
+    """Regression test for the 2022 WTA Melbourne Summer Set 1/2 swap.
+
+    Without `force_keys`, a stale-but-non-blank existing id (from an earlier
+    buggy automatic match) can never be corrected by adding a `manual_matches`
+    override and rerunning - `force_keys` lets that specific key's freshly
+    computed value win regardless.
+    """
+    existing = pd.DataFrame([_row(official_tournament_id=2059)]).astype(
+        {"official_tournament_id": "Int64"}
+    )
+    new = pd.DataFrame([_row(official_tournament_id=2058)]).astype({"official_tournament_id": "Int64"})
+
+    merged = _merge_source_links(
+        existing,
+        new,
+        ["source", "year", "source_tournament_id"],
+        force_keys={("sackmann", 2016, "2016-M006")},
+    )
+
+    assert len(merged) == 1
+    assert merged.iloc[0]["official_tournament_id"] == 2058
+
+
+def test_merge_source_links_non_forced_key_still_keeps_existing_id() -> None:
+    """A key not covered by `force_keys` keeps the existing-wins behavior unchanged."""
+    existing = pd.DataFrame([_row(official_tournament_id=404)]).astype(
+        {"official_tournament_id": "Int64"}
+    )
+    new = pd.DataFrame([_row(official_tournament_id=999)]).astype({"official_tournament_id": "Int64"})
+
+    merged = _merge_source_links(
+        existing,
+        new,
+        ["source", "year", "source_tournament_id"],
+        force_keys={("sackmann", 2016, "some-other-id")},
+    )
+
+    assert merged.iloc[0]["official_tournament_id"] == 404
+
+
+def test_manual_force_keys_covers_all_three_override_kinds() -> None:
+    manual_year = pd.DataFrame(
+        [
+            {  # forced pairing
+                "year": 2022,
+                "uk_source_event_key": "2022_2_melbourne_melbourne_summer_set_1",
+                "sackmann_tourney_id": "2022-2058",
+                "official_tournament_id": pd.NA,
+            },
+            {  # sackmann-id-only backfill
+                "year": 2016,
+                "uk_source_event_key": pd.NA,
+                "sackmann_tourney_id": "2016-M006",
+                "official_tournament_id": 609,
+            },
+            {  # UK-only backfill
+                "year": 2007,
+                "uk_source_event_key": "2007_2_gold_coast_mondial",
+                "sackmann_tourney_id": pd.NA,
+                "official_tournament_id": 1066,
+            },
+        ]
+    )
+
+    keys = _manual_force_keys(manual_year)
+
+    assert keys == {
+        ("tennis_data_uk", 2022, "2022_2_melbourne_melbourne_summer_set_1"),
+        ("sackmann", 2022, "2022-2058"),
+        ("sackmann", 2016, "2016-M006"),
+        ("tennis_data_uk", 2007, "2007_2_gold_coast_mondial"),
+    }
+
+
+def test_manual_force_keys_empty_for_no_manual_matches_this_year() -> None:
+    assert _manual_force_keys(pd.DataFrame()) == set()
 
 
 def _crosswalk_row(**overrides: object) -> dict:

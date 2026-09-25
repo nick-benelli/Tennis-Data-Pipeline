@@ -15,7 +15,11 @@ are the source of truth and are never clobbered by rerunning this. Source
 links use a slightly smarter merge (`_merge_source_links`): a freshly computed
 row only replaces an existing one if the existing `official_tournament_id` is
 still blank, so a later `manual_matches` backfill (see below) can complete a
-previously-unresolved id without a hand-corrected value ever being overwritten.
+previously-unresolved id without a hand-corrected value ever being overwritten -
+*unless* that exact key has an explicit `manual_matches` override this run
+(`_manual_force_keys`), in which case the freshly computed value always wins,
+even over an existing non-blank id - otherwise a manual correction could never
+undo a previously-persisted wrong automatic match.
 
 If `{tour}_tournament_manual_matches.csv` exists under the same directory, it's
 read and passed through to `mapper.tournaments.match_uk_to_sackmann_tourneys` -
@@ -43,12 +47,16 @@ from ...mapper import tournaments as mapper_tournaments
 from .._csv_upsert import upsert_csv
 from ..sackmann.tournaments import tournament_table_path as sackmann_tournament_table_path
 from ..uk.tournaments import tournament_table_path as uk_tournament_table_path
+from ..wta_api.tournaments import tournament_table_path as wta_api_tournament_table_path
 
 logger = logging.getLogger(__name__)
 
 
 def _merge_source_links(
-    existing: pd.DataFrame, new: pd.DataFrame, key_columns: list[str]
+    existing: pd.DataFrame,
+    new: pd.DataFrame,
+    key_columns: list[str],
+    force_keys: set[tuple] | None = None,
 ) -> pd.DataFrame:
     """Merge freshly computed source links onto the existing file.
 
@@ -58,11 +66,25 @@ def _merge_source_links(
     replaced by a freshly computed non-blank one, so a `manual_matches`
     backfill (or an improved automatic match) can complete a row that was
     previously persisted with an unresolved id.
+
+    `force_keys` (optional): `key_columns` tuples with an explicit
+    `manual_matches` override for this run - the freshly computed row always
+    wins for these keys, even over an existing *non-blank* id. Without this,
+    a manual correction for a key that was already (wrong-but-non-blank)
+    persisted by an earlier, buggy automatic match could never take effect -
+    see the 2022 WTA Melbourne Summer Set 1/2 swap this was added for.
     """
+    force_keys = force_keys or set()
+    existing = existing.copy()
+    new = new.copy()
+    new_keys = new[key_columns].apply(tuple, axis=1)
+    is_forced = new_keys.isin(force_keys)
+    existing["_priority"] = existing["official_tournament_id"].notna().astype(int)
+    new["_priority"] = new["official_tournament_id"].notna().astype(int)
+    new.loc[is_forced, "_priority"] = 2
     combined = pd.concat([existing, new], ignore_index=True)
-    combined["_has_id"] = combined["official_tournament_id"].notna()
-    combined = combined.sort_values("_has_id", ascending=False, kind="stable")
-    combined = combined.drop_duplicates(subset=key_columns, keep="first").drop(columns="_has_id")
+    combined = combined.sort_values("_priority", ascending=False, kind="stable")
+    combined = combined.drop_duplicates(subset=key_columns, keep="first").drop(columns="_priority")
     return combined.sort_values(key_columns).reset_index(drop=True)
 
 
@@ -108,6 +130,27 @@ def _warn_on_crosswalk_conflicts(existing: pd.DataFrame, new: pd.DataFrame) -> N
             )
 
 
+def _manual_force_keys(manual_year: pd.DataFrame) -> set[tuple[str, int, str]]:
+    """`(source, year, source_tournament_id)` keys with an explicit `manual_matches` row this year.
+
+    Covers all three `manual_matches` override kinds (forced pairing,
+    Sackmann-id-only backfill, UK-only backfill) uniformly: any row with a
+    non-blank `uk_source_event_key` forces the `tennis_data_uk` side, any row
+    with a non-blank `sackmann_tourney_id` forces the `sackmann` side. Passed
+    to `_merge_source_links` so an explicit override always wins over a
+    previously-persisted row, even a wrong-but-non-blank one.
+    """
+    if manual_year.empty:
+        return set()
+    keys: set[tuple[str, int, str]] = set()
+    for row in manual_year.itertuples():
+        if pd.notna(row.uk_source_event_key):
+            keys.add(("tennis_data_uk", row.year, row.uk_source_event_key))
+        if pd.notna(row.sackmann_tourney_id):
+            keys.add(("sackmann", row.year, row.sackmann_tourney_id))
+    return keys
+
+
 class TournamentMappingResult(NamedTuple):
     """Outcome of one `build_tournament_mapping` call, for scripts/callers to report on."""
 
@@ -119,6 +162,8 @@ class TournamentMappingResult(NamedTuple):
     manual_match_count: int
     review_df: pd.DataFrame
     ambiguous_locations: set[str]
+    wta_api_backfilled_count: int = 0
+    wta_api_review_df: pd.DataFrame | None = None
 
 
 def build_tournament_mapping(
@@ -127,6 +172,7 @@ def build_tournament_mapping(
     *,
     uk_clean_dir: Path | None = None,
     sackmann_clean_dir: Path | None = None,
+    wta_api_clean_dir: Path | None = None,
     mapping_dir: Path | None = None,
     min_match_score: float | None = None,
 ) -> TournamentMappingResult:
@@ -134,6 +180,15 @@ def build_tournament_mapping(
 
     Requires both tours' tournament-summary tables to already exist for `year`
     (see `workflows.uk.build_uk_tournaments`/`workflows.sackmann.build_sackmann_tournaments`).
+
+    For WTA, if the WTA-tournaments-API table (`workflows.wta_api.build_wta_api_tournaments`)
+    has rows for `year`, any Sackmann tournament whose `official_tournament_id`
+    couldn't be extracted from its own `tourney_id` (pre-2016 seasons use a
+    non-numeric id - see `mapper.tournaments.extract_official_tournament_id`)
+    is additionally matched directly against that table
+    (`mapper.tournaments.match_sackmann_to_wta_api_tourneys`) to backfill it.
+    Missing/absent WTA-API data (e.g. for ATP, which has no such table) is a
+    no-op, not an error.
 
     Raises:
         FileNotFoundError: if either tournament-summary table doesn't exist yet.
@@ -164,8 +219,33 @@ def build_tournament_mapping(
     match_result = mapper_tournaments.match_uk_to_sackmann_tourneys(
         df_uk, df_sackmann, year, min_match_score=min_match_score, manual_matches=manual_matches
     )
-    crosswalk_result = mapper_tournaments.build_location_crosswalk(match_result.link_df, df_uk)
-    source_links = mapper_tournaments.build_source_links(match_result.link_df)
+
+    link_df = match_result.link_df
+    wta_api_backfilled_count = 0
+    wta_api_review_df: pd.DataFrame | None = None
+    if tour == "wta":
+        wta_api_path = wta_api_tournament_table_path(wta_api_clean_dir)
+        if wta_api_path.exists():
+            df_wta_api = pd.read_csv(wta_api_path)
+            df_wta_api = df_wta_api.loc[df_wta_api["year"] == year].reset_index(drop=True)
+            unresolved_sackmann_ids = set(
+                link_df.loc[link_df["official_tournament_id"].isna(), "sackmann_tourney_id"].dropna()
+            )
+            df_sackmann_unresolved = df_sackmann.loc[
+                df_sackmann["tourney_id"].isin(unresolved_sackmann_ids)
+            ].reset_index(drop=True)
+            if not df_wta_api.empty and not df_sackmann_unresolved.empty:
+                wta_api_match = mapper_tournaments.match_sackmann_to_wta_api_tourneys(
+                    df_sackmann_unresolved, df_wta_api
+                )
+                link_df = mapper_tournaments.backfill_official_ids_from_wta_api(
+                    link_df, wta_api_match.link_df
+                )
+                wta_api_backfilled_count = wta_api_match.matched_count
+                wta_api_review_df = wta_api_match.review_df
+
+    crosswalk_result = mapper_tournaments.build_location_crosswalk(link_df, df_uk)
+    source_links = mapper_tournaments.build_source_links(link_df)
 
     crosswalk_csv_path = crosswalk_path(tour, mapping_dir)
     if crosswalk_csv_path.exists():
@@ -181,7 +261,15 @@ def build_tournament_mapping(
     key_columns = ["source", "year", "source_tournament_id"]
     existing_source_links = load_tournament_source_links(tour, mapping_dir)
     if not existing_source_links.empty:
-        source_links = _merge_source_links(existing_source_links, source_links, key_columns)
+        manual_year = (
+            manual_matches.loc[manual_matches["year"] == year]
+            if not manual_matches.empty
+            else manual_matches
+        )
+        force_keys = _manual_force_keys(manual_year)
+        source_links = _merge_source_links(
+            existing_source_links, source_links, key_columns, force_keys=force_keys
+        )
     else:
         source_links = source_links.sort_values(key_columns).reset_index(drop=True)
     source_links.to_csv(source_links_csv_path, index=False)
@@ -197,6 +285,13 @@ def build_tournament_mapping(
         crosswalk_csv_path,
         source_links_csv_path,
     )
+    if wta_api_backfilled_count:
+        logger.info(
+            "[%s %s] Backfilled %d official_tournament_id(s) from the WTA-tournaments-API table",
+            tour.upper(),
+            year,
+            wta_api_backfilled_count,
+        )
     if crosswalk_result.ambiguous_locations:
         logger.info(
             "[%s %s] Ambiguous locations (resolved via location+name): %s",
@@ -214,6 +309,8 @@ def build_tournament_mapping(
         manual_match_count=match_result.manual_match_count,
         review_df=match_result.review_df,
         ambiguous_locations=crosswalk_result.ambiguous_locations,
+        wta_api_backfilled_count=wta_api_backfilled_count,
+        wta_api_review_df=wta_api_review_df,
     )
 
 

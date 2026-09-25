@@ -109,6 +109,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Override the Sackmann clean checkpoint directory (default: config-driven)",
     )
     parser.add_argument(
+        "--wta-api-clean-dir",
+        type=Path,
+        default=None,
+        help="Override the WTA-tournaments-API clean checkpoint directory (default: config-driven)",
+    )
+    parser.add_argument(
         "--mapping-dir",
         type=Path,
         default=None,
@@ -157,6 +163,7 @@ def main(argv: list[str] | None = None) -> int:
                 year,
                 uk_clean_dir=args.uk_clean_dir,
                 sackmann_clean_dir=args.sackmann_clean_dir,
+                wta_api_clean_dir=args.wta_api_clean_dir,
                 mapping_dir=args.mapping_dir,
             )
         except FileNotFoundError as exc:
@@ -184,6 +191,21 @@ def main(argv: list[str] | None = None) -> int:
                 args.review_threshold,
                 weak.to_string(index=False),
             )
+
+        if result.wta_api_review_df is not None and not result.wta_api_review_df.empty:
+            weak_wta_api = result.wta_api_review_df.loc[
+                result.wta_api_review_df["score"] < args.review_threshold
+            ]
+            if not weak_wta_api.empty:
+                logger.warning(
+                    "[%s %s] %d Sackmann<->WTA-API backfill pair(s) scored below %.2f - review "
+                    "before trusting:\n%s",
+                    args.tour.upper(),
+                    year,
+                    len(weak_wta_api),
+                    args.review_threshold,
+                    weak_wta_api.to_string(index=False),
+                )
 
     if succeeded == 0:
         logger.error("No years were successfully mapped.")

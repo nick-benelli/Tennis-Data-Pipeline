@@ -6,10 +6,12 @@ import pandas as pd
 import pytest
 
 from tennis_data_pipeline.mapper.tournaments import (
+    backfill_official_ids_from_wta_api,
     build_location_crosswalk,
     build_source_links,
     date_score,
     extract_official_tournament_id,
+    match_sackmann_to_wta_api_tourneys,
     match_uk_to_sackmann_tourneys,
     normalize_tournament_name,
     pivot_source_links,
@@ -156,6 +158,37 @@ def test_manual_matches_backfill_unresolved_official_id() -> None:
     assert row["official_tournament_id"] == 404
 
 
+def test_manual_matches_backfill_uk_only_when_no_sackmann_counterpart() -> None:
+    """A manual override can document an official_tournament_id for a UK tournament that has
+    no Sackmann counterpart at all, keyed on uk_source_event_key alone."""
+    df_uk = pd.DataFrame([_uk_row(source_event_key="2007_2_gold_coast", tournament_name="Gold Coast")])
+    df_sack = pd.DataFrame(
+        [
+            _sack_row(
+                tourney_id="2007-W-XXX-01A-2007",
+                tournament_name="Unrelated Event",
+                surface="clay",
+                start_date="2007-06-15",
+                end_date="2007-06-15",
+            )
+        ]
+    )
+    manual_matches = pd.DataFrame(
+        {
+            "year": [2025],
+            "uk_source_event_key": ["2007_2_gold_coast"],
+            "sackmann_tourney_id": [pd.NA],
+            "official_tournament_id": pd.array([1066], dtype="Int64"),
+        }
+    )
+
+    result = match_uk_to_sackmann_tourneys(df_uk, df_sack, 2025, manual_matches=manual_matches)
+
+    row = result.link_df.loc[result.link_df["uk_source_event_key"] == "2007_2_gold_coast"].iloc[0]
+    assert row["official_tournament_id"] == 1066
+    assert pd.isna(row["sackmann_tourney_id"])  # no Sackmann counterpart, left blank
+
+
 def test_build_location_crosswalk_disambiguates_shared_location() -> None:
     """A location hosting two distinct tournaments (e.g. Paris) falls back to a composite key."""
     df_uk = pd.DataFrame(
@@ -265,3 +298,98 @@ def test_pivot_source_links_joins_uk_and_sackmann_ids_side_by_side() -> None:
     assert row["year"] == 2024
     assert row["sackmann_id"] == "2024-0301"
     assert row["tennis_data_uk_id"] == "2024_4_auckland_asb_classic"
+
+
+def _wta_api_row(**overrides: object) -> dict:
+    row = {
+        "official_tournament_id": 303,
+        "group_name": "PATTAYA CITY",
+        "title": "PTT PATTAYA WOMEN'S OPEN - PATTAYA CITY, THAILAND",
+        "surface": "Hard",
+        "start_date": "2010-02-08",
+    }
+    row.update(overrides)
+    return row
+
+
+def test_match_sackmann_to_wta_api_tourneys_matches_pre_2016_non_numeric_id() -> None:
+    """Sackmann's pre-2016 WTA tourney_id ("2010-W-INT-THA-01A-2010") can't be parsed for an
+    official id, but the WTA-API's own permanent id can still be recovered by name/date match."""
+    df_sack = pd.DataFrame(
+        [
+            _sack_row(
+                tourney_id="2010-W-INT-THA-01A-2010",
+                tournament_name="Pattaya",
+                start_date="2010-02-08",
+                end_date="2010-02-08",
+            )
+        ]
+    )
+    df_wta_api = pd.DataFrame([_wta_api_row()])
+
+    result = match_sackmann_to_wta_api_tourneys(df_sack, df_wta_api)
+
+    assert result.sackmann_total == 1
+    assert result.wta_api_total == 1
+    assert result.matched_count == 1
+    row = result.link_df.iloc[0]
+    assert row["sackmann_tourney_id"] == "2010-W-INT-THA-01A-2010"
+    assert row["official_tournament_id"] == 303
+
+
+def test_match_sackmann_to_wta_api_tourneys_no_match_below_threshold() -> None:
+    df_sack = pd.DataFrame(
+        [
+            _sack_row(
+                tourney_id="2010-W-INT-XXX-01A-2010",
+                tournament_name="Nowhere",
+                start_date="2010-09-01",
+                end_date="2010-09-01",
+            )
+        ]
+    )
+    df_wta_api = pd.DataFrame([_wta_api_row()])
+
+    result = match_sackmann_to_wta_api_tourneys(df_sack, df_wta_api)
+
+    assert result.matched_count == 0
+    assert result.link_df.empty
+
+
+def test_backfill_official_ids_from_wta_api_fills_only_blank_ids() -> None:
+    link_df = pd.DataFrame(
+        {
+            "year": [2010, 2010],
+            "uk_source_event_key": ["2010_1_pattaya_thailand_open", "2010_2_other"],
+            "sackmann_tourney_id": ["2010-W-INT-THA-01A-2010", "2010-9999"],
+            "official_tournament_id": pd.array([pd.NA, 999], dtype="Int64"),
+        }
+    )
+    sackmann_to_wta_api = pd.DataFrame(
+        {
+            "sackmann_tourney_id": ["2010-W-INT-THA-01A-2010"],
+            "official_tournament_id": pd.array([303], dtype="Int64"),
+        }
+    )
+
+    result = backfill_official_ids_from_wta_api(link_df, sackmann_to_wta_api)
+
+    backfilled = result.loc[result["sackmann_tourney_id"] == "2010-W-INT-THA-01A-2010"].iloc[0]
+    already_resolved = result.loc[result["sackmann_tourney_id"] == "2010-9999"].iloc[0]
+    assert backfilled["official_tournament_id"] == 303
+    assert already_resolved["official_tournament_id"] == 999  # never overwritten
+
+
+def test_backfill_official_ids_from_wta_api_noop_when_no_wta_api_matches() -> None:
+    link_df = pd.DataFrame(
+        {
+            "year": [2010],
+            "uk_source_event_key": ["2010_1_pattaya_thailand_open"],
+            "sackmann_tourney_id": ["2010-W-INT-THA-01A-2010"],
+            "official_tournament_id": pd.array([pd.NA], dtype="Int64"),
+        }
+    )
+
+    result = backfill_official_ids_from_wta_api(link_df, pd.DataFrame())
+
+    assert result["official_tournament_id"].isna().all()

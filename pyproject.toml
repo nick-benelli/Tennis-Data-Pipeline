@@ -44,7 +44,9 @@ dev = [
 line-length = 105
 target-version = "py312"
 # Exploratory notebooks and doc snippets aren't held to the same lint/format bar as src/scripts/tests.
-extend-exclude = ["notebooks", "docs"]
+extend-exclude = ["notebooks", "docs", "*.ipynb"]
+# Honor extend-exclude even when pre-commit passes explicit staged file paths.
+force-exclude = true
 
 [tool.ruff.lint]
 select = [

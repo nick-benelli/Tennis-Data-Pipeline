@@ -33,7 +33,7 @@ Currently `loader` only has a `uk.py` module (Tennis-Data UK).
 | Function | Purpose |
 |---|---|
 | `load_clean_uk_data(path, tour)` | Load one clean checkpoint file with correct dtypes. |
-| `load_clean_uk_year(tour, year, project_dir=None)` | Resolve the path for one tour/year and load it. |
+| `load_clean_uk_year(tour, year, clean_dir=None)` | Resolve the path for one tour/year and load it. |
 | `load_clean_uk_data_range(...)` | Load and concatenate multiple years for one tour. |
 | `load_clean_uk_combined(...)` | Load and concatenate both tours together. |
 | `load_clean_uk_atp_data(path)` | Convenience wrapper for ATP-only loading. |

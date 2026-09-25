@@ -1,13 +1,22 @@
 location_key,official_tournament_id,location
 abu dhabi,2028,Abu Dhabi
 abu dhabi|abu dhabi wta women s tennis open,2028,Abu Dhabi
+acapulco,1002,Acapulco
 adelaide,2030,Adelaide
 adelaide|adelaide international,2030,Adelaide
 adelaide|adelaide international 1,2014,Adelaide
 adelaide|adelaide international 2,2014,Adelaide
+amelia island,803,Amelia Island
+antwerp,1016,Antwerp
 auckland,1049,Auckland
 austin,2082,Austin
+bad gastein,1036,Bad Gastein
 bad homburg,2017,Bad Homburg
+baku,1044,Baku
+bali,1009,Bali
+bangalore,1033,Bangalore
+bangkok,1030,Bangkok
+barcelona,1035,Barcelona
 bastad,1048,Bastad
 beijing,1020,Beijing
 belgrade,2035,Belgrade
@@ -16,11 +25,13 @@ biel,1098,Biel
 birmingham,1052,Birmingham
 bogota,894,Bogota
 brisbane,800,Brisbane
+brussels,1046,Brussels
 bucharest,1079,Bucharest
 budapest,1097,Budapest
 budapest|budapest open,2036,Budapest
 budapest|hungarian ladies open,1097,Budapest
 cancun,808,Cancun
+carlsbad,408,Carlsbad
 charleston,804,Charleston
 charleston|charleston open,804,Charleston
 charleston|family circle cup,804,Charleston
@@ -33,13 +44,22 @@ chicago|chicago women s opeen,2047,Chicago
 cincinnati,1017,Cincinnati
 cleveland,2040,Cleveland
 cluj napoca,2050,Cluj-Napoca
+college park,1045,College Park
+copenhagen,1042,Copenhagen
 courmayeur,2046,Courmayeur
+dallas,1047,Dallas
 doha,1003,Doha
+doha|qatar total open,1003,Doha
+doha|sony ericsson championships,808,Doha
 dubai,718,Dubai
 eastbourne,710,Eastbourne
+estoril,358,Estoril
+fes,1005,Fes
 florianopolis,1064,Florianopolis
+forest hills,1019,Forest Hills
 fort worth,808,Fort Worth
 gdynia,2037,Gdynia
+gold coast,1066,Gold Coast
 granby,2070,Granby
 gstaad,1094,Gstaad
 guadalajara,2075,Guadalajara
@@ -63,16 +83,21 @@ jiujiang,1077,Jiujiang
 jurmala,2006,Jurmala
 kaohsiung,1087,Kaohsiung
 katowice,1067,Katowice
+kolkata,1029,Kolkata
 kuala lumpur,1041,Kuala Lumpur
 lausanne,1094,Lausanne
 lexington,2022,Lexington
 linz,528,Linz
 london,540,London
+los angeles,805,Los Angeles
 lugano,1101,Lugano
 luxembourg,300,Luxembourg
 lyon,2011,Lyon
 madrid,1038,Madrid
 mallorca,1091,Mallorca
+marbella,1040,Marbella
+marrakech,1005,Marrakech
+marrakesh,1005,Marrakesh
 melbourne,580,Melbourne
 melbourne|australian open,580,Melbourne
 melbourne|gippsland trophy,2029,Melbourne
@@ -81,9 +106,11 @@ melbourne|melbourne summer set 1,2058,Melbourne
 melbourne|melbourne summer set 2,2059,Melbourne
 melbourne|phillip island trophy,2027,Melbourne
 melbourne|yarra valley classic,2026,Melbourne
+memphis,1012,Memphis
 merida,2085,Merida
 miami,902,Miami
 monastir,2072,Monastir
+monreal,806,Monreal
 monterrey,1039,Monterrey
 montreal,806,Montreal
 moscow,730,Moscow
@@ -99,19 +126,27 @@ ningbo,2092,Ningbo
 nottingham,1080,Nottingham
 nur sultan,2053,Nur-Sultan
 nurnberg,1068,Nürnberg
+oeiras,358,Oeiras
 osaka,1056,Osaka
 osaka|japan open,405,Osaka
 osaka|toray pan pacific open tennis tournament,1056,Osaka
 ostrava,2025,Ostrava
 palermo,466,Palermo
 paris,520,Paris
+paris|french open,903,Paris
+paris|open gaz de france,604,Paris
+paris|open gdf suez,604,Paris
 parma,2041,Parma
+pattaya,303,Pattaya
+ponte vedra beach,803,Ponte Vedra Beach
 portoroz,2044,Portoroz
 prague,1082,Prague
 quebec,656,Quebec
 queens club,1111,Queens Club
 rabat,1005,Rabat
+rio de janeiro,1073,Rio de Janeiro
 riyadh,808,Riyadh
+rogers cup,806,Rogers Cup
 rome,709,Rome
 rouen,2066,Rouen
 s hertogenbosch,822,'s-Hertogenbosch
@@ -125,8 +160,10 @@ shenzhen|wta finals,808,Shenzhen
 singapore,808,Singapore
 singapore|bnp paribas wta finals,808,Singapore
 singapore|singapore open,1096,Singapore
+sofia,1043,Sofia
 st petersburg,1086,St. Petersburg
 stanford,703,Stanford
+stockholm,1013,Stockholm
 strasbourg,406,Strasbourg
 stuttgart,1051,Stuttgart
 sydney,2060,Sydney
@@ -136,12 +173,15 @@ tashkent,825,Tashkent
 tenerife,2049,Tenerife
 tianjin,1076,Tianjin
 tokyo,1056,Tokyo
+tokyo|aig japan open tennis championships,1062,Tokyo
 tokyo|japan women s tennis open,405,Tokyo
 tokyo|toray pan pacific open,1056,Tokyo
 tokyo|toray pan pacific open tennis tournament,1056,Tokyo
 toronto,806,Toronto
+vina del mar,1037,Vina del Mar
 warsaw,2037,Warsaw
 washington,1045,Washington
 wuhan,1075,Wuhan
 zhengzhou,2008,Zhengzhou
 zhuhai,1081,Zhuhai
+zurich,608,Zurich

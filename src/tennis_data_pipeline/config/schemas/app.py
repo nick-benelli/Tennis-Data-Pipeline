@@ -1,15 +1,18 @@
 """Application configuration schema."""
 
 from __future__ import annotations
-from .api import ApiConfig
-from .logging import LoggingConfig
-from .paths import PathsConfig
-from .uk import TennisDataUKConfig
-from .sackmann import SackmannConfig
-from .mapping import MappingConfig
-from .wta_api import WtaApiConfig
-from .base import StrictModel
+
 from pydantic import Field
+
+from .api import ApiConfig
+from .base import StrictModel
+from .linked import LinkedConfig
+from .logging import LoggingConfig
+from .mapping import MappingConfig
+from .paths import PathsConfig
+from .sackmann import SackmannConfig
+from .uk import TennisDataUKConfig
+from .wta_api import WtaApiConfig
 
 
 class AppConfig(StrictModel):
@@ -21,6 +24,7 @@ class AppConfig(StrictModel):
     tennis_data_uk: TennisDataUKConfig = Field(default_factory=TennisDataUKConfig)
     sackmann: SackmannConfig = Field(default_factory=SackmannConfig)
     mapping: MappingConfig = Field(default_factory=MappingConfig)
+    linked: LinkedConfig = Field(default_factory=LinkedConfig)
     wta_api: WtaApiConfig = Field(default_factory=WtaApiConfig)
 
 

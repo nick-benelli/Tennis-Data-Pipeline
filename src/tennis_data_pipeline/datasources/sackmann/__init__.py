@@ -1,7 +1,7 @@
 """Jeff Sackmann's tennis-data GitHub mirror: client + raw-schema cleaning."""
 
 from . import (
-    atp, 
+    atp,
     wta,
 )
 

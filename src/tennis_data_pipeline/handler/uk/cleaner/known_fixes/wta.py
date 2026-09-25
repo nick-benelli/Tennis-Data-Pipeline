@@ -32,6 +32,10 @@ def _fix_cincinnati_final_2012(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "Date"] = "2012-08-19"
 
 
+def _fix_charleston_tourney_id_2018(df: pd.DataFrame, mask: pd.Series) -> None:
+    df.loc[mask, "WTA"] = 16
+
+
 WTA_MATCH_FIXES: list[MatchFix] = [
     MatchFix(
         tour="wta",
@@ -114,6 +118,42 @@ WTA_MATCH_FIXES: list[MatchFix] = [
             & (df["Date"] == "2024-05-02")
         ),
         apply=_fix_madrid_sf_2024,
+    ),
+    MatchFix(
+        tour="wta",
+        year=2018,
+        description=(
+            "Charleston (Family Circle Cup) R16 (Cornet d. Bondarenko): tournament "
+            "id recorded as 15 instead of 16, splitting the tournament's matches "
+            "across two ids ('2018_16_charleston_family_circle_cup' and "
+            "'2018_15_charleston_family_circle_cup')."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["WTA"] == 15)
+            & (df["Winner"] == "Cornet A.")
+            & (df["Loser"] == "Bondarenko K.")
+            & (df["Date"] == "2018-04-02")
+        ),
+        apply=_fix_charleston_tourney_id_2018,
+    ),
+    MatchFix(
+        tour="wta",
+        year=2018,
+        description=(
+            "Charleston (Family Circle Cup) semifinal (Goerges d. Sevastova): "
+            "tournament id recorded as 15 instead of 16, splitting the "
+            "tournament's matches across two ids ('2018_16_charleston_family_circle_cup' "
+            "and '2018_15_charleston_family_circle_cup')."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["WTA"] == 15)
+            & (df["Winner"] == "Goerges J.")
+            & (df["Loser"] == "Sevastova A.")
+            & (df["Date"] == "2018-04-08")
+        ),
+        apply=_fix_charleston_tourney_id_2018,
     ),
 ]
 

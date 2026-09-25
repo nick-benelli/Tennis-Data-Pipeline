@@ -1,104 +1,50 @@
-"""Cross-source match-level linking: Tennis-Data UK <-> Sackmann (Pass 1 only).
-
-Pure functions over already-clean match-level `DataFrame`s - no file I/O here
-(see `workflows.mapper` for that layer, following the `mapper.tournaments`
-precedent).
-
-Pass 1 methodology (tournament-blocked exact rank pair):
-
-    UK match row                    Sackmann match row
-         |                                 |
-    official_tournament_id  <----(tournament_mapper)---->  official_tournament_id
-         |                                 |
-         +--------- year, tour, winner_rank, loser_rank ---+
-                            |
-                    candidate match
-                            |
-              exactly one on both sides?
-                    /              \\
-                 yes                no
-                  |                  |
-          accepted link      ambiguous candidate
-
-Rows that never produce a candidate (missing tournament id, missing rank, or
-no counterpart) fall out as unmatched. Nothing here does player-name fuzzy
-matching or a date-window join - see `docs/My-Notes/link_td_sackmann.py` /
-`Link-UK-Sackmann.ipynb` for the later passes this is designed to feed into.
-"""
+"""Pass 1: tournament-blocked exact rank-pair match linking (`build_rank_links`)."""
 
 from __future__ import annotations
 
 import pandas as pd
 
-MATCH_METHOD_TOURNAMENT_RANK_UNIQUE = "tournament_rank_unique"
-
-# The blocking + exact-match key shared by both sides once official_tournament_id
-# is attached and Sackmann's source_year has been aliased to "year".
-RANK_CANDIDATE_KEY_COLUMNS = ["year", "tour", "official_tournament_id", "winner_rank", "loser_rank"]
-
-CROSSWALK_COLUMNS = [
-    "source_match_key",
-    "canonical_match_key",
-    "official_tournament_id",
-    "year",
-    "tour",
-    "winner_rank",
-    "loser_rank",
-    "winner_id",
-    "loser_id",
-    "match_method",
-    "review_flag",
-    "source_candidate_count",
-    "canonical_candidate_count",
-    "round_agrees",
-    "winner_rank_points_diff",
-    "loser_rank_points_diff",
-]
-
-
-def attach_tournament_ids(
-    matches: pd.DataFrame,
-    tournament_mapper: pd.DataFrame,
-    *,
-    source: str,
-    match_tournament_col: str,
-    year_col: str,
-) -> pd.DataFrame:
-    """Attach `official_tournament_id` to a source's match rows.
-
-    Looks up `tournament_mapper` rows where `source` equals `source`, keyed by
-    (`year_col`, `match_tournament_col`) in `matches` against Sackmann's/`UK`s
-    (`year`, `source_tournament_id`) in `tournament_mapper`. Every other column
-    in `matches` is left unchanged - this only adds `official_tournament_id`.
-
-    Raises a `pandas.errors.MergeError` (via `validate="many_to_one"`) if
-    `tournament_mapper` has more than one `official_tournament_id` for the
-    same (`year_col`, `match_tournament_col`) combination.
-    """
-    mapper = (
-        tournament_mapper.loc[
-            tournament_mapper["source"].eq(source),
-            ["year", "source_tournament_id", "official_tournament_id"],
-        ]
-        .drop_duplicates()
-        .rename(columns={"year": year_col, "source_tournament_id": match_tournament_col})
-    )
-
-    return matches.merge(
-        mapper,
-        on=[year_col, match_tournament_col],
-        how="left",
-        validate="many_to_one",
-    )
+from .schema import CROSSWALK_COLUMNS, MATCH_METHOD_TOURNAMENT_RANK_UNIQUE, RANK_CANDIDATE_KEY_COLUMNS
+from .tournament_ids import attach_tournament_ids
 
 
 def add_sackmann_match_key(sackmann_df: pd.DataFrame) -> pd.DataFrame:
-    """Add a stable `canonical_match_key` = `tourney_id` + "_" + `match_num` column."""
+    """Add a stable `canonical_match_key` = `tourney_id` + "_" + `match_num` column.
+
+    A no-op if `canonical_match_key` is already present - `datasources.sackmann.cleaning`
+    attaches it during `clean_matches`, so this is only a fallback for uncleaned input.
+    Mirrors that function's round-robin disambiguation (append `round` only for
+    rows whose plain `tourney_id_match_num` key collides) - see its docstring.
+    """
+    if "canonical_match_key" in sackmann_df.columns:
+        return sackmann_df
     sackmann_df = sackmann_df.copy()
-    sackmann_df["canonical_match_key"] = (
-        sackmann_df["tourney_id"].astype(str) + "_" + sackmann_df["match_num"].astype(str)
-    )
+    key = sackmann_df["tourney_id"].astype(str) + "_" + sackmann_df["match_num"].astype(str)
+    collides = key.duplicated(keep=False)
+    if collides.any():
+        key = key.where(~collides, key + "_" + sackmann_df["round"].astype(str))
+    sackmann_df["canonical_match_key"] = key
     return sackmann_df
+
+
+def _attach_uk(uk_df: pd.DataFrame, tournament_mapper_df: pd.DataFrame) -> pd.DataFrame:
+    return attach_tournament_ids(
+        uk_df,
+        tournament_mapper_df,
+        source="tennis_data_uk",
+        match_tournament_col="source_event_key",
+        year_col="year",
+    )
+
+
+def _attach_sackmann(sackmann_df: pd.DataFrame, tournament_mapper_df: pd.DataFrame) -> pd.DataFrame:
+    return attach_tournament_ids(
+        sackmann_df,
+        tournament_mapper_df,
+        source="sackmann",
+        match_tournament_col="tourney_id",
+        year_col="source_year",
+    )
 
 
 def generate_rank_candidates(uk_df: pd.DataFrame, sackmann_df: pd.DataFrame) -> pd.DataFrame:
@@ -156,7 +102,13 @@ def classify_rank_candidates(candidates: pd.DataFrame) -> pd.DataFrame:
         "canonical_candidate_count"
     ].eq(1)
 
-    candidates["round_agrees"] = candidates["round_uk"] == candidates["round_sk"]
+    # round_uk/round_sk are each `category` dtype from their own source with
+    # independently-built category sets - comparing two Categoricals directly
+    # raises unless the categories match exactly, so compare as plain objects
+    # instead (preserves NaN != NaN; only the dtype changes).
+    candidates["round_agrees"] = candidates["round_uk"].astype(object) == candidates["round_sk"].astype(
+        object
+    )
     candidates["winner_rank_points_diff"] = (
         candidates["winner_rank_points_uk"] - candidates["winner_rank_points_sk"]
     ).abs()
@@ -197,20 +149,8 @@ def build_rank_links(
     if sackmann_df["canonical_match_key"].duplicated().any():
         raise ValueError("sackmann_df's derived canonical_match_key must be unique")
 
-    uk_linked = attach_tournament_ids(
-        uk_df,
-        tournament_mapper_df,
-        source="tennis_data_uk",
-        match_tournament_col="source_event_key",
-        year_col="year",
-    )
-    sackmann_linked = attach_tournament_ids(
-        sackmann_df,
-        tournament_mapper_df,
-        source="sackmann",
-        match_tournament_col="tourney_id",
-        year_col="source_year",
-    )
+    uk_linked = _attach_uk(uk_df, tournament_mapper_df)
+    sackmann_linked = _attach_sackmann(sackmann_df, tournament_mapper_df)
 
     candidates = classify_rank_candidates(generate_rank_candidates(uk_linked, sackmann_linked))
 

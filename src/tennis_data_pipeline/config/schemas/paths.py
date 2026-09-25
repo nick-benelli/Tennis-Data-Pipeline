@@ -1,12 +1,14 @@
 """Paths configuration schema."""
 
 from __future__ import annotations
+
 from pathlib import Path
-from pydantic import Field, field_validator
 from typing import Any
 
-from .base import StrictModel, _is_unresolved_env_placeholder, _field_default
+from pydantic import Field, field_validator
+
 from ..paths import PROJECT_DIR
+from .base import StrictModel, _field_default, _is_unresolved_env_placeholder
 
 
 class PathsConfig(StrictModel):
@@ -22,6 +24,7 @@ class PathsConfig(StrictModel):
     clean_dir: str = "data/clean"
     archive_dir: str = "data/archive"
     mapping_dir: str = "data/mapping"
+    linked_dir: str = "data/linked"
 
     @field_validator("project_dir", mode="before")
     @classmethod
@@ -33,7 +36,9 @@ class PathsConfig(StrictModel):
             return PROJECT_DIR
         return Path(value).expanduser().resolve()
 
-    @field_validator("data_dir", "raw_dir", "clean_dir", "archive_dir", "mapping_dir", mode="before")
+    @field_validator(
+        "data_dir", "raw_dir", "clean_dir", "archive_dir", "mapping_dir", "linked_dir", mode="before"
+    )
     @classmethod
     def normalize_dir_defaults(cls, value: Any, info: Any) -> str:
         """If the value is None or an unresolved env placeholder, return the default.
@@ -71,3 +76,8 @@ class PathsConfig(StrictModel):
     def mapping(self) -> Path:
         """Absolute path to the cross-source id-mapping data directory."""
         return self._resolve(self.mapping_dir)
+
+    @property
+    def linked(self) -> Path:
+        """Absolute path to the formalized per-year match-linkage output directory."""
+        return self._resolve(self.linked_dir)

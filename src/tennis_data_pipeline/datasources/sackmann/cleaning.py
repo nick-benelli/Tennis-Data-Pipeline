@@ -55,6 +55,23 @@ def _coerce_columns(
     return df
 
 
+def _add_canonical_match_key(df: pd.DataFrame) -> pd.DataFrame:
+    """Add `canonical_match_key` = `tourney_id` + "_" + `match_num`, Sackmann's unique per-match id.
+
+    Round-robin events (e.g. the WTA/ATP season-ending "Tournament of Champions")
+    can reuse `match_num` across the round-robin stage and the knockout stage
+    within the same `tourney_id` - `round` is appended to disambiguate, but only
+    for rows that actually collide, so the key stays the plain
+    `tourney_id_match_num` form for every other match.
+    """
+    key = (df["tourney_id"].astype(str) + "_" + df["match_num"].astype(str)).astype("string")
+    collides = key.duplicated(keep=False)
+    if collides.any():
+        key = key.where(~collides, key + "_" + df["round"].astype(str))
+    df["canonical_match_key"] = key
+    return df
+
+
 def clean_matches(
     df: pd.DataFrame,
 ) -> pd.DataFrame:
@@ -67,6 +84,7 @@ def clean_matches(
         string_columns=SINGLES_STRING_COLUMNS,
         category_columns=SINGLES_CATEGORY_COLUMNS,
     )
+    result = _add_canonical_match_key(result)
     return result.reset_index(drop=True)
 
 
@@ -82,4 +100,5 @@ def clean_doubles_matches(
         string_columns=DOUBLES_STRING_COLUMNS,
         category_columns=DOUBLES_CATEGORY_COLUMNS,
     )
+    result = _add_canonical_match_key(result)
     return result.reset_index(drop=True)

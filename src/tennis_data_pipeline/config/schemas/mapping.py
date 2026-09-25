@@ -24,6 +24,10 @@ class MappingConfig(StrictModel):
     # Candidate matches scoring below this are treated as "no match" (see mapper.tournaments).
     min_match_score: float = 0.5
 
+    # Pass-0 hand-maintained match-level override table (see mapper.matches.build_manual_links).
+    match_dir_name: str = "matches"
+    match_manual_links_filename_template: str = "{tour}_manual_links.csv"
+
     @field_validator("min_match_score", mode="before")
     @classmethod
     def normalize_min_match_score(cls, value: Any) -> float:

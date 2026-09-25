@@ -9,6 +9,7 @@ paths:
   clean_dir: ${TENNIS_DATA_PIPELINE_CLEAN_DIR:data/clean}
   archive_dir: ${TENNIS_DATA_PIPELINE_ARCHIVE_DIR:data/archive}
   mapping_dir: ${TENNIS_DATA_PIPELINE_MAPPING_DIR:data/mapping}
+  linked_dir: ${TENNIS_DATA_PIPELINE_LINKED_DIR:data/linked}
 
 # API Client Settings (defaults shared by data sources)
 api:
@@ -67,6 +68,19 @@ mapping:
   source_links_filename_template: "{tour}_tournament_source_links.csv"
   manual_matches_filename_template: "{tour}_tournament_manual_matches.csv"
   min_match_score: ${MAPPING_MIN_MATCH_SCORE:0.5}
+  # Pass-0 hand-maintained match-level override table (see mapper/matches/uk_sackmann/pass0.py).
+  match_dir_name: matches
+  match_manual_links_filename_template: "{tour}_manual_links.csv"
+
+# Formalized per-year UK<->Sackmann linkage outputs (data/linked/{tour}/{year}/) -
+# see mapper/matches/uk_sackmann/outputs.py
+linked:
+  review_dir_name: review
+  match_links_filename_template: "{tour}_match_links_{year}.csv"
+  enriched_matches_filename_template: "{tour}_matches_enriched_{year}.csv"
+  linkage_summary_filename_template: "{tour}_linkage_summary_{year}.csv"
+  linkage_ambiguous_filename_template: "{tour}_linkage_ambiguous_{year}.csv"
+  linkage_unmatched_filename_template: "{tour}_linkage_unmatched_{year}.csv"
 
 # WTA tournaments API (api.wtatennis.com) settings - no API key/auth required
 wta_api:

@@ -98,46 +98,50 @@ def load_clean_uk_data(path: Path | str, tour: str) -> pd.DataFrame:
     return df
 
 
-def load_clean_uk_year(tour: str, year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
+def _default_clean_dir() -> Path:
+    """`settings.paths.clean / tennis_data_uk.clean_dir_name` - same default
+    `workflows.uk.clean.clean_checkpoint_path` uses, so callers stay in sync
+    without passing `clean_dir` explicitly.
+    """
+    return settings.paths.clean / settings.tennis_data_uk.clean_dir_name
+
+
+def load_clean_uk_year(tour: str, year: int, clean_dir: Path | str | None = None) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP/WTA matches CSV by year.
 
-    Directory/filename come from `tennis_data_uk.clean_dir_name`/
-    `clean_filename_template` (config.yaml) under `settings.paths.clean` -
-    the same config workflows.uk.clean_checkpoint_path() uses, so
-    the two stay in sync. `project_dir` defaults to `settings.paths.project_dir`
-    (override via the TENNIS_DATA_PIPELINE_PROJECT_DIR env var); pass it to
-    load from a different project root's `paths.clean_dir`.
+    `clean_dir` defaults to `_default_clean_dir()` (i.e. `settings.paths.clean`,
+    which honors `TENNIS_DATA_PIPELINE_CLEAN_DIR`/`TENNIS_DATA_PIPELINE_PROJECT_DIR`);
+    pass it to load from a different clean-data root instead.
     """
-    tennis_data_uk_settings = settings.tennis_data_uk
-    clean_root = (
-        Path(project_dir) / settings.paths.clean_dir if project_dir is not None else settings.paths.clean
-    )
-    clean_dir = clean_root / tennis_data_uk_settings.clean_dir_name
-    filename = tennis_data_uk_settings.clean_filename_template.format(tour=tour, year=year)
+    clean_dir = Path(clean_dir) if clean_dir is not None else _default_clean_dir()
+    filename = settings.tennis_data_uk.clean_filename_template.format(tour=tour, year=year)
     return load_clean_uk_data(clean_dir / tour / filename, tour)
 
 
 def load_clean_uk_data_range(
-    tour: str, years: range | list[int], project_dir: Path | str | None = None
+    tour: str, years: range | list[int], clean_dir: Path | str | None = None
 ) -> pd.DataFrame:
     """Load and concatenate several seasons' cleaned UK ATP/WTA matches CSVs."""
     return pd.concat(
-        [load_clean_uk_year(tour, year, project_dir) for year in years],
+        [load_clean_uk_year(tour, year, clean_dir) for year in years],
         ignore_index=True,
     )
 
 
 def load_clean_uk_combined(
-    years: range | list[int], project_dir: Path | str | None = None
+    years: range | list[int], clean_dir: Path | str | None = None
 ) -> pd.DataFrame:
     """Load and concatenate ATP+WTA cleaned matches for the given years (same schema, both tours)."""
     return pd.concat(
         [
-            load_clean_uk_data_range("atp", years, project_dir),
-            load_clean_uk_data_range("wta", years, project_dir),
+            load_clean_uk_data_range("atp", years, clean_dir),
+            load_clean_uk_data_range("wta", years, clean_dir),
         ],
         ignore_index=True,
     )
+
+
+# -------- ATP-only aliases --------
 
 
 # Backward-compatible ATP-only aliases.
@@ -146,16 +150,37 @@ def load_clean_uk_atp_data(path: Path | str) -> pd.DataFrame:
     return load_clean_uk_data(path, tour="atp")
 
 
-def load_clean_uk_atp_year(year: int, project_dir: Path | str | None = None) -> pd.DataFrame:
+def load_clean_uk_atp_year(year: int, clean_dir: Path | str | None = None) -> pd.DataFrame:
     """Load a single season's cleaned UK ATP matches CSV by year."""
-    return load_clean_uk_year("atp", year, project_dir)
+    return load_clean_uk_year("atp", year, clean_dir)
 
 
 def load_clean_uk_atp_data_range(
-    years: range | list[int], project_dir: Path | str | None = None
+    years: range | list[int], clean_dir: Path | str | None = None
 ) -> pd.DataFrame:
     """Load and concatenate several seasons' cleaned UK ATP matches CSVs."""
-    return load_clean_uk_data_range("atp", years, project_dir)
+    return load_clean_uk_data_range("atp", years, clean_dir)
+
+
+# -------- WTA-only aliases --------
+
+
+# WTA-only aliases (same shape as the ATP ones above).
+def load_clean_uk_wta_data(path: Path | str) -> pd.DataFrame:
+    """Load a single cleaned UK WTA matches CSV with dtypes restored."""
+    return load_clean_uk_data(path, tour="wta")
+
+
+def load_clean_uk_wta_year(year: int, clean_dir: Path | str | None = None) -> pd.DataFrame:
+    """Load a single season's cleaned UK WTA matches CSV by year."""
+    return load_clean_uk_year("wta", year, clean_dir)
+
+
+def load_clean_uk_wta_data_range(
+    years: range | list[int], clean_dir: Path | str | None = None
+) -> pd.DataFrame:
+    """Load and concatenate several seasons' cleaned UK WTA matches CSVs."""
+    return load_clean_uk_data_range("wta", years, clean_dir)
 
 
 __all__ = [
@@ -166,4 +191,7 @@ __all__ = [
     "load_clean_uk_atp_data",
     "load_clean_uk_atp_year",
     "load_clean_uk_atp_data_range",
+    "load_clean_uk_wta_data",
+    "load_clean_uk_wta_year",
+    "load_clean_uk_wta_data_range",
 ]

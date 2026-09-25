@@ -1,10 +1,11 @@
 """Base schema definitions for the tennis data pipeline."""
 
 from __future__ import annotations
+
 import re
-from pydantic import BaseModel, ConfigDict
 from typing import Any
 
+from pydantic import BaseModel, ConfigDict
 
 _ENV_PLACEHOLDER_PATTERN = re.compile(r"^\$\{[^}]+\}$")
 

@@ -28,6 +28,62 @@ def _fix_montpellier_final_2020(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "ATP"] = 6
 
 
+def _fix_marrakech_r16_2023(df: pd.DataFrame, mask: pd.Series) -> None:
+    # Winner/Loser fully swapped - unlike the 2024 Turin case, every column
+    # (rank, points, score, odds) is internally consistent per player here,
+    # so the whole W*/L* bundle simply needs to move sides.
+    set_values(
+        df,
+        mask,
+        {
+            "Winner": "Carballes Baena R.",
+            "Loser": "Kuzmanov D.",
+            "WRank": 82,
+            "LRank": 207,
+            "WPts": 675,
+            "LPts": 283,
+            "W1": 2,
+            "L1": 0,
+            "B365W": 1.4,
+            "B365L": 3.0,
+            "PSW": 1.43,
+            "PSL": 3.01,
+            "MaxW": 1.46,
+            "MaxL": 3.43,
+            "AvgW": 1.36,
+            "AvgL": 3.06,
+        },
+    )
+
+
+def _fix_turin_finals_rr_2024(df: pd.DataFrame, mask: pd.Series) -> None:
+    # Winner/Loser were swapped along with their name-keyed lookups (rank,
+    # points, odds); the game-by-game score columns were already correctly
+    # positioned (Fritz's own 5-7,6-4,6-3 line was recorded under W1-3/Wsets,
+    # just under the wrong player's name) - so only those columns move, the
+    # score/set columns are left untouched.
+    set_values(
+        df,
+        mask,
+        {
+            "Winner": "Fritz T.",
+            "Loser": "De Minaur A.",
+            "WRank": 5,
+            "LRank": 9,
+            "WPts": 4300,
+            "LPts": 3745,
+            "B365W": 1.36,
+            "B365L": 3.2,
+            "PSW": 1.42,
+            "PSL": 3.09,
+            "MaxW": 1.42,
+            "MaxL": 3.2,
+            "AvgW": 1.38,
+            "AvgL": 3.0,
+        },
+    )
+
+
 def _fix_bogota_final_2013(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, ["Wsets", "Lsets"]] = [2, 0]
 
@@ -216,6 +272,48 @@ ATP_MATCH_FIXES: list[MatchFix] = [
             & (df["Date"] == "2020-02-09")
         ),
         apply=_fix_montpellier_final_2020,
+    ),
+    MatchFix(
+        tour="atp",
+        year=2024,
+        description=(
+            "ATP Finals (Turin) Round Robin (recorded as De Minaur d. Fritz): Winner/Loser "
+            "swapped along with rank/points/odds. Actual result was Fritz d. De Minaur "
+            "5-7, 6-4, 6-3 - confirmed against Sackmann (2024-0605_377, Fritz rank 5 d. "
+            "De Minaur rank 9) and the betting line (Fritz -278 favorite, De Minaur +220 "
+            "underdog matches B365L=1.36/B365W=3.2 in the raw row, i.e. attached to the "
+            "wrong name). The game-by-game score columns (W1-3/L1-3/Wsets/Lsets) were "
+            "already correctly positioned and are left untouched."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["ATP"] == 65)
+            & (df["Winner"] == "De Minaur A.")
+            & (df["Loser"] == "Fritz T.")
+            & (df["Date"] == "2024-11-14")
+        ),
+        apply=_fix_turin_finals_rr_2024,
+    ),
+    MatchFix(
+        tour="atp",
+        year=2023,
+        description=(
+            "Grand Prix Hassan II (Marrakech) 2nd Round (recorded as Kuzmanov d. "
+            "Carballes Baena): Winner/Loser swapped, along with everything keyed to "
+            "them (rank, points, score, odds). Actual result was Carballes Baena d. "
+            "Kuzmanov (Kuzmanov retired trailing 0-2) - confirmed against the ATP "
+            "Tour's own match record and the betting line (Carballes Baena -280 "
+            "favorite, Kuzmanov +198 underdog, matching B365L=1.4/B365W=3.0 in the "
+            "raw row, i.e. attached to the wrong name)."
+        ),
+        source_url="https://www.atptour.com/en/scores/stats-centre/archive/2023/360/ms012",
+        match=lambda df: (
+            (df["ATP"] == 22)
+            & (df["Winner"] == "Kuzmanov D.")
+            & (df["Loser"] == "Carballes Baena R.")
+            & (df["Date"] == "2023-04-06")
+        ),
+        apply=_fix_marrakech_r16_2023,
     ),
 ]
 

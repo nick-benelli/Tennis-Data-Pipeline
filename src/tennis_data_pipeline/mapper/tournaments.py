@@ -38,6 +38,11 @@ import pandas as pd
 
 MAX_DATE_DIFF_DAYS = 10  # same tournament shouldn't drift further than this between sources
 MIN_MATCH_SCORE = 0.5  # candidates below this are treated as "no match"
+# Sackmann<->WTA-API name conventions diverge more than UK<->Sackmann (host city vs. the
+# API's own group_name/title, e.g. "Stanford" vs. "ASTANA"/"SAN JOSE" scored 0.7-0.79 despite
+# being entirely different tournaments) - a wrong match here mints a wrong permanent id rather
+# than just leaving a gap, so this backfill uses a stricter floor than the general MIN_MATCH_SCORE.
+WTA_API_MIN_MATCH_SCORE = 0.8
 
 # uk_tournament_id is deliberately excluded from the persisted shape - it's been
 # unreliable across past years (resets 1-60 each season, reused/reshuffled ids).
@@ -78,6 +83,150 @@ def extract_official_tournament_id(sackmann_tourney_id: Any) -> Any:
         return pd.NA
     number = str(sackmann_tourney_id).split("-", 1)[1]
     return int(number) if number.isdigit() else pd.NA
+
+
+class SackmannWtaApiMatchResult(NamedTuple):
+    """Result of matching one WTA season's Sackmann tournaments to the WTA-tournaments-API table.
+
+    `link_df` is `sackmann_tourney_id -> official_tournament_id`, one row per
+    matched pair only (no unmatched placeholder rows - this is a pure backfill
+    source, not a persisted crosswalk). `review_df` is for manual eyeballing
+    only: `score`/`sackmann_name`/`wta_api_name`, weakest first.
+    """
+
+    link_df: pd.DataFrame
+    review_df: pd.DataFrame
+    sackmann_total: int
+    wta_api_total: int
+    matched_count: int
+
+
+def match_sackmann_to_wta_api_tourneys(
+    df_sackmann_tourneys: pd.DataFrame,
+    df_wta_api_tourneys: pd.DataFrame,
+    *,
+    min_match_score: float = WTA_API_MIN_MATCH_SCORE,
+    max_date_diff_days: int = MAX_DATE_DIFF_DAYS,
+) -> SackmannWtaApiMatchResult:
+    """Match one WTA season's Sackmann tournaments directly to the WTA-tournaments-API table.
+
+    Pre-2016 Sackmann WTA `tourney_id`s use a non-numeric code (e.g.
+    "2010-W-INT-THA-01A-2010") that `extract_official_tournament_id` can't parse
+    a permanent id out of, leaving `official_tournament_id` blank for those
+    seasons entirely. This is a second, independent way to recover it: match
+    Sackmann's `tournament_name` (usually the host city, e.g. "Pattaya") against
+    the API's `group_name`/`title` (whichever scores higher), combined with
+    start-date proximity and surface match - the same scoring approach as
+    `match_uk_to_sackmann_tourneys`. The API's `official_tournament_id` is
+    already the permanent id, so no extraction/crosswalk step is needed here.
+
+    Both inputs should already be filtered to the target year (and, for
+    Sackmann, have Davis Cup excluded via `tourney_level != "D"`).
+    """
+    sack = df_sackmann_tourneys[["tourney_id", "tournament_name", "surface", "start_date"]].copy()
+    api = df_wta_api_tourneys[
+        ["official_tournament_id", "group_name", "title", "surface", "start_date"]
+    ].copy()
+
+    sack["start_date"] = pd.to_datetime(sack["start_date"])
+    api["start_date"] = pd.to_datetime(api["start_date"])
+
+    sack["name_norm"] = sack["tournament_name"].map(normalize_tournament_name)
+    api["group_name_norm"] = api["group_name"].map(normalize_tournament_name)
+    api["title_norm"] = api["title"].map(normalize_tournament_name)
+    api["surface_norm"] = api["surface"].map(lambda value: str(value).lower())
+
+    candidates = []
+    for sack_row in sack.itertuples():
+        for api_row in api.itertuples():
+            name_score = max(
+                SequenceMatcher(None, str(sack_row.name_norm), str(api_row.group_name_norm)).ratio(),
+                SequenceMatcher(None, str(sack_row.name_norm), str(api_row.title_norm)).ratio(),
+            )
+            d_score = date_score(sack_row.start_date, api_row.start_date, max_date_diff_days)
+            surface_match = float(sack_row.surface == api_row.surface_norm)
+            score = 0.5 * name_score + 0.4 * d_score + 0.1 * surface_match
+            candidates.append(
+                {
+                    "sackmann_tourney_id": sack_row.tourney_id,
+                    "official_tournament_id": api_row.official_tournament_id,
+                    "sackmann_name": sack_row.tournament_name,
+                    "wta_api_name": api_row.group_name,
+                    "score": score,
+                }
+            )
+
+    review_columns = ["score", "sackmann_name", "wta_api_name"]
+    link_columns = ["sackmann_tourney_id", "official_tournament_id"]
+
+    if not candidates:
+        return SackmannWtaApiMatchResult(
+            link_df=pd.DataFrame(columns=link_columns),
+            review_df=pd.DataFrame(columns=review_columns),
+            sackmann_total=len(sack),
+            wta_api_total=len(api),
+            matched_count=0,
+        )
+
+    candidates_df = pd.DataFrame(candidates).sort_values("score", ascending=False)
+
+    matched_sack_ids: set = set()
+    matched_api_ids: set = set()
+    matches = []
+    for row in candidates_df.to_dict("records"):
+        if row["score"] < min_match_score:
+            break  # sorted descending, nothing better remains
+        sack_id = row["sackmann_tourney_id"]
+        api_id = row["official_tournament_id"]
+        if sack_id in matched_sack_ids or api_id in matched_api_ids:
+            continue
+        matched_sack_ids.add(sack_id)
+        matched_api_ids.add(api_id)
+        matches.append(row)
+
+    matched_df = pd.DataFrame(matches)
+    link_df = (
+        matched_df[link_columns].astype({"official_tournament_id": "Int64"})
+        if not matched_df.empty
+        else pd.DataFrame(columns=link_columns)
+    )
+    review_df = (
+        matched_df[review_columns].sort_values("score").reset_index(drop=True)
+        if not matched_df.empty
+        else pd.DataFrame(columns=review_columns)
+    )
+
+    return SackmannWtaApiMatchResult(
+        link_df=link_df,
+        review_df=review_df,
+        sackmann_total=len(sack),
+        wta_api_total=len(api),
+        matched_count=len(matched_df),
+    )
+
+
+def backfill_official_ids_from_wta_api(
+    link_df: pd.DataFrame, sackmann_to_wta_api: pd.DataFrame
+) -> pd.DataFrame:
+    """Fill blank `official_tournament_id`s in `link_df` from a Sackmann<->WTA-API match.
+
+    Only rows where `official_tournament_id` is still blank get filled - an id
+    already resolved (e.g. via `extract_official_tournament_id`, or a manual
+    override applied afterward) is never overwritten. `sackmann_to_wta_api` is
+    the `link_df` of a `match_sackmann_to_wta_api_tourneys` result (or any
+    frame shaped like it - `sackmann_tourney_id`/`official_tournament_id`).
+    """
+    if sackmann_to_wta_api.empty:
+        return link_df
+
+    link_df = link_df.copy()
+    lookup = sackmann_to_wta_api.set_index("sackmann_tourney_id")["official_tournament_id"]
+    missing = link_df["official_tournament_id"].isna() & link_df["sackmann_tourney_id"].notna()
+    link_df.loc[missing, "official_tournament_id"] = link_df.loc[missing, "sackmann_tourney_id"].map(
+        lookup
+    )
+    link_df["official_tournament_id"] = link_df["official_tournament_id"].astype("Int64")
+    return link_df
 
 
 class TournamentMatchResult(NamedTuple):
@@ -124,7 +273,7 @@ def match_uk_to_sackmann_tourneys(
     `manual_matches` (optional) is a hand-maintained override table with columns
     `year`/`uk_source_event_key`/`sackmann_tourney_id`/`official_tournament_id`
     (any of the id columns may be blank on a given row). Filtered to `year`
-    internally, so the caller can pass the whole multi-year file as-is. Two uses:
+    internally, so the caller can pass the whole multi-year file as-is. Three uses:
 
     1. Force a specific UK<->Sackmann pairing (both id columns filled in) -
        skipped entirely by the automatic matcher, so a rerun can't reassign it.
@@ -132,6 +281,10 @@ def match_uk_to_sackmann_tourneys(
        resolve (e.g. the `M0xx`-era rows - see module docstring) by filling in
        just `sackmann_tourney_id` + `official_tournament_id`, leaving the UK
        side to be matched normally.
+    3. Document/backfill a UK-only `official_tournament_id` when no Sackmann
+       counterpart exists at all (e.g. an edition entirely missing from
+       Sackmann's archive) by filling in just `uk_source_event_key` +
+       `official_tournament_id`, leaving `sackmann_tourney_id` blank.
     """
     manual_matches = (
         manual_matches if manual_matches is not None else pd.DataFrame(columns=MANUAL_MATCH_COLUMNS)
@@ -249,6 +402,19 @@ def match_uk_to_sackmann_tourneys(
         mask = link_df["sackmann_tourney_id"].isin(override_by_sackmann_id.index)
         link_df.loc[mask, "official_tournament_id"] = (
             link_df.loc[mask, "sackmann_tourney_id"].map(override_by_sackmann_id).astype("Int64")
+        )
+
+    # UK-only backfill (use 3): no Sackmann counterpart, so keyed on uk_source_event_key instead.
+    uk_only_overrides = manual_year.loc[
+        manual_year["uk_source_event_key"].notna()
+        & manual_year["sackmann_tourney_id"].isna()
+        & manual_year["official_tournament_id"].notna()
+    ]
+    if not uk_only_overrides.empty:
+        override_by_uk_key = uk_only_overrides.set_index("uk_source_event_key")["official_tournament_id"]
+        mask = link_df["uk_source_event_key"].isin(override_by_uk_key.index)
+        link_df.loc[mask, "official_tournament_id"] = (
+            link_df.loc[mask, "uk_source_event_key"].map(override_by_uk_key).astype("Int64")
         )
 
     review_columns = ["score", "location", "uk_name", "sackmann_name"]
@@ -377,12 +543,16 @@ __all__ = [
     "LINK_COLUMNS",
     "MAX_DATE_DIFF_DAYS",
     "MIN_MATCH_SCORE",
+    "WTA_API_MIN_MATCH_SCORE",
     "LocationCrosswalkResult",
+    "SackmannWtaApiMatchResult",
     "TournamentMatchResult",
+    "backfill_official_ids_from_wta_api",
     "build_location_crosswalk",
     "build_source_links",
     "date_score",
     "extract_official_tournament_id",
+    "match_sackmann_to_wta_api_tourneys",
     "match_uk_to_sackmann_tourneys",
     "normalize_tournament_name",
     "pivot_source_links",

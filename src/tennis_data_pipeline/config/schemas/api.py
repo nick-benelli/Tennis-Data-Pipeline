@@ -1,9 +1,12 @@
 """API client configuration schema."""
 
 from __future__ import annotations
+
 from typing import Any
+
 from pydantic import field_validator
-from .base import StrictModel, _is_unresolved_env_placeholder, _field_default, _normalize_bool
+
+from .base import StrictModel, _field_default, _is_unresolved_env_placeholder, _normalize_bool
 
 
 class ApiConfig(StrictModel):

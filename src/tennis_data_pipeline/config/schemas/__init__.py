@@ -1,7 +1,8 @@
 """Configuration schemas package."""
 
-from .app import AppConfig
 from .api import ApiConfig
+from .app import AppConfig
+from .linked import LinkedConfig
 from .logging import LoggingConfig
 from .mapping import MappingConfig
 from .paths import PathsConfig
@@ -12,6 +13,7 @@ from .wta_api import WtaApiConfig
 __all__ = [
     "AppConfig",
     "ApiConfig",
+    "LinkedConfig",
     "LoggingConfig",
     "MappingConfig",
     "PathsConfig",

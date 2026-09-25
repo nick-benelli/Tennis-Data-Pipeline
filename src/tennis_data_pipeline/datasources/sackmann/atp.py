@@ -310,8 +310,9 @@ def load_doubles_range(
         clean=clean,
     )
 
+
 __all__ = [
-    "load_year", 
+    "load_year",
     "load_years",
     "load_range",
     "load_futures_year",
