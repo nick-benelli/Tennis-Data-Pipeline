@@ -27,10 +27,6 @@ This supersedes [docs/scripts/tournament_linker.md](../scripts/tournament_linker
 override table existed) — that doc is kept for now but should be considered
 stale in its favor.
 
-Match-*level* cross-source linking — the separate pipeline
-(`mapper/matches/uk_sackmann/`, `scripts/mapper/link_matches_uk_sackmann.py`)
-that links individual matches using this tournament mapping's output — is
-not yet documented here.
-
 For where each pipeline fits relative to `datasources`/`handler`/`workflows`/
-`loader` as a whole, see the [architecture overview](../architecture/README.md).
+`loader`/`mapper` as a whole, see the
+[architecture overview](../architecture/README.md).

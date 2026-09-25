@@ -5,7 +5,7 @@ follow a link below depending on what you're looking for.
 
 | Folder | What's in it |
 |---|---|
-| [`architecture/`](architecture/README.md) | System-level architecture: components (`config`/`datasources`/`handler`/`workflows`/`loader`), how data flows between them, configuration, and design decisions. |
+| [`architecture/`](architecture/README.md) | System-level architecture: components (`config`/`datasources`/`handler`/`workflows`/`loader`/`mapper`), how data flows between them, configuration, and design decisions. |
 | [`pipelines/`](pipelines/README.md) | Process docs for each data pipeline — fetch, clean, tournament-table building, cross-source tournament matching, match linking. Each doc studies the actual code and answers "what does this do, in what order, and why." |
 | [`data-sources/`](data-sources/tennis-data-uk/README.md) | Per-source reference material: schema/data dictionary, module-level data flow, and design-rationale plan docs. Currently covers Tennis-Data.co.uk. |
 | [`scripts/`](scripts/README.md) | CLI reference for every script under `scripts/`: parameters and example invocations. |

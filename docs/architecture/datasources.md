@@ -31,8 +31,9 @@ that is `handler`'s job.
 
 | Path | Provider | Status |
 |---|---|---|
-| `datasources/tennis_data_uk/` | [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Implemented; wired into `handler`/`workflows`/`loader`. |
-| `datasources/sackmann/` | Sackmann tennis archive (via a GitHub mirror) | Client + its own cleaning helpers exist (`atp.py`/`wta.py`/`cleaning.py`), but are **not** wired into `handler`/`workflows`/`loader` — see the open question below. |
+| `datasources/tennis_data_uk/` | [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Implemented; wired into `handler`/`workflows`/`loader` end to end, including a full match-level raw+clean checkpoint. |
+| `datasources/sackmann/` | Sackmann tennis archive (via a GitHub mirror) | Client + its own cleaning helpers (`atp.py`/`wta.py`/`cleaning.py`) are called live by `workflows.sackmann.tournaments` to build a tournament-summary table (see [sackmann-fetch.md](../pipelines/sackmann-fetch.md)) and by the cross-source `mapper`/match-linking pipelines — but there is still no match-level raw/clean checkpoint under `data/raw/`/`data/clean/sackmann/`; every call re-downloads from GitHub. |
+| `datasources/wta/` | WTA tournaments API (`api.wtatennis.com`) | Implemented; `WtaApiClient` (paginated fetch) + `cleaner.flatten_tournament` + `checkpoint` are wired into `workflows.wta_api`/`handler.wta_api` to produce a raw checkpoint and a clean tournament table — see [wta-api-fetch.md](../pipelines/wta-api-fetch.md) / [wta-api-tournaments.md](../pipelines/wta-api-tournaments.md). WTA-only; no ATP equivalent exists. |
 | `datasources/tennis_is_my_life/` | stats.tennismylife.org | Client only (`client.py`: `list_files`/`read_csv`). No cleaning, checkpointing, or workflow layer yet. |
 
 ### `datasources/tennis_data_uk/`
@@ -47,22 +48,36 @@ that is `handler`'s job.
 | Module | Purpose |
 |---|---|
 | `client.py` | `SackmannClient` — downloads one season's match file from the archive mirror. |
-| `atp.py` / `wta.py` | `load_year()` / `load_years()` — download + optionally clean one or more seasons in one call. |
-| `cleaning.py` | `clean_matches()` — cleaning logic local to this datasource. |
+| `atp.py` / `wta.py` | `load_year()` / `load_years()` — download + optionally clean one or more seasons in one call, plus tier-specific variants (qual/challenger, futures, qual+ITF, ATP doubles). |
+| `cleaning.py` | `clean_matches()` / `clean_doubles_matches()` — dtype coercion + `canonical_match_key` derivation, local to this datasource. |
+| `schema.py` | File-naming templates and the two column/dtype layouts (singles vs. ATP doubles). |
 
-> TODO: Confirm whether `datasources/sackmann` is meant to stay a
-> self-contained mini-pipeline (client + cleaning in one place), or whether
-> its cleaning logic should eventually move into `handler/` and be
-> orchestrated by `workflows/`, matching the Tennis-Data UK layout.
+This mini-pipeline (client + cleaning in one subpackage, not split across
+`handler`/`workflows`) is the answer to what was previously an open
+question here: `workflows.sackmann.tournaments.build_sackmann_tournaments`
+and the cross-source `mapper`/match-linking pipelines both call
+`datasources.sackmann.{atp,wta}.load_year(s)` directly, live, every run —
+see [sackmann-fetch.md](../pipelines/sackmann-fetch.md) for the full
+call chain and its known limitations (no checkpoint, no known-fix registry).
+
+### `datasources/wta/`
+
+| Module | Purpose |
+|---|---|
+| `client.py` | `WtaApiClient` — pages through `GET /tennis/tournaments/` (server-capped at 100 entries/page), raises `WtaApiDownloadError` on failure. |
+| `cleaner.py` | `flatten_tournament()` — flattens one raw tournament JSON entry into a row (this determines the raw checkpoint's column set). |
+| `checkpoint.py` | Persists a season's flattened `DataFrame` to disk unmodified; warns (doesn't raise) on schema drift. |
+
+See [wta-api-fetch.md](../pipelines/wta-api-fetch.md) for the pagination
+mechanics and the TLS-verification-disabled caveat.
 
 ### `datasources/tennis_is_my_life/`
 
-> TODO: Confirm whether this source is actively planned for a
-> `handler`/`workflows`/`loader` integration, or is exploratory/unused
-> for now.
+Still exploratory/unused beyond the client — no `handler`/`workflows`
+integration exists or is currently planned.
 
 ## Implementation
 
 Retries for HTTP clients use `urllib3.util.Retry` via `requests`'
 `HTTPAdapter`, configured from `config`'s `ApiConfig` /
-`TennisDataUKConfig` defaults.
+`TennisDataUKConfig` / `SackmannConfig` / `WtaApiConfig` defaults.

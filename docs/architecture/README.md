@@ -46,20 +46,30 @@ as a starting point, not a settled decision — add, remove, or reword
 entries as the project's actual intent is confirmed.
 
 - **Separation of concerns:** fetching (`datasources`), cleaning
-  (`handler`), orchestration/persistence (`workflows`), and read-back
-  (`loader`) are separate subpackages with a one-directional dependency
-  chain.
+  (`handler`), orchestration/persistence (`workflows`), read-back
+  (`loader`), and cross-source matching (`mapper`, pure — no I/O) are
+  separate subpackages with a one-directional dependency chain.
 - **Reproducibility / idempotency:** the raw checkpoint stage means
   re-cleaning never requires re-downloading, and re-downloading a given
-  year overwrites deterministically rather than accumulating history.
+  year overwrites deterministically rather than accumulating history. The
+  cross-source mapping/linkage CSVs are upsert-based for the same reason.
 - **Data lineage:** cleaned rows carry `source`, `tour`,
   `source_event_key`, and `source_match_key` columns tracing them back to
-  the original file.
+  the original file; cross-source outputs carry `official_tournament_id`,
+  `match_method`, and candidate-count/agreement columns tracing a link
+  back to the evidence that produced it.
 - **Configuration over hard-coded behavior:** paths, filenames, timeouts,
   and retry behavior are all read from `config` (file + env vars) rather
-  than hard-coded in `datasources`/`handler`/`workflows`.
-- **Testability:** `handler`'s cleaning/validation logic and
-  `datasources.tennis_data_uk`'s client/checkpoint logic are pure
+  than hard-coded in `datasources`/`handler`/`workflows`/`mapper`.
+- **Never let an automatic rerun silently undo a human correction:** every
+  upsert-based output in this repo (UK/Sackmann/WTA-API tournament tables,
+  the tournament-id crosswalk, source-links, match-link overrides) has an
+  explicit, documented precedence rule for what wins when a fresh run
+  disagrees with what's already on disk — see each pipeline doc's
+  "Persistence" section for the specifics, since the rule genuinely
+  differs by file.
+- **Testability:** `handler`'s cleaning/validation logic, every
+  `datasources` client's checkpoint logic, and all of `mapper` are pure
   functions over `DataFrame`s/simple inputs, with unit tests under
   `tests/`.
 
@@ -144,35 +154,49 @@ flowchart LR
     F --> G["Consumer"]
 ```
 
-Only Tennis-Data.co.uk currently has an implemented, end-to-end flow of
-this shape.
+Tennis-Data.co.uk has the full raw-checkpoint → clean-checkpoint →
+tournament-table flow of this shape. Sackmann and the WTA tournaments API
+reach the tournament-table stage too, but without a persisted raw/clean
+match-level checkpoint (Sackmann has no checkpoint at all; the WTA API has
+a raw checkpoint per the [fetch pipeline](../pipelines/wta-api-fetch.md) but
+its tournament table is built by re-fetching live, not by reading that
+checkpoint back) — see [datasources.md](datasources.md) for the current
+status of each source. On top of this per-source flow, `mapper` +
+`workflows.mapper` consume multiple sources' tournament/match tables
+together to build the cross-source id crosswalk and match-level linkage —
+see [tournament-matching.md](../pipelines/tournament-matching.md) and
+[match-linking.md](../pipelines/match-linking.md).
 
 ## Repository Structure
 
 | Path | Responsibility |
 |---|---|
 | `src/tennis_data_pipeline/config/` | Application configuration loading and schema. |
-| `src/tennis_data_pipeline/datasources/` | External-provider clients (one subpackage per provider). |
-| `src/tennis_data_pipeline/handler/` | Cleaning/validation/transform logic (currently: `uk/` only). |
-| `src/tennis_data_pipeline/workflows/` | End-to-end orchestration per source (currently: `uk/` only). |
-| `src/tennis_data_pipeline/loader/` | Read-back of clean checkpoints (currently: `uk.py` only). |
+| `src/tennis_data_pipeline/datasources/` | External-provider clients (one subpackage per provider: `tennis_data_uk/`, `sackmann/`, `wta/`, `tennis_is_my_life/`). |
+| `src/tennis_data_pipeline/handler/` | Cleaning/validation/transform logic (`uk/` — full match-level pipeline; `sackmann/` and `wta_api/` — tournament-table builders only). |
+| `src/tennis_data_pipeline/workflows/` | End-to-end orchestration per source (`uk/`, `sackmann/`, `wta_api/`), plus `mapper/` for cross-source tournament/match matching. |
+| `src/tennis_data_pipeline/loader/` | Read-back of clean checkpoints (`uk.py`) and cross-source mapping/linkage tables (`mapper.py`, `linked.py`). |
+| `src/tennis_data_pipeline/mapper/` | Pure (no I/O) cross-source matching logic: `tournaments.py` (id crosswalk) and `matches/uk_sackmann/` (match-level linking). |
 | `data/raw/` | Stage-2 raw checkpoints (source's original schema). |
 | `data/clean/` | Stage-4 clean checkpoints (canonical schema) and derived tables/reports. |
+| `data/mapping/` | Cross-source tournament-id crosswalk, source links, and hand-maintained manual-override CSVs. |
+| `data/linked/` | Per-tour/year UK↔Sackmann match-level linkage outputs and rollup summaries. |
 | `data/archive/` | Superseded/one-off historical snapshots, kept for reference. |
 | `scripts/` | Thin CLI entry points around `workflows` (e.g. scheduled refresh). |
 | `notebooks/` | Exploratory analysis and one-off data-cleaning notebooks. |
 | `tests/` | Unit tests, mirroring the `src/` package layout. |
-| `docs/` | Documentation: this `architecture/` folder, plus per-data-source docs under `docs/data-sources/`. |
+| `docs/` | Documentation: this `architecture/` folder, plus per-pipeline docs under `docs/pipelines/`, per-data-source docs under `docs/data-sources/`, and a CLI reference under `docs/scripts/`. |
 
 ## External Dependencies
 
 | Dependency | Role |
 |---|---|
-| [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Upstream data source (implemented). |
-| Sackmann tennis archive (GitHub mirror) | Upstream data source (client implemented; not yet integrated end-to-end). |
-| stats.tennismylife.org | Upstream data source (client only). |
+| [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Upstream data source (implemented, full match-level pipeline). |
+| Sackmann tennis archive (GitHub mirror) | Upstream data source (implemented; live match-level access + tournament-table builder, no local match-level checkpoint). |
+| WTA tournaments API (`api.wtatennis.com`) | Upstream data source (implemented; WTA-only, tournament-level data — the authoritative `official_tournament_id` source for cross-source matching). |
+| stats.tennismylife.org | Upstream data source (client only, not integrated further). |
 | `requests` + `urllib3` retry adapters | Architecturally relevant at every datasource client boundary (timeouts/retries are a deliberate, configurable behavior, not incidental). |
-| `pandas` | The in-memory data structure passed between every layer (`datasources` → `handler` → `workflows` → `loader`). |
+| `pandas` | The in-memory data structure passed between every layer (`datasources` → `handler` → `workflows` → `loader`/`mapper`). |
 | `pydantic` / `pydantic-settings` | Backs the `config` component's validation. |
 
 > TODO: List any other externally-important libraries or platforms (e.g.
@@ -202,7 +226,8 @@ per-source settings).
 
 ## Error Handling and Reliability
 
-- **Retries:** HTTP clients (`datasources.tennis_data_uk.client`) use
+- **Retries:** HTTP clients (`datasources.tennis_data_uk.client`,
+  `datasources.sackmann.client`, `datasources.wta.client`) use
   `urllib3.util.Retry` via a `requests` `HTTPAdapter`, configured from
   `config`.
 - **Validation:** `handler` raises on structural inconsistencies (reused
@@ -211,15 +236,23 @@ per-source settings).
 - **Known-issue handling:** one-off, hand-verified data corrections are
   tracked in an explicit registry (`handler/uk/cleaner/known_fixes/`)
   rather than ad hoc conditionals; each fix asserts it still matches
-  exactly one row.
+  exactly one row. The cross-source `mapper` pipelines have their own,
+  analogous hand-maintained override mechanism (`manual_matches` /
+  `manual_links` CSVs — see [tournament-matching.md](../pipelines/tournament-matching.md)
+  and [match-linking.md](../pipelines/match-linking.md)).
 - **Partial failure / unattended runs:** `workflows.uk.update.update_current_season()`
   treats each tour/year independently — a download failure is logged as a
   recoverable warning (self-heals next scheduled run), while a clean
   failure is logged as an error and fails the run (it usually means a new
-  data-quality issue needs a fix added to `known_fixes`).
+  data-quality issue needs a fix added to `known_fixes`). The `mapper`
+  scripts (`build_tournament_mapping.py`, `link_matches_uk_sackmann.py`)
+  follow the same per-year skip-with-warning convention on a missing
+  input, rather than aborting a multi-year batch.
 - **Recovery behavior:** the raw checkpoint stage means a cleaning bug fix
   can be replayed against previously-downloaded data without needing
-  network access again.
+  network access again. The mapping/linked CSVs are upsert-based and
+  never overwritten wholesale, so a rerun (or a hand correction) only
+  touches the rows it actually recomputes.
 
 > TODO: Document logging configuration/conventions in more depth, and note
 > any gaps (e.g. no alerting/monitoring currently exists) if relevant.
@@ -228,7 +261,12 @@ per-source settings).
 
 - **Unit tests:** `tests/handler/uk/cleaner/` (common helpers, known
   fixes, quality reporting, schema parity between ATP/WTA, tournament
-  aggregation) and `tests/sources/tennis_data_uk/` (client, checkpoint).
+  aggregation), `tests/sources/tennis_data_uk/` (client, checkpoint),
+  `tests/sources/sackmann/` (client, cleaning, ATP/WTA tour helpers),
+  `tests/sources/wta/` (WTA-API client, flattening), `tests/mapper/`
+  (tournament-matching and match-linking logic, the most comprehensively
+  tested area of the cross-source pipeline), `tests/workflows/mapper/`
+  and `tests/loader/` (orchestration/persistence and typed-reload layers).
 - **Integration tests:** none identified currently.
   > TODO: Confirm whether an end-to-end (network or fixture-driven)
   > integration test is planned for the full fetch → clean → load chain.
@@ -271,18 +309,34 @@ What disadvantages or limitations this introduces.
 
 ## Known Limitations
 
-- Only Tennis-Data.co.uk has a complete `datasources` → `handler` →
-  `workflows` → `loader` pipeline; Sackmann and Tennis Is My Life are
-  partial (see [datasources.md](datasources.md)).
-- `handler`, `workflows`, and `loader` are currently named/organized as if
-  multi-source (`uk` as one package among several) but only contain a `uk`
-  implementation today.
-  > TODO: Confirm whether this is intentional groundwork or should be
-  > revisited once a second source is fully integrated.
+- **Only Tennis-Data.co.uk has a full match-level raw → clean checkpoint
+  pipeline.** Sackmann's match-level data is fetched live on every call
+  with no local checkpoint at all (see
+  [sackmann-fetch.md](../pipelines/sackmann-fetch.md#known-limitations--current-state));
+  the WTA tournaments API has a raw checkpoint but its tournament table is
+  built by re-fetching live rather than reading that checkpoint back (see
+  [wta-api-tournaments.md](../pipelines/wta-api-tournaments.md#1-input-fetched-live-every-run)).
+  Tennis Is My Life is client-only with no further integration.
+- **`handler`/`workflows` are source-specific packages of very different
+  depth**, not a uniform "one package per source" shape: `uk/` is the only
+  one with a full clean/validate/known-fixes pipeline; `sackmann/` and
+  `wta_api/` only build a tournament-summary table (match-level cleaning
+  for Sackmann still lives in `datasources.sackmann.cleaning`, not
+  `handler`). `loader` similarly only restores dtypes for the UK clean
+  schema (`loader/uk.py`) and the `mapper`-produced crosswalk/linkage
+  tables (`loader/mapper.py`, `loader/linked.py`) — there's no dtype-typed
+  reload for Sackmann or WTA-API data. `loader/tournaments.py` exists as an
+  empty placeholder module (docstring only, not imported anywhere).
+- **The cross-source `mapper` pipelines only cover Tennis-Data UK and
+  Sackmann** (tournament matching also folds in the WTA-tournaments-API as
+  a backfill source for WTA). There's no ATP equivalent of the WTA
+  tournaments API, and match-level linking doesn't yet cover a third
+  source.
 
 ## Future Architecture
 
-> TODO: Document likely next steps here as they're decided — e.g.
-> integrating Sackmann/Tennis Is My Life into the shared
-> `handler`/`workflows`/`loader` layers, adding integration tests, or
-> introducing new storage/consumption layers.
+> TODO: Document likely next steps here as they're decided — e.g. giving
+> Sackmann/WTA-API a real match-level raw/clean checkpoint, adding an ATP
+> tournaments-API equivalent, extending match-level linking to a third
+> source, adding integration tests, or introducing new storage/consumption
+> layers.

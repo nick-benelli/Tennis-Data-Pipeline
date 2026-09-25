@@ -174,7 +174,7 @@ through `update_current_season()` and is best-effort per year — see the
 
 ## Configuration
 
-`settings.tennis_data_uk` (`config/schemas.py`, `configs/config.yaml`):
+`settings.tennis_data_uk` (`config/schemas/uk.py`, `configs/config.yaml`):
 
 | Key | Purpose | Default |
 |---|---|---|
