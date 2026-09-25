@@ -22,14 +22,22 @@ reference. For what the repository is and its data licensing, see the
   > TODO: Confirm whether any external/downstream consumers exist outside
   > this repository.
 - **Major inputs:** third-party tennis data providers. Currently
-  implemented end-to-end: [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php).
-  Partially present: the Sackmann archive (client + standalone cleaning
-  helpers, not yet wired into the shared pipeline) and
-  stats.tennismylife.org (client only). See
+  implemented end-to-end (fetch/live-load through a persisted
+  tournament-summary table): [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php)
+  (full match-level raw/clean checkpoints), the Sackmann archive (live
+  match-level access, no local checkpoint — see
+  [sackmann-fetch.md](../pipelines/sackmann-fetch.md)), and the WTA
+  tournaments API (`api.wtatennis.com`, WTA-only, tournament-level data
+  only — see [wta-api-fetch.md](../pipelines/wta-api-fetch.md)). Client
+  only, no further integration: stats.tennismylife.org. See
   [datasources.md](datasources.md).
 - **Major outputs:** raw and clean CSV checkpoints under `data/raw/` and
-  `data/clean/`, plus derived tournament-summary tables and data-quality
-  reports.
+  `data/clean/`, derived tournament-summary tables and data-quality
+  reports, plus (via `mapper`/`workflows.mapper`) a cross-source
+  tournament-id crosswalk and per-year UK↔Sackmann match-level linkage
+  tables under `data/mapping/` and `data/linked/` — see
+  [tournament-matching.md](../pipelines/tournament-matching.md) and
+  [match-linking.md](../pipelines/match-linking.md).
 
 ## Architectural Principles
 
@@ -65,7 +73,8 @@ flowchart LR
     subgraph External["External Sources"]
         S1[("Tennis-Data.co.uk")]
         S2[("Sackmann archive")]
-        S3[("stats.tennismylife.org")]
+        S3[("api.wtatennis.com")]
+        S4[("stats.tennismylife.org")]
     end
 
     subgraph Pipeline["tennis_data_pipeline"]
@@ -73,25 +82,33 @@ flowchart LR
         HD["handler\n(clean / validate / transform)"]
         WF["workflows\n(orchestration)"]
         LD["loader\n(read clean data back)"]
+        MP["mapper\n(cross-source id/match matching, pure)"]
     end
 
     CFG["config\n(settings, paths, env vars)"]
     STORE[("data/raw, data/clean\n(checkpoint storage)")]
+    MAPSTORE[("data/mapping, data/linked\n(cross-source crosswalks)")]
     Consumers["Consumers\n(notebooks, scripts, analysis)"]
 
     S1 --> DS
     S2 --> DS
     S3 --> DS
+    S4 --> DS
     DS --> WF
     WF --> HD
     HD --> WF
     WF --> STORE
     STORE --> LD
     LD --> Consumers
+    WF --> MP
+    MP --> WF
+    WF --> MAPSTORE
+    MAPSTORE --> LD
     CFG -.-> DS
     CFG -.-> HD
     CFG -.-> WF
     CFG -.-> LD
+    CFG -.-> MP
 ```
 
 Rename, remove, or add boxes as the system's actual shape changes — e.g. if
@@ -106,7 +123,8 @@ scheduler) is introduced.
 | `datasources` | Source-specific clients that fetch raw data, unmodified, from external providers | [datasources.md](datasources.md) |
 | `handler` | Cleans, validates, and transforms raw data into the canonical schema | [handler.md](handler.md) |
 | `workflows` | Orchestrates fetch → clean → checkpoint → tournament-table into callable pipelines per source | [workflows.md](workflows.md) |
-| `loader` | Reads clean checkpoints back into memory with correct dtypes | [loader.md](loader.md) |
+| `loader` | Reads clean checkpoints and cross-source mapping/linkage CSVs back into memory with correct dtypes | [loader.md](loader.md) |
+| `mapper` | Pure (no I/O) cross-source matching logic: tournament-id crosswalk building, UK↔Sackmann match-level linking | [mapper.md](mapper.md) |
 
 ## Data Flow
 
