@@ -225,29 +225,3 @@ Requires that year's clean UK match CSV to already exist
 (`scripts/uk/clean_uk_data.py`) — a year missing it is skipped with a
 warning.
 
-## `scripts/timl/` — Tennis Is My Life (stats.tennismylife.org)
-
-### `timl_download_all.py`
-
-Downloads every file listed by the TennisMyLife API into
-`data/raw/tennis_my_life/`. Not yet part of a documented pipeline (client
-only, no clean/workflow layer — see
-[architecture: datasources](../architecture/datasources.md)).
-
-No CLI parameters — the output directory (`OUTPUT_DIR`) is hardcoded in the
-script, not config-driven or overridable via a flag.
-
-```bash
-python scripts/timl/timl_download_all.py
-```
-
-### `archive/timl_download_all.py`
-
-Archived, pre-`TennisMyLifeClient` version of the same downloader (raw
-`requests` calls against the data-files API directly). Kept for reference
-only — prefer `scripts/timl/timl_download_all.py`. No CLI parameters.
-
-```bash
-python scripts/timl/archive/timl_download_all.py
-```
-

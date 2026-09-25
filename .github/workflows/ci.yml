@@ -26,4 +26,4 @@ jobs:
         run: uv run ruff format --check .
 
       - name: Pytest
-        run: uv run pytest
+        run: uv run pytest --cov=tennis_data_pipeline --cov-report=term-missing

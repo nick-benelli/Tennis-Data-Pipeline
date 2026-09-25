@@ -55,6 +55,8 @@ cover/
 
 # Django stuff
 *.log
+*.swp
+*.swo
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -106,6 +108,7 @@ celerybeat.pid
 
 # Environments
 .env
+*.env
 .venv
 env/
 venv/
@@ -142,50 +145,17 @@ cython_debug/
 
 # MacOS
 .DS_Store
-
-# Ignore compiled Python files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Ignore virtual environments
-venv/
-.env
-env/
-*.env
-
-# Logs and generated files
-*.log
-*.swp
-*.swo
-
-# System files
-.DS_Store
 Thumbs.db
 
 # Local configuration files
 *.local
-*.cfg
 
 # Database files
 *.sqlite3
 *.db
-
-# Generated documentation
-build/
-dist/
 
 # pip cache
 .pip_cache/
 
 # Code editor configurations
 .vscode/
-.idea/
-
-# Example files
-EXAMPLES/* linguist-vendored
-
-# Supporting data files
-*.csv linguist-vendored
-*.html linguist-vendored

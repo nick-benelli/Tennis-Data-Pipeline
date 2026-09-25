@@ -28,9 +28,9 @@ reference. For what the repository is and its data licensing, see the
   match-level access, no local checkpoint — see
   [sackmann-fetch.md](../pipelines/sackmann-fetch.md)), and the WTA
   tournaments API (`api.wtatennis.com`, WTA-only, tournament-level data
-  only — see [wta-api-fetch.md](../pipelines/wta-api-fetch.md)). Client
-  only, no further integration: stats.tennismylife.org. See
-  [datasources.md](datasources.md).
+  only — see [wta-api-fetch.md](../pipelines/wta-api-fetch.md)). See
+  [datasources.md](datasources.md). Raw tennismylife.org data is now
+  archived in a separate repo (`tennis-my-life-archive`), not fetched here.
 - **Major outputs:** raw and clean CSV checkpoints under `data/raw/` and
   `data/clean/`, derived tournament-summary tables and data-quality
   reports, plus (via `mapper`/`workflows.mapper`) a cross-source
@@ -84,7 +84,6 @@ flowchart LR
         S1[("Tennis-Data.co.uk")]
         S2[("Sackmann archive")]
         S3[("api.wtatennis.com")]
-        S4[("stats.tennismylife.org")]
     end
 
     subgraph Pipeline["tennis_data_pipeline"]
@@ -103,7 +102,6 @@ flowchart LR
     S1 --> DS
     S2 --> DS
     S3 --> DS
-    S4 --> DS
     DS --> WF
     WF --> HD
     HD --> WF
@@ -172,7 +170,7 @@ see [tournament-matching.md](../pipelines/tournament-matching.md) and
 | Path | Responsibility |
 |---|---|
 | `src/tennis_data_pipeline/config/` | Application configuration loading and schema. |
-| `src/tennis_data_pipeline/datasources/` | External-provider clients (one subpackage per provider: `tennis_data_uk/`, `sackmann/`, `wta/`, `tennis_is_my_life/`). |
+| `src/tennis_data_pipeline/datasources/` | External-provider clients (one subpackage per provider: `tennis_data_uk/`, `sackmann/`, `wta/`). |
 | `src/tennis_data_pipeline/handler/` | Cleaning/validation/transform logic (`uk/` — full match-level pipeline; `sackmann/` and `wta_api/` — tournament-table builders only). |
 | `src/tennis_data_pipeline/workflows/` | End-to-end orchestration per source (`uk/`, `sackmann/`, `wta_api/`), plus `mapper/` for cross-source tournament/match matching. |
 | `src/tennis_data_pipeline/loader/` | Read-back of clean checkpoints (`uk.py`) and cross-source mapping/linkage tables (`mapper.py`, `linked.py`). |
@@ -194,7 +192,6 @@ see [tournament-matching.md](../pipelines/tournament-matching.md) and
 | [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Upstream data source (implemented, full match-level pipeline). |
 | Sackmann tennis archive (GitHub mirror) | Upstream data source (implemented; live match-level access + tournament-table builder, no local match-level checkpoint). |
 | WTA tournaments API (`api.wtatennis.com`) | Upstream data source (implemented; WTA-only, tournament-level data — the authoritative `official_tournament_id` source for cross-source matching). |
-| stats.tennismylife.org | Upstream data source (client only, not integrated further). |
 | `requests` + `urllib3` retry adapters | Architecturally relevant at every datasource client boundary (timeouts/retries are a deliberate, configurable behavior, not incidental). |
 | `pandas` | The in-memory data structure passed between every layer (`datasources` → `handler` → `workflows` → `loader`/`mapper`). |
 | `pydantic` / `pydantic-settings` | Backs the `config` component's validation. |

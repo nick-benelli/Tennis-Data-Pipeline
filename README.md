@@ -1,8 +1,59 @@
-# Tennis-Data
+# Tennis-Data-Pipeline
 
-Repository of tennis datasets
+Fetch, clean, and cross-link tennis match and tournament data from multiple
+third-party sources into a consistent, versionable set of checkpoints for
+analysis.
 
-This repository houses various datasets related to tennis matches, players, and tournaments. The data is collected from third-party sources, cleaned for accuracy, and organized for easier analysis. **Note:** I am not the original creator of the data, only its custodian, ensuring that any errors are corrected and the datasets are usable for further analysis.
+This repository is both an installable Python package (`tennis_data_pipeline`)
+that implements the fetch/clean/link pipeline, and the collection of cleaned
+datasets that pipeline produces (see [Data Sources](#data-sources) below).
+**Note:** I am not the original creator of the data, only its custodian,
+ensuring that any errors are corrected and the datasets are usable for
+further analysis.
+
+## Installation
+
+Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/nick-benelli/Tennis-Data-Pipeline.git
+cd Tennis-Data-Pipeline
+uv sync --all-groups   # installs runtime + dev dependencies into .venv
+```
+
+To install just the package itself (e.g. as a dependency of another
+project/environment):
+
+```bash
+uv pip install -e .
+```
+
+## Usage
+
+Run the installed console script:
+
+```bash
+uv run tennis-data-pipeline
+```
+
+Day-to-day pipeline work (fetching, cleaning, building tournament tables,
+linking matches across sources) happens via the per-source scripts under
+[scripts/](scripts/) — see [docs/scripts/README.md](docs/scripts/README.md)
+for the full CLI reference and example invocations. For how the pipeline
+itself is organized (`datasources` → `handler` → `workflows` →
+`loader`/`mapper`), see [docs/architecture/README.md](docs/architecture/README.md).
+
+## Development
+
+```bash
+uv run pytest         # run the test suite
+uv run ruff check .   # lint
+uv run ruff format .  # format
+uv run mypy           # type-check
+```
+
+[.pre-commit-config.yaml](.pre-commit-config.yaml) runs ruff check/format on
+every commit; install the hooks once with `uv run pre-commit install`.
 
 ## Data Sources
 
@@ -23,7 +74,7 @@ See [docs/](docs/README.md) for architecture, per-pipeline process docs, data-so
 - **Data Source Attribution**: All datasets in this repository come from third parties, with proper attribution given to the original creators. Any corrections or cleaning of the data have been made without altering its original intent.
 - **No Warranty**: While efforts have been made to ensure accuracy, no warranties are made regarding the data. Always verify with the original source for the most up-to-date and complete data.
 
-## Usage
+## Using the Data
 
 Feel free to explore, analyze, and use the data for personal or educational purposes. Contributions are welcome via pull requests or issues.
 

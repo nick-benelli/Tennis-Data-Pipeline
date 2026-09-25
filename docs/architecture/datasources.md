@@ -34,7 +34,6 @@ that is `handler`'s job.
 | `datasources/tennis_data_uk/` | [Tennis-Data.co.uk](http://www.tennis-data.co.uk/alldata.php) | Implemented; wired into `handler`/`workflows`/`loader` end to end, including a full match-level raw+clean checkpoint. |
 | `datasources/sackmann/` | Sackmann tennis archive (via a GitHub mirror) | Client + its own cleaning helpers (`atp.py`/`wta.py`/`cleaning.py`) are called live by `workflows.sackmann.tournaments` to build a tournament-summary table (see [sackmann-fetch.md](../pipelines/sackmann-fetch.md)) and by the cross-source `mapper`/match-linking pipelines — but there is still no match-level raw/clean checkpoint under `data/raw/`/`data/clean/sackmann/`; every call re-downloads from GitHub. |
 | `datasources/wta/` | WTA tournaments API (`api.wtatennis.com`) | Implemented; `WtaApiClient` (paginated fetch) + `cleaner.flatten_tournament` + `checkpoint` are wired into `workflows.wta_api`/`handler.wta_api` to produce a raw checkpoint and a clean tournament table — see [wta-api-fetch.md](../pipelines/wta-api-fetch.md) / [wta-api-tournaments.md](../pipelines/wta-api-tournaments.md). WTA-only; no ATP equivalent exists. |
-| `datasources/tennis_is_my_life/` | stats.tennismylife.org | Client only (`client.py`: `list_files`/`read_csv`). No cleaning, checkpointing, or workflow layer yet. |
 
 ### `datasources/tennis_data_uk/`
 
@@ -70,11 +69,6 @@ call chain and its known limitations (no checkpoint, no known-fix registry).
 
 See [wta-api-fetch.md](../pipelines/wta-api-fetch.md) for the pagination
 mechanics and the TLS-verification-disabled caveat.
-
-### `datasources/tennis_is_my_life/`
-
-Still exploratory/unused beyond the client — no `handler`/`workflows`
-integration exists or is currently planned.
 
 ## Implementation
 

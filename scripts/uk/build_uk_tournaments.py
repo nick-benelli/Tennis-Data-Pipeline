@@ -24,6 +24,7 @@ import logging
 import sys
 from pathlib import Path
 
+from tennis_data_pipeline.cli import parse_years
 from tennis_data_pipeline.workflows.uk import build_uk_tournaments
 
 logger = logging.getLogger(__name__)
@@ -34,34 +35,6 @@ _TOURS = ("atp", "wta")
 # --------------------------------------------------------------------------- #
 # CLI
 # --------------------------------------------------------------------------- #
-
-
-def _parse_year_token(token: str) -> list[int]:
-    """Expand a single CLI token: "2022" -> [2022], "2010-2015" -> [2010..2015]."""
-    token = token.strip()
-
-    if "-" in token:
-        start_str, _, end_str = token.partition("-")
-        try:
-            start, end = int(start_str), int(end_str)
-        except ValueError as exc:
-            raise argparse.ArgumentTypeError(f"Invalid year range '{token}'") from exc
-        if start > end:
-            raise argparse.ArgumentTypeError(f"Invalid year range '{token}': start > end")
-        return list(range(start, end + 1))
-
-    try:
-        return [int(token)]
-    except ValueError as exc:
-        raise argparse.ArgumentTypeError(f"Invalid year '{token}'") from exc
-
-
-def parse_years(tokens: list[str]) -> list[int]:
-    """Expand and de-duplicate a mix of single years and ranges, e.g. ["2022", "2010-2015"]."""
-    years: set[int] = set()
-    for token in tokens:
-        years.update(_parse_year_token(token))
-    return sorted(years)
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:

@@ -1,7 +1,7 @@
 [project]
 name = "tennis-data-pipeline"
 version = "0.1.0"
-description = "Add your description here"
+description = "Fetch, clean, and link tennis match/tournament data from multiple sources (Tennis-Data.co.uk, Jeff Sackmann's archive, WTA API)."
 readme = "README.md"
 authors = [
     { name = "Nick-Benelli", email = "31021342+nick-benelli@users.noreply.github.com" }
@@ -15,7 +15,6 @@ dependencies = [
     "pydantic-settings>=2.15.0",
     "python-dotenv>=1.0.1",
     "requests>=2.34.2",
-    "ruff>=0.16.7",
     "urllib3>=2.7.0",
     "xlrd>=2.0.2",
 ]
@@ -36,7 +35,6 @@ dev = [
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "ruff>=0.16.7",
-    "truststore>=0.10.4",
     "types-pyyaml>=6.0.12.20260906",
 ]
 

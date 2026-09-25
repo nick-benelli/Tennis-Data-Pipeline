@@ -1,0 +1,4 @@
+# Exclude bundled example/data files from GitHub's language stats and diffs.
+EXAMPLES/* linguist-vendored
+*.csv linguist-vendored
+*.html linguist-vendored

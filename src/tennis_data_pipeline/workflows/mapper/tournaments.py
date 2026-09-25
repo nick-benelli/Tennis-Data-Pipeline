@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, cast
 
 import pandas as pd
 
@@ -144,10 +144,13 @@ def _manual_force_keys(manual_year: pd.DataFrame) -> set[tuple[str, int, str]]:
         return set()
     keys: set[tuple[str, int, str]] = set()
     for row in manual_year.itertuples():
+        # itertuples() types every field as a broad scalar union; the CSV schema guarantees
+        # year is int-like and the id columns are str-like, so narrow explicitly for mypy.
+        year = cast(int, row.year)
         if pd.notna(row.uk_source_event_key):
-            keys.add(("tennis_data_uk", row.year, row.uk_source_event_key))
+            keys.add(("tennis_data_uk", year, cast(str, row.uk_source_event_key)))
         if pd.notna(row.sackmann_tourney_id):
-            keys.add(("sackmann", row.year, row.sackmann_tourney_id))
+            keys.add(("sackmann", year, cast(str, row.sackmann_tourney_id)))
     return keys
 
 
