@@ -1,7 +1,7 @@
 # Archived: ATP clean output (schema v1)
 
 Superseded by the unified ATP/WTA schema described in
-[docs/tennis-data-uk-pipeline-plan.md](../../../../docs/tennis-data-uk-pipeline-plan.md).
+[docs/data-sources/tennis-data-uk/pipeline-plan.md](../../../../docs/data-sources/tennis-data-uk/pipeline-plan.md).
 
 Kept for reference/diffing only - do not build on this. Known issues with this
 version:

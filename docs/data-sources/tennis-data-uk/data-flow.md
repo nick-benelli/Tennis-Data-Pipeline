@@ -7,7 +7,7 @@ data moves from the third-party site to the canonical, analysis-ready
 dataset, naming the actual modules and functions involved at each step. For
 the schema itself (column names, dtypes, categorical vocabularies) and the
 design rationale behind these stages, see
-[docs/tennis-data-uk-pipeline-plan.md](../../tennis-data-uk-pipeline-plan.md)
+[pipeline-plan.md](pipeline-plan.md)
 (status: implemented — this document describes the current, implemented
 state; the plan doc additionally records *why* it was designed this way).
 
@@ -117,11 +117,13 @@ Match-level corrections live in `handler/uk/cleaner/known_fixes/` as a list
 of `MatchFix` entries (tour, year, human-readable description, source URL,
 a boolean-mask matcher, and an apply function). Each fix must match exactly
 one row — see
-[docs/tennis-data-uk-pipeline-plan.md §5](../../tennis-data-uk-pipeline-plan.md#5-known-issue-fix-registry)
+[pipeline-plan.md §5](pipeline-plan.md#5-known-issue-fix-registry)
 for the format and the bulk-typo-remap alternative used for category-level
 issues.
 
-> TODO: Confirm whether this data-flow document should be kept in sync
-> manually alongside `docs/tennis-data-uk-pipeline-plan.md`, or whether the
-> plan doc should eventually be retired in favor of this one now that the
-> pipeline is implemented.
+Resolved: this data-flow document (and the more detailed
+[fetch](../../pipelines/tennis-data-uk-fetch.md)/[clean](../../pipelines/tennis-data-uk-clean.md)
+pipeline docs) are the current-state reference, kept in sync with the code;
+`pipeline-plan.md` is retained specifically for the *design rationale* it
+records and is not expected to track every implementation detail going
+forward.

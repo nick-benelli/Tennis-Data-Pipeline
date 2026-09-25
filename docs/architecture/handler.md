@@ -61,7 +61,7 @@ generic/shared cleaning layer yet.
 
 See [Tennis-Data UK: data flow](../data-sources/tennis-data-uk/data-flow.md)
 for how these functions are chained together for one concrete source, and
-[docs/tennis-data-uk-pipeline-plan.md](../tennis-data-uk-pipeline-plan.md)
+[docs/data-sources/tennis-data-uk/pipeline-plan.md](../data-sources/tennis-data-uk/pipeline-plan.md)
 for the design rationale (canonical schema, known-fix registry format).
 
 > TODO: Confirm whether `handler` is intended to eventually hold a package

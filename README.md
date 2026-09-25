@@ -13,6 +13,10 @@ The data in this repository comes from the following third-party sources:
 
 Each dataset retains attribution to its original source, and the respective owners hold all rights. Please review each source's terms and conditions for more details on how their data can be used.
 
+## Documentation
+
+See [docs/](docs/README.md) for architecture, per-pipeline process docs, data-source references, and a CLI reference for every script.
+
 ## Disclaimer
 
 - **Non-Commercial Use**: This repository is intended for personal, educational, or research purposes only. I do not profit from the distribution of this data.

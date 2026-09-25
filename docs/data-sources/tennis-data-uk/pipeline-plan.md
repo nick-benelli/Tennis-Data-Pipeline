@@ -1,12 +1,25 @@
 # Tennis-Data.co.uk Pipeline Plan
 
+[← Tennis-Data.co.uk overview](README.md) · [Data flow](data-flow.md) · [Fetch pipeline](../../pipelines/tennis-data-uk-fetch.md) · [Clean pipeline](../../pipelines/tennis-data-uk-clean.md)
+
 Status: implemented. The unified `handler/uk/cleaner` pipeline described below
 is in place (Stage 1-6, `workflows/uk/` - split into `fetch.py`/`clean.py`/
 `tournaments.py`/`update.py`, re-exported flat from `workflows/uk/__init__.py`);
 item 9's retirement of the old `datasources/tennis_data_uk/{schema,cleaning}.py`
 near-original schema is done - `atp.py`/`wta.py`/`cleaning.py`/`schema.py` under
 `datasources/tennis_data_uk/` have been deleted along with their tests. The
-rest of this doc is kept as historical design context.
+rest of this doc is kept as historical design context - it explains *why*
+the pipeline is shaped this way (raw/clean checkpoint split, canonical
+schema, known-fix registry format).
+
+> **Some concrete details below (directory names, filenames) are the
+> original proposal and differ slightly from what actually shipped** - e.g.
+> §6 proposes `data/raw/tennis-data-uk/atp/atp_singles_results_<year>.csv`,
+> but the implemented convention is `data/raw/uk/<tour>/uk_<tour>_singles_raw_<year>.csv`
+> (see `settings.tennis_data_uk` in `configs/config.yaml`). For accurate,
+> current paths/behavior, see the [fetch](../../pipelines/tennis-data-uk-fetch.md)
+> and [clean](../../pipelines/tennis-data-uk-clean.md) pipeline docs; treat
+> this doc as design rationale, not a path reference.
 
 ## 1. Motivation
 

@@ -226,7 +226,7 @@ per-source settings).
 Use this section for decisions not already captured elsewhere. The
 Tennis-Data UK pipeline's key design decisions (raw/clean checkpoint
 split, canonical schema, known-fix registry format) are already documented
-in [docs/tennis-data-uk-pipeline-plan.md](../tennis-data-uk-pipeline-plan.md)
+in [docs/data-sources/tennis-data-uk/pipeline-plan.md](../data-sources/tennis-data-uk/pipeline-plan.md)
 and are not duplicated here — link to it rather than copying it.
 
 ### Decision: [Decision Name]

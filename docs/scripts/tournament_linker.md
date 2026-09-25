@@ -2,6 +2,11 @@
 
 [← Scripts overview](README.md) · [Architecture overview](../architecture/README.md)
 
+> **Superseded by [docs/pipelines/tournament-matching.md](../pipelines/tournament-matching.md).**
+> This doc predates the WTA-tournaments-API backfill step and the
+> `manual_matches` override table (both now part of the pipeline) and is
+> kept only for historical reference - prefer the linked doc.
+
 This documents the `mapper` → `workflows.mapper` → `scripts/mapper` chain
 that links Tennis-Data UK tournaments to Sackmann tournaments and resolves
 both to the permanent ATP tournament id used on atptour.com. It grew out of
