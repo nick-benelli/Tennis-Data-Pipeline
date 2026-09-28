@@ -1,4 +1,5 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2012,wta,2012_36_bastad_sony_swedish_open_2012-07-17_R32_rus_a_petersson_r,2012-W-INT-SWE-01A-2012_11,1048,201551,202490,manual_override,False,,,,,,
 2012,wta,2012_1_auckland_asb_classic_2012-01-02_R32_mchale_c_dulgheru_a,2012-W-INT-NZL-01A-2012_11,1049,201539,201567,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2012,wta,2012_1_auckland_asb_classic_2012-01-02_R32_pennetta_f_cirstea_s,2012-W-INT-NZL-01A-2012_5,1049,201355,201514,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2012,wta,2012_1_auckland_asb_classic_2012-01-02_R32_hradecka_l_brianti_a,2012-W-INT-NZL-01A-2012_15,1049,201556,201462,tournament_rank_unique,False,,1,1,True,0.0,0.0

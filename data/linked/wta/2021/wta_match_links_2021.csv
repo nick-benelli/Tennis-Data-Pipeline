@@ -1,4 +1,9 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-16_R64_kvitova_p_keys_m,2021-1017_257,1017,201520,201619,manual_override,False,,,,,,
+2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-17_R64_mertens_e_podoroska_n,2021-1017_249,1017,210722,206408,manual_override,False,,,,,,
+2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-17_R64_riske_a_fernandez_l_a,2021-1017_267,1017,201590,220367,manual_override,False,,,,,,
+2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R64_bencic_b_vondrousova_m,2021-1017_242,1017,202505,214954,manual_override,False,,,,,,
+2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R32_azarenka_v_riske_a,2021-1017_284,1017,201458,201590,manual_override,False,,,,,,
 2021,wta,2021_1_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2021-01-06_R64_kasatkina_d_wang_q,2021-2028_257,2028,214082,202492,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_1_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2021-01-06_R64_kudermetova_v_kontaveit_a,2021-2028_243,2028,206368,204426,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_1_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2021-01-06_R64_sakkari_m_potapova_a,2021-2028_266,2028,206289,215713,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -1607,7 +1612,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2021,wta,2021_35_prague_prague_open_2021-07-17_SF_martincova_t_minnen_g,2021-1082_299,1082,206124,213889,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_35_prague_prague_open_2021-07-17_SF_krejcikova_b_wang_xin,2021-1082_298,1082,206252,216133,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_35_prague_prague_open_2021-07-18_F_krejcikova_b_martincova_t,2021-1082_300,1082,206252,206124,tournament_rank_unique,False,,1,1,True,0.0,0.0
-2021,wta,2021_36_gdynia_poland_open_2021-07-21_R32_kuzmova_v_gracheva_v,2021-2037_282,2037,214149,219875,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2021,wta,2021_36_gdynia_poland_open_2021-07-21_R32_hruncakova_v_gracheva_v,2021-2037_282,2037,214149,219875,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_37_palermo_internazionali_femminili_di_palermo_2021-07-19_R32_diatchenko_v_grabher_j,2021-466_272,466,201554,211814,tournament_rank_unique,False,,1,1,True,0.0,6.0
 2021,wta,2021_37_palermo_internazionali_femminili_di_palermo_2021-07-20_R32_zavatska_k_cabrera_l,2021-466_279,466,215290,211878,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_39_san_jose_mubadala_silicon_valley_classic_2021-08-02_R32_martic_p_sevastova_a,2021-703_278,703,201549,201545,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -1692,10 +1697,8 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2021,wta,2021_40_montreal_canadian_open_2021-08-14_SF_pliskova_ka_sabalenka_a,2021-806_300,806,201662,214544,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_40_montreal_canadian_open_2021-08-14_SF_giorgi_c_pegula_j,2021-806_299,806,202429,202468,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_40_montreal_canadian_open_2021-08-15_F_giorgi_c_pliskova_ka,2021-806_238,806,202429,201662,tournament_rank_unique,False,,1,1,True,0.0,0.0
-2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R64_bencic_b_vondrousova_m,2021-1017_257,1017,201520,201619,tournament_rank_unique,False,,1,1,True,0.0,41.0
 2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R32_osaka_n_gauff_c,2021-1017_270,1017,211768,221103,tournament_rank_unique,False,,1,1,True,0.0,80.0
 2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R32_barty_a_watson_h,2021-1017_285,1017,202458,201586,tournament_rank_unique,False,,1,1,True,349.0,63.0
-2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-18_R32_azarenka_v_riske_a,2021-1017_249,1017,210722,206408,tournament_rank_unique,False,,1,1,False,186.0,7.0
 2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-19_R16_krejcikova_b_muguruza_g,2021-1017_292,1017,206252,202469,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_41_cincinnati_western_southern_financial_group_women_s_open_2021-08-20_QF_barty_a_krejcikova_b,2021-1017_297,1017,202458,206252,tournament_rank_unique,False,,1,1,True,349.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-22_R32_kostyuk_m_sebov_k,2021-2047_277,2047,216146,214684,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -1718,6 +1721,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-24_R16_kostyuk_m_kanepi_k,2021-2047_289,2047,216146,201466,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-24_R16_mladenovic_k_abanda_f,2021-2047_292,2047,201540,211796,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-25_R16_martincova_t_hsieh_s_w,2021-2047_291,2047,206124,201444,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-25_R16_vondrousova_m_van_uytvanck_a,2021-2047_287,2047,214954,202421,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-25_R16_svitolina_e_ferro_f,2021-2047_293,2047,202494,211539,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-25_R16_cornet_a_paolini_j,2021-2047_286,2047,201427,211148,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2021,wta,2021_42_chicago_chicago_women_s_opeen_2021-08-25_R16_peterson_r_golubic_v,2021-2047_290,2047,202490,203530,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2329,6 +2333,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2021,wta,2021_31_london_wimbledon_2021-07-01_R64_badosa_p_putintseva_y,2021-540_173,540,211651,201709,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_31_london_wimbledon_2021-07-03_R32_badosa_p_linette_m,2021-540_200,540,211651,202663,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_31_london_wimbledon_2021-07-05_R16_muchova_k_badosa_p,2021-540_214,540,214096,211651,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2021,wta,2021_36_gdynia_poland_open_2021-07-19_R32_baindl_k_volynets_k,2021-2037_279,2037,203462,220465,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-19_R32_schmiedlova_a_blinkova_a,2021-2037_273,2037,203533,215020,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-19_R32_bondar_a_olyanovskaya_v,2021-2037_272,2037,214388,216179,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-19_R32_bara_i_di_sarra_f,2021-2037_274,2037,210705,202580,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
@@ -2346,13 +2351,17 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2021,wta,2021_36_gdynia_poland_open_2021-07-21_R16_bondar_a_schmiedlova_a,2021-2037_287,2037,214388,203533,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-21_R16_korpatsch_t_falkowska_w,2021-2037_286,2037,211337,216579,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_gorgodze_e_lepchenko_v,2021-2037_289,2037,202493,201478,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_baindl_k_sasnovich_a,2021-2037_290,2037,203462,205925,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_parrizas_diaz_n_anshba_a,2021-2037_293,2037,203463,214020,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_kucova_k_bara_i,2021-2037_288,2037,201568,210705,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_kawa_k_begu_i,2021-2037_291,2037,203514,201593,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2021,wta,2021_36_gdynia_poland_open_2021-07-22_R16_zanevska_m_hruncakova_v,2021-2037_292,2037,202628,214149,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-23_QF_korpatsch_t_bondar_a,2021-2037_294,2037,211337,214388,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-23_QF_kucova_k_gorgodze_e,2021-2037_295,2037,201568,202493,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-23_QF_zanevska_m_parrizas_diaz_n,2021-2037_297,2037,202628,203463,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2021,wta,2021_36_gdynia_poland_open_2021-07-24_QF_baindl_k_kawa_k,2021-2037_296,2037,203462,203514,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-24_SF_kucova_k_korpatsch_t,2021-2037_298,2037,201568,211337,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2021,wta,2021_36_gdynia_poland_open_2021-07-24_SF_zanevska_m_baindl_k,2021-2037_299,2037,202628,203462,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_36_gdynia_poland_open_2021-07-25_F_zanevska_m_kucova_k,2021-2037_300,2037,202628,201568,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_37_palermo_internazionali_femminili_di_palermo_2021-07-19_R32_min_g_arruabarrena_l,2021-466_276,466,202479,202418,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2021,wta,2021_37_palermo_internazionali_femminili_di_palermo_2021-07-19_R32_cristian_j_brancaccio_n,2021-466_271,466,211713,215572,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

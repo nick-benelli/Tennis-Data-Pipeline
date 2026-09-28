@@ -1,4 +1,10 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2024,wta,2024_5_melbourne_australian_open_2024-01-15_R128_maria_t_osorio_m,2024-580_118,580,213583,215785,manual_override,False,,,,,,
+2024,wta,2024_9_cluj_napoca_transylvania_open_2024-02-05_R32_osorio_m_tomova_v,2024-2050_273,2050,215785,202600,manual_override,False,,,,,,
+2024,wta,2024_9_cluj_napoca_transylvania_open_2024-02-08_R16_pliskova_ka_osorio_m,2024-2050_287,2050,201662,215785,manual_override,False,,,,,,
+2024,wta,2024_22_rabat_morocco_open_2024-05-20_R32_avanesyan_e_osorio_m,2024-1005_271,1005,215785,220589,manual_override,False,,,,,,
+2024,wta,2024_31_london_wimbledon_2024-07-03_R128_osorio_m_davis_l,2024-540_110,540,215785,201616,manual_override,False,,,,,,
+2024,wta,2024_31_london_wimbledon_2024-07-04_R64_haddad_maia_b_osorio_m,2024-540_169,540,206242,215785,manual_override,False,,,,,,
 2024,wta,2024_1_auckland_asb_classic_2023-12-31_R32_wang_xiy_cristian_j,2024-1049_276,1049,216016,211713,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_1_auckland_asb_classic_2024-01-01_R32_avanesyan_e_barry_m,2024-1049_280,1049,220589,222667,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_1_auckland_asb_classic_2024-01-01_R32_navarro_e_fruhvirtova_l,2024-1049_281,1049,215613,222258,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -1994,6 +2000,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-11_R32_bouzkova_m_eala_a,2024-2075_278,2075,213631,223253,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-11_R32_stakusic_m_schmiedlova_a,2024-2075_284,2075,222233,203533,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-11_R32_frech_m_bektas_e,2024-2075_282,2075,211684,211765,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-11_R16_rakhimova_k_azarenka_v,2024-2075_288,2075,215872,201458,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-11_R16_osorio_m_kudermetova_v,2024-2075_289,2075,215785,206368,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-12_R16_gadecki_o_collins_d,2024-2075_286,2075,216265,203389,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2024,wta,2024_42_guadalajara_guadalajara_open_2024-09-12_R16_trevisan_m_zarazua_r,2024-2075_287,2075,203354,213887,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2476,3 +2483,9 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2024,wta,2024_16_bogota_copa_colsanitas_2024-04-01_R32_zarazua_r_higuita_barraza_m_i,2024-894_279,894,213887,246476,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2024,wta,2024_16_bogota_copa_colsanitas_2024-04-02_R32_rakhimova_k_mediorreal_arias_v,2024-894_278,894,215872,260848,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2024,wta,2024_21_rome_internazionali_bnl_d_italia_2024-05-07_R128_stefanini_l_paganetti_v,2024-709_208,709,214593,260510,tournament_round_name_pair,False,missing_rank,1,1,True,,
+2024,wta,2024_35_prague_prague_open_2024-07-22_R32_samson_l_wurth_t,2024-1082_271,1082,266671,223087,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2024,wta,2024_35_prague_prague_open_2024-07-23_R16_samson_l_siniakova_k,2024-1082_286,1082,266671,211701,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2024,wta,2024_35_prague_prague_open_2024-07-24_QF_samson_l_selekhmeteva_o,2024-1082_294,1082,266671,221407,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2024,wta,2024_35_prague_prague_open_2024-07-25_SF_frech_m_samson_l,2024-1082_298,1082,211684,266671,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2024,wta,2024_52_hong_kong_hong_kong_tennis_open_2024-10-28_R32_shi_h_gasparyan_m,2024-1074_280,1074,222559,202506,tournament_round_name_pair,False,missing_rank,1,1,True,,
+2024,wta,2024_54_merida_merida_open_2024-10-29_R32_ruzic_a_samson_l,2024-2085_276,2085,222045,266671,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

@@ -1,4 +1,10 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2017,wta,2017_21_stuttgart_porsche_tennis_grand_prix_2017-04-27_R16_sharapova_m_makarova_e,2017-1051_290,1051,201345,201505,manual_override,False,,,,,,
+2017,wta,2017_30_nottingham_aegon_open_2017-06-13_R32_riske_a_watson_h,2017-1080_281,1080,201590,201586,manual_override,False,,,,,,
+2017,wta,2017_30_nottingham_aegon_open_2017-06-15_R16_rybarikova_m_riske_a,2017-1080_291,1080,201517,201590,manual_override,False,,,,,,
+2017,wta,2017_42_cincinnati_western_southern_financial_group_women_s_open_2017-08-14_R64_gavrilova_d_mladenovic_k,2017-M024_266,1017,201611,201540,manual_override,False,,,,,,
+2017,wta,2017_47_guangzhou_guangzhou_open_2017-09-18_R32_barthel_m_lu_j_j,2017-1023_280,1023,201621,201582,manual_override,False,,,,,,
+2017,wta,2017_55_tianjin_tianjin_open_2017-10-11_R32_hsieh_s_w_lu_j_j,2017-1076_271,1076,201444,201582,manual_override,False,,,,,,
 2017,wta,2017_1_auckland_asb_classic_2017-01-01_R32_safarova_l_allertova_d,2017-1049_280,1049,201425,202653,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2017,wta,2017_1_auckland_asb_classic_2017-01-01_R32_nara_k_lottner_a,2017-1049_279,1049,201597,204430,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2017,wta,2017_1_auckland_asb_classic_2017-01-02_R32_strycova_b_stefkova_b,2017-1049_281,1049,201366,211700,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2479,6 +2485,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2017,wta,2017_30_nottingham_aegon_open_2017-06-16_QF_safarova_l_pironkova_t,2017-1080_295,1080,201425,201450,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_30_nottingham_aegon_open_2017-06-17_SF_konta_j_rybarikova_m,2017-1080_299,1080,202427,201517,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_30_nottingham_aegon_open_2017-06-17_SF_vekic_d_safarova_l,2017-1080_298,1080,202499,201425,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2017,wta,2017_30_nottingham_aegon_open_2017-06-18_F_vekic_d_konta_j,2017-1080_300,1080,202499,202427,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_32_mallorca_mallorca_open_2017-06-19_R32_pliskova_kr_babos_t,2017-1091_278,1091,201697,201693,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2017,wta,2017_32_mallorca_mallorca_open_2017-06-21_R32_azarenka_v_ozaki_r,2017-1091_272,1091,201458,203552,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2017,wta,2017_32_mallorca_mallorca_open_2017-06-22_R16_konjuh_a_azarenka_v,2017-1091_287,1091,211951,201458,tournament_round_name_pair,False,missing_rank,1,1,True,,
@@ -2489,5 +2496,6 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2017,wta,2017_44_new_york_us_open_2017-08-30_R128_jabeur_o_minor_b,2017-560_110,560,202460,219434,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2017,wta,2017_44_new_york_us_open_2017-09-09_F_stephens_s_keys_m,2017-560_226,560,201585,201619,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_48_seoul_korea_open_2017-09-19_R32_cepede_royg_v_plipuech_p,2017-1024_283,1024,202705,204223,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2017,wta,2017_54_linz_generali_ladies_linz_2017-10-10_R32_hruncakova_v_friedsam_a_l,2017-0528_272,528,214149,204431,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_55_tianjin_tianjin_open_2017-10-11_R32_wang_x_kovinic_d,2017-1076_280,1076,216016,203575,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2017,wta,2017_55_tianjin_tianjin_open_2017-10-12_R16_peng_s_wang_x,2017-1076_291,1076,201397,216016,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

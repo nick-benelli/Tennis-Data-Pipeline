@@ -1,4 +1,7 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2022,wta,2022_30_london_wimbledon_2022-06-27_R128_mertens_e_osorio_m,2022-540_143,540,210722,215785,manual_override,False,,,,,,
+2022,wta,2022_38_washington_citi_open_2022-08-02_R32_osorio_m_kenin_s,2022-1045_271,1045,215785,213550,manual_override,False,,,,,,
+2022,wta,2022_38_washington_citi_open_2022-08-04_R16_raducanu_e_osorio_m,2022-1045_286,1045,221054,215785,manual_override,False,,,,,,
 2022,wta,2022_1_adelaide_adelaide_international_1_2022-01-03_R32_sakkari_m_zidansek_t,2022-2014_274,2014,206289,214461,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_1_adelaide_adelaide_international_1_2022-01-03_R32_rybakina_e_sanders_s,2022-2014_277,2014,214981,204411,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_1_adelaide_adelaide_international_1_2022-01-03_R32_juvan_k_paquet_c,2022-2014_271,2014,215219,203564,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -318,6 +321,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_jabeur_o_zvonareva_v,2022-718_278,718,202460,201329,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_gracheva_v_tomljanovic_a,2022-718_272,718,219875,201548,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_kudermetova_v_azarenka_v,2022-718_275,718,206368,201458,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_vondrousova_m_collins_d,2022-718_273,718,214954,203389,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_muguruza_g_siniakova_k,2022-718_274,718,202469,211701,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-15_R32_sabalenka_a_kostyuk_m,2022-718_285,718,214544,216146,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-16_R16_ostapenko_j_swiatek_i,2022-718_292,718,211533,216347,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -333,6 +337,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-17_QF_halep_s_jabeur_o,2022-718_296,718,201594,202460,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-17_QF_vondrousova_m_yastremska_d,2022-718_294,718,214954,215035,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-18_SF_ostapenko_j_halep_s,2022-718_299,718,211533,201594,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-18_SF_kudermetova_v_vondrousova_m,2022-718_298,718,206368,214954,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_8_dubai_dubai_duty_free_tennis_championships_2022-02-19_F_ostapenko_j_kudermetova_v,2022-718_300,718,211533,206368,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_9_doha_qatar_open_2022-02-20_R64_cirstea_s_sherif_m,2022-1003_245,1003,201514,210886,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2022,wta,2022_9_doha_qatar_open_2022-02-20_R64_van_uytvanck_a_zvonareva_v,2022-1003_268,1003,202421,201329,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2362,3 +2367,4 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2022,wta,2022_42_granby_championnats_de_granby_2022-08-25_R16_wang_xiy_brace_c,2022-2070_287,2070,216016,223335,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2022,wta,2022_43_new_york_us_open_2022-08-29_R128_rodina_e_trevisan_m,2022-560_160,560,201516,203354,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2022,wta,2022_43_new_york_us_open_2022-09-01_R64_tomljanovic_a_rodina_e,2022-560_194,560,201548,201516,tournament_round_name_pair,False,missing_rank,1,1,True,,
+2022,wta,2022_48_parma_parma_ladies_open_2022-09-26_R32_schmiedlova_a_jani_r_l,2022-2041_276,2041,203533,202436,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

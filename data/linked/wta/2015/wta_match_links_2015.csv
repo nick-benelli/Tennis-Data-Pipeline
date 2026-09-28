@@ -1,4 +1,22 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2015,wta,2015_4_hobart_hobart_international_2015-01-11_R32_riske_a_mchale_c,2015-W-INT-AUS-01A-2015_13,1050,201590,201539,manual_override,False,,,,,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-14_R16_riske_a_jovanovski_b,2015-W-INT-AUS-01A-2015_23,1050,201590,201587,manual_override,False,,,,,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-15_QF_riske_a_diyas_z,2015-W-INT-AUS-01A-2015_28,1050,201590,201610,manual_override,False,,,,,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-16_SF_watson_h_riske_a,2015-W-INT-AUS-01A-2015_30,1050,201586,201590,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-11_R32_gavrilova_d_bencic_b,2015-W-PR-AUS-02A-2015_6,702,201611,202505,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-12_R32_makarova_e_svitolina_e,2015-W-PR-AUS-02A-2015_3,702,201505,202494,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-12_R32_zahlavova_strycova_b_wozniacki_c,2015-W-PR-AUS-02A-2015_11,702,201366,201496,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-13_R16_zahlavova_strycova_b_stosur_s,2015-W-PR-AUS-02A-2015_20,702,201366,201325,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-13_R16_kerber_a_gavrilova_d,2015-W-PR-AUS-02A-2015_18,702,201493,201611,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-14_QF_pironkova_t_zahlavova_strycova_b,2015-W-PR-AUS-02A-2015_25,702,201450,201366,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-13_R16_kvitova_p_peng_s,2015-W-PR-AUS-02A-2015_22,702,201520,201397,manual_override,False,,,,,,
+2015,wta,2015_5_sydney_apai_international_2015-01-16_F_kvitova_p_pliskova_ka,2015-W-PR-AUS-02A-2015_29,702,201520,201662,manual_override,False,,,,,,
+2015,wta,2015_30_birmingham_aegon_classic_2015-06-16_R64_mladenovic_k_riske_a,2015-W-P700-GBR-01A-2015_6,1052,201540,201590,manual_override,False,,,,,,
+2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-27_R32_tomljanovic_a_pous_t_l,2015-W-INT-BRA-02A-2015_16,1064,201548,201440,manual_override,False,,,,,,
+2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-28_R32_beck_a_alves_c_m,2015-W-INT-BRA-02A-2015_12,1064,202470,206430,manual_override,False,,,,,,
+2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-29_R16_mattek_sands_b_bogdan_a,2015-W-INT-BRA-02A-2015_23,1064,201318,202536,manual_override,False,,,,,,
+2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-30_QF_mattek_sands_b_martincova_t,2015-W-INT-BRA-02A-2015_28,1064,201318,206124,manual_override,False,,,,,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_giorgi_c_sanders_s,2015-W-INT-AUS-01A-2015_5,1050,202429,204411,manual_override,False,,,,,,
 2015,wta,2015_1_auckland_asb_classic_2015-01-04_R32_davis_l_rogers_s,2015-W-INT-NZL-01A-2015_14,1049,201616,201603,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_1_auckland_asb_classic_2015-01-04_R32_townsend_t_wickmayer_y,2015-W-INT-NZL-01A-2015_2,1049,203501,201518,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_1_auckland_asb_classic_2015-01-05_R32_nara_k_bertens_k,2015-W-INT-NZL-01A-2015_11,1049,201597,202428,tournament_rank_unique,False,,1,1,True,0,0.0
@@ -91,7 +109,6 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2015,wta,2015_3_shenzhen_shenzhen_open_2015-01-09_SF_bacsinszky_t_kvitova_p,2015-W-INT-CHN-01A-2015_30,1063,201490,201520,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_3_shenzhen_shenzhen_open_2015-01-10_F_halep_s_bacsinszky_t,2015-W-INT-CHN-01A-2015_31,1063,201594,201490,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_5_sydney_apai_international_2015-01-13_R16_suarez_navarro_c_makarova_e,2015-W-PR-AUS-02A-2015_16,702,201521,201505,tournament_rank_unique,False,,1,1,True,0,0.0
-2015,wta,2015_5_sydney_apai_international_2015-01-13_R16_kvitova_p_peng_s,2015-W-PR-AUS-02A-2015_29,702,201520,201662,tournament_rank_unique,False,,1,1,False,75,25.0
 2015,wta,2015_6_melbourne_australian_open_2015-01-19_R128_goerges_j_bencic_b,2015-W-SL-AUS-01A-2015_36,901,201504,202505,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_6_melbourne_australian_open_2015-01-19_R128_halep_s_knapp_k,2015-W-SL-AUS-01A-2015_48,901,201594,201498,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_6_melbourne_australian_open_2015-01-19_R128_peng_s_maria_t,2015-W-SL-AUS-01A-2015_60,901,201397,213583,tournament_rank_unique,False,,1,1,True,0,0.0
@@ -1549,7 +1566,6 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2015,wta,2015_36_istanbul_teb_bnp_paribas_istanbul_cup_2015-07-25_SF_tsurenko_l_flipkens_k,2015-W-INT-TUR-01A-2015_29,1027,201615,201465,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_36_istanbul_teb_bnp_paribas_istanbul_cup_2015-07-26_F_tsurenko_l_radwanska_u,2015-W-INT-TUR-01A-2015_31,1027,201615,201524,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-28_R32_mattek_sands_b_minella_m,2015-W-INT-BRA-02A-2015_13,1064,201318,201605,tournament_rank_unique,False,,1,1,True,0,0.0
-2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-29_R16_mattek_sands_b_bogdan_a,2015-W-INT-BRA-02A-2015_28,1064,201318,206124,tournament_rank_unique,False,,1,1,False,0,2.0
 2015,wta,2015_39_stanford_bank_of_the_west_classic_2015-08-03_R32_doi_m_bellis_c,2015-W-P700-USA-03A-2015_12,703,201595,214263,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_39_stanford_bank_of_the_west_classic_2015-08-03_R32_riske_a_maria_t,2015-W-P700-USA-03A-2015_9,703,201590,213583,tournament_rank_unique,False,,1,1,True,0,0.0
 2015,wta,2015_39_stanford_bank_of_the_west_classic_2015-08-03_R32_gibbs_n_garcia_c,2015-W-P700-USA-03A-2015_8,703,202484,201614,tournament_rank_unique,False,,1,1,True,0,0.0
@@ -2351,6 +2367,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_diyas_z_soler_espinosa_s,2015-W-INT-AUS-01A-2015_16,1050,201610,201562,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_jovanovski_b_lucic_m,2015-W-INT-AUS-01A-2015_14,1050,201587,200002,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_vinci_r_rogowska_o,2015-W-INT-AUS-01A-2015_9,1050,201311,201542,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_baindl_k_flipkens_k,2015-W-INT-AUS-01A-2015_3,1050,203462,201465,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_larsson_j_zheng_s,2015-W-INT-AUS-01A-2015_7,1050,201596,202453,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_knapp_k_tomljanovic_a,2015-W-INT-AUS-01A-2015_2,1050,201498,201548,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-12_R32_watson_h_rybarikova_m,2015-W-INT-AUS-01A-2015_11,1050,201586,201517,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
@@ -2363,6 +2380,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2015,wta,2015_4_hobart_hobart_international_2015-01-14_R16_diyas_z_hantuchova_d,2015-W-INT-AUS-01A-2015_24,1050,201610,201290,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-14_R16_giorgi_c_kanepi_k,2015-W-INT-AUS-01A-2015_19,1050,202429,201466,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-15_R16_knapp_k_dellacqua_c,2015-W-INT-AUS-01A-2015_17,1050,201498,201348,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2015,wta,2015_4_hobart_hobart_international_2015-01-15_R16_brengle_m_baindl_k,2015-W-INT-AUS-01A-2015_18,1050,201483,203462,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-15_QF_watson_h_vinci_r,2015-W-INT-AUS-01A-2015_27,1050,201586,201311,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-15_QF_nara_k_giorgi_c,2015-W-INT-AUS-01A-2015_26,1050,201597,202429,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_4_hobart_hobart_international_2015-01-15_QF_brengle_m_knapp_k,2015-W-INT-AUS-01A-2015_25,1050,201483,201498,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
@@ -2496,6 +2514,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-07-31_SF_beck_a_mattek_sands_b,2015-W-INT-BRA-02A-2015_30,1064,202470,201318,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_38_florianopolis_brasil_tennis_cup_2015-08-01_F_pereira_t_beck_a,2015-W-INT-BRA-02A-2015_31,1064,202694,202470,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_44_new_york_us_open_2015-09-01_R128_ostapenko_j_beck_a,2015-W-SL-USA-01A-2015_42,905,211533,202470,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2015,wta,2015_45_quebec_coupe_banque_nationale_2015-09-17_R32_tatishvili_a_kichenok_n,2015-W-INT-CAN-01A-2015_1,656,201588,203297,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_48_seoul_kia_korea_open_2015-09-22_R32_date_krumm_k_tomljanovic_a,2015-W-INT-KOR-01A-2015_11,1024,200617,201548,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_48_seoul_kia_korea_open_2015-09-24_R16_stephens_s_date_krumm_k,2015-W-INT-KOR-01A-2015_22,1024,201585,200617,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2015,wta,2015_50_tashkent_tashkent_open_2015-09-29_R32_beck_a_kulichkova_e,2015-W-INT-UZB-01A-2015_1,825,202470,206404,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

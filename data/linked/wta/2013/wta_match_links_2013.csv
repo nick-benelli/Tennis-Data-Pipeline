@@ -1,4 +1,6 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2013,wta,2013_38_baku_baku_cup_2013-07-22_R32_cadantu_a_krajicek_m,2013-W-INT-AZE-01A-2013_12,1044,202456,201414,manual_override,False,,,,,,
+2013,wta,2013_45_new_york_us_open_2013-08-29_R64_makarova_e_mattek_sands_b,2013-W-SL-USA-01A-2013_75,905,201505,201318,manual_override,False,,,,,,
 2013,wta,2013_1_auckland_asb_classic_2012-12-30_R32_parmentier_p_mchale_c,2013-W-INT-NZL-01A-2013_9,1049,201426,201539,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2013,wta,2013_1_auckland_asb_classic_2012-12-31_R32_vesnina_e_bouchard_e,2013-W-INT-NZL-01A-2013_3,1049,201455,202446,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2013,wta,2013_1_auckland_asb_classic_2012-12-31_R32_daniilidou_e_vandeweghe_c,2013-W-INT-NZL-01A-2013_14,1049,201305,201535,tournament_rank_unique,False,,1,1,True,0.0,0.0

@@ -1,4 +1,8 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2010,wta,2010_5_melbourne_australian_open_2010-01-19_R128_dulko_g_kucova_k,2010-W-SL-AUS-01A-2010_11,901,201363,201389,manual_override,False,,,,,,
+2010,wta,2010_16_marbella_andalucia_tennis_experience_2010-04-05_R32_malek_t_zahlavova_s,2010-W-INT-ESP-01A-2010_6,1040,213583,201484,manual_override,False,,,,,,
+2010,wta,2010_17_ponte_vedra_beach_mps_group_championships_2010-04-06_R32_mattek_sands_b_rodionova_ar,2010-W-INT-USA-02A-2010_3,803,201318,201370,manual_override,False,,,,,,
+2010,wta,2010_34_palermo_internazionali_femminili_di_tennis_di_palermo_2010-07-12_R32_duque_marino_m_kucova_k,2010-W-INT-ITA-01A-2010_15,466,201531,201389,manual_override,False,,,,,,
 2010,wta,2010_1_auckland_asb_classic_2010-01-03_R32_wickmayer_y_goerges_j,2010-W-INT-NZL-01A-2010_12,1049,201518,201504,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2010,wta,2010_1_auckland_asb_classic_2010-01-04_R32_pennetta_f_craybas_j,2010-W-INT-NZL-01A-2010_1,1049,201355,200754,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2010,wta,2010_1_auckland_asb_classic_2010-01-04_R32_cibulkova_d_dulgheru_a,2010-W-INT-NZL-01A-2010_3,1049,201495,201567,tournament_rank_unique,False,,1,1,True,0.0,0.0

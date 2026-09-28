@@ -1,4 +1,16 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2023,wta,2023_22_rabat_morocco_open_2023-05-23_R32_fernandez_l_a_fita_boluda_a,2023-1005_273,1005,220367,214236,manual_override,False,,,,,,
+2023,wta,2023_22_rabat_morocco_open_2023-05-24_R16_stearns_p_fernandez_l_a,2023-1005_287,1005,220548,220367,manual_override,False,,,,,,
+2023,wta,2023_38_washington_citi_open_2023-08-02_R32_fernandez_l_a_pera_b,2023-1045_280,1045,220367,211095,manual_override,False,,,,,,
+2023,wta,2023_38_washington_citi_open_2023-08-04_R16_sakkari_m_fernandez_l_a,2023-1045_291,1045,206289,220367,manual_override,False,,,,,,
+2023,wta,2023_39_montreal_canadian_open_2023-08-08_R64_fernandez_l_a_stearns_p,2023-806_264,806,220367,220548,manual_override,False,,,,,,
+2023,wta,2023_39_montreal_canadian_open_2023-08-09_R32_fernandez_l_a_haddad_maia_b,2023-806_283,806,220367,206242,manual_override,False,,,,,,
+2023,wta,2023_39_montreal_canadian_open_2023-08-11_R16_collins_d_fernandez_l_a,2023-806_292,806,203389,220367,manual_override,False,,,,,,
+2023,wta,2023_42_new_york_us_open_2023-08-29_R128_jabeur_o_osorio_m,2023-560_148,560,202460,215785,manual_override,False,,,,,,
+2023,wta,2023_45_guadalajara_guadalajara_open_2023-09-18_R64_frech_m_osorio_m,2023-2075_263,2075,211684,215785,manual_override,False,,,,,,
+2023,wta,2023_20_madrid_mutua_madrid_open_2023-04-26_R128_burillo_i_kanepi_k,2023-1038_204,1038,213706,201466,manual_override,False,,,,,,
+2023,wta,2023_20_madrid_mutua_madrid_open_2023-04-27_R64_gauff_c_burillo_i,2023-1038_253,1038,221103,213706,manual_override,False,,,,,,
+2023,wta,2023_50_hong_kong_hong_kong_tennis_open_2023-10-11_R32_lansere_s_wong_c,2023-1074_275,1074,216139,216587,manual_override,False,,,,,,
 2023,wta,2023_1_adelaide_adelaide_international_1_2023-01-01_R32_andreescu_b_muguruza_g,2023-800_275,800,215370,202469,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_1_adelaide_adelaide_international_1_2023-01-01_R32_kanepi_k_sasnovich_a,2023-800_272,800,201466,205925,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_1_adelaide_adelaide_international_1_2023-01-02_R32_noskova_l_kasatkina_d,2023-800_281,800,222328,214082,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -739,6 +751,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_maria_t_scott_k,2023-894_270,894,213583,221512,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_alves_c_yastremska_d,2023-894_271,894,206430,215035,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_stearns_p_vicens_mas_r,2023-894_283,894,220548,215798,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_arango_e_tan_h,2023-894_279,894,215306,211552,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_brancaccio_n_papamichail_d,2023-894_272,894,215572,202604,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_sorribes_tormo_s_bolsova_a,2023-894_278,894,204427,211901,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2023,wta,2023_17_bogota_copa_colsanitas_2023-04-04_R32_bjorklund_m_mertens_e,2023-894_285,894,214405,210722,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2380,6 +2393,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2023,wta,2023_23_strasbourg_internationaux_de_strasbourg_2023-05-27_F_svitolina_e_blinkova_a,2023-406_300,406,202494,215020,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_24_paris_french_open_2023-05-29_R128_ostapenko_j_martincova_t,2023-520_152,520,211533,206124,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_24_paris_french_open_2023-05-31_R64_stearns_p_ostapenko_j,2023-520_190,520,220548,211533,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2023,wta,2023_31_london_wimbledon_2023-07-05_R128_juvan_k_gasparyan_m,2023-540_153,540,215219,202506,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2023,wta,2023_37_prague_prague_open_2023-07-31_R32_baindl_k_yastremska_d,2023-1082_282,1082,203462,215035,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_37_prague_prague_open_2023-07-31_R32_korpatsch_t_tomova_v,2023-1082_271,1082,211337,202600,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_37_prague_prague_open_2023-07-31_R32_hibino_n_errani_s,2023-1082_279,1082,211702,201506,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
@@ -2471,6 +2485,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2023,wta,2023_39_montreal_canadian_open_2023-08-12_SF_pegula_j_swiatek_i,2023-806_299,806,202468,216347,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_39_montreal_canadian_open_2023-08-13_SF_samsonova_l_rybakina_e,2023-806_298,806,214643,214981,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_39_montreal_canadian_open_2023-08-13_F_pegula_j_samsonova_l,2023-806_300,806,202468,214643,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2023,wta,2023_42_new_york_us_open_2023-08-28_R128_miyazaki_y_gasparyan_m,2023-560_122,560,213908,202506,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2023,wta,2023_45_guadalajara_guadalajara_open_2023-09-17_R64_baptiste_h_fernandez_l,2023-2075_248,2075,221024,248660,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2023,wta,2023_45_guadalajara_guadalajara_open_2023-09-17_R64_trevisan_m_schuurs_d,2023-2075_267,2075,203354,204376,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2023,wta,2023_55_nanchang_jiangxi_tennis_open_2023-10-17_R32_siniakova_k_wang_y,2023-1077_276,1077,211701,264205,tournament_round_name_pair,False,missing_rank,1,1,True,,

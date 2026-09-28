@@ -1,4 +1,6 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2020,wta,2020_22_paris_french_open_2020-09-27_R128_gavrilova_d_yastremska_d,2020-520_2105,520,201611,215035,manual_override,False,,,,,,
+2020,wta,2020_22_paris_french_open_2020-09-30_R64_bouchard_e_gavrilova_d,2020-520_2203,520,202446,201611,manual_override,False,,,,,,
 2020,wta,2020_1_auckland_asb_classic_2020-01-06_R32_kasatkina_d_suarez_navarro_c,2020-1049_280,1049,214082,201521,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_1_auckland_asb_classic_2020-01-06_R32_pegula_j_bellis_c,2020-1049_272,1049,202468,214263,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_1_auckland_asb_classic_2020-01-06_R32_garcia_c_townsend_t,2020-1049_278,1049,201614,203501,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -107,6 +109,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-14_R16_barty_a_pavlyuchenkova_a,2020-M056_293,2030,202458,201499,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-14_R16_halep_s_tomljanovic_a,2020-M056_286,2030,201594,201548,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-15_R16_vekic_d_sakkari_m,2020-M056_289,2030,202499,206289,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2020,wta,2020_4_adelaide_adelaide_international_2020-01-15_R16_yastremska_d_kerber_a,2020-M056_288,2030,215035,201493,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-15_R16_collins_d_kenin_s,2020-M056_290,2030,203389,213550,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-15_R16_sabalenka_a_pera_b,2020-M056_287,2030,214544,211095,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_4_adelaide_adelaide_international_2020-01-15_R16_vondrousova_m_rodionova_ar,2020-M056_292,2030,214954,201613,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -121,6 +124,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_kozlova_k_sorribes_tormo_s,2020-1050_275,1050,203462,204427,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_davis_l_sharma_a,2020-1050_276,1050,201616,206292,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_watson_h_teichmann_j,2020-1050_283,1050,201586,213525,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_ferro_f_peterson_r,2020-1050_282,1050,211539,202490,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_linette_m_kuznetsova_s,2020-1050_277,1050,202663,201320,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_kuzmova_v_zhu_l,2020-1050_284,1050,214149,202684,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-13_R32_kudermetova_v_stosur_s,2020-1050_273,1050,206368,201325,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -143,6 +147,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2020,wta,2020_5_hobart_hobart_international_2020-01-15_R16_mertens_e_kuzmova_v,2020-1050_293,1050,210722,214149,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-16_QF_zhang_s_davis_l,2020-1050_295,1050,201533,201616,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-16_QF_watson_h_mertens_e,2020-1050_297,1050,201586,210722,tournament_rank_unique,False,,1,1,True,0.0,0.0
+2020,wta,2020_5_hobart_hobart_international_2020-01-16_QF_kudermetova_v_muguruza_g,2020-1050_294,1050,206368,202469,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-16_QF_rybakina_e_cabrera_l,2020-1050_296,1050,214981,211878,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-17_SF_zhang_s_kudermetova_v,2020-1050_298,1050,201533,206368,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2020,wta,2020_5_hobart_hobart_international_2020-01-17_SF_rybakina_e_watson_h,2020-1050_299,1050,214981,201586,tournament_rank_unique,False,,1,1,True,0.0,0.0
