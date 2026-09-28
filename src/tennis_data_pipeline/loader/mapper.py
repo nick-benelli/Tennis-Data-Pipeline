@@ -26,6 +26,10 @@ SOURCE_LINKS_COLUMNS = ["official_tournament_id", "year", "source", "source_tour
 
 
 def _mapping_path(tour: str, mapping_dir: Path | None, dir_name: str, filename_template: str) -> Path:
+    """
+    Return the path to a specific mapping CSV file based on the tournament, mapping directory,
+    and filename template.
+    """
     tour = str(tour).lower()
     mapping_dir = mapping_dir if mapping_dir is not None else settings.paths.mapping
     filename = filename_template.format(tour=tour)
@@ -33,6 +37,9 @@ def _mapping_path(tour: str, mapping_dir: Path | None, dir_name: str, filename_t
 
 
 def _tournament_mapping_path(tour: str, mapping_dir: Path | None, filename_template: str) -> Path:
+    """
+    Resolve tournamnet mapping path
+    """
     return _mapping_path(tour, mapping_dir, settings.mapping.tournament_dir_name, filename_template)
 
 
