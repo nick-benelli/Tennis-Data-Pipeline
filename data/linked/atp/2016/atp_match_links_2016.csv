@@ -1,4 +1,10 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2016,atp,2016_26_estoril_millenium_estoril_open_2016-04-26_R32_cervantes_i_munoz_de_la_nava_d,2016-7290_271,7290,105438,103926,manual_override,False,,,,,,
+2016,atp,2016_26_estoril_millenium_estoril_open_2016-04-27_R16_kyrgios_n_cervantes_i,2016-7290_286,7290,106401,105438,manual_override,False,,,,,,
+2016,atp,2016_39_london_wimbledon_2016-06-28_R128_granollers_m_estrella_burgos_v,2016-540_149,540,104719,103607,manual_override,False,,,,,,
+2016,atp,2016_27_istanbul_istanbul_open_2016-04-25_R32_ramos_vinolas_a_mannarino_a,2016-7163_278,7163,105077,105173,manual_override,False,,,,,,
+2016,atp,2016_27_istanbul_istanbul_open_2016-04-27_R16_ramos_vinolas_a_khachanov_k,2016-7163_290,7163,105077,111575,manual_override,False,,,,,,
+2016,atp,2016_27_istanbul_istanbul_open_2016-04-29_QF_delbonis_f_ramos_vinolas_a,2016-7163_296,7163,105643,105077,manual_override,False,,,,,,
 2016,atp,2016_1_brisbane_brisbane_international_2016-01-04_R32_dimitrov_g_simon_g,2016-M020_282,339,105777,104468,tournament_rank_unique,False,,1,1,True,0,0
 2016,atp,2016_1_brisbane_brisbane_international_2016-01-04_R32_kudla_d_smith_j_p,2016-M020_279,339,106045,105441,tournament_rank_unique,False,,1,1,True,0,0
 2016,atp,2016_1_brisbane_brisbane_international_2016-01-04_R32_kamke_t_mitchell_b,2016-M020_284,339,104735,106093,tournament_rank_unique,False,,1,1,True,0,0
@@ -2579,7 +2585,9 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2016,atp,2016_8_quito_ecuador_open_2016-02-01_R32_carreno_busta_p_dutra_silva_r,2016-7161_278,7161,105807,104297,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2016,atp,2016_8_quito_ecuador_open_2016-02-02_R32_martin_a_granollers_m,2016-7161_276,7161,105413,104719,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2016,atp,2016_20_miami_sony_ericsson_open_2016-03-24_R128_kuznetsov_an_dutra_silva_r,2016-M007_191,403,105723,104297,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2016,atp,2016_20_miami_sony_ericsson_open_2016-03-24_R128_herbert_p_h_rosol_l,2016-M007_188,403,105732,104586,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2016,atp,2016_20_miami_sony_ericsson_open_2016-03-25_R128_baghdatis_m_becker_b,2016-M007_195,403,104571,103794,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2016,atp,2016_20_miami_sony_ericsson_open_2016-03-26_R64_nishikori_k_herbert_p_h,2016-M007_245,403,105453,105732,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2016,atp,2016_21_houston_u_s_men_s_clay_court_championships_2016-04-05_R32_querrey_s_opelka_r,2016-0717_273,717,105023,124187,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2016,atp,2016_22_marrakech_grand_prix_hassan_ii_2016-04-04_R32_mektic_n_el_amrani_r,2016-0360_283,360,105254,105149,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2016,atp,2016_26_estoril_millenium_estoril_open_2016-04-26_R32_dutra_silva_r_becker_b,2016-7290_272,7290,104297,103794,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

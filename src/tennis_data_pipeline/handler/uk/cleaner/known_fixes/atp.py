@@ -28,6 +28,21 @@ def _fix_montpellier_final_2020(df: pd.DataFrame, mask: pd.Series) -> None:
     df.loc[mask, "ATP"] = 6
 
 
+def _fix_winston_salem_r64_2019(df: pd.DataFrame, mask: pd.Series) -> None:
+    # Loser recorded as "Monteiro J." - every other 2019 occurrence of this
+    # surname is "Monteiro T." (Thiago Monteiro), and the rank/points (106/502,
+    # 518/57) match Sackmann's Popyrin d. Monteiro exactly, confirming a typo'd initial.
+    df.loc[mask, "Loser"] = "Monteiro T."
+
+
+def _fix_san_jose_r32_2012(df: pd.DataFrame, mask: pd.Series) -> None:
+    # Loser recorded as "Rochus C." (Christophe, rank ~1502, barely active) but
+    # the winner's rank/points (94/596) match Sackmann's Harrison d. Olivier
+    # Rochus (rank 50) exactly - the raw row attached the wrong Rochus twin's
+    # identity (name, rank, and points) to the actual loser.
+    set_values(df, mask, {"Loser": "Rochus O.", "LRank": 50, "LPts": 867})
+
+
 def _fix_marrakech_r16_2023(df: pd.DataFrame, mask: pd.Series) -> None:
     # Winner/Loser fully swapped - unlike the 2024 Turin case, every column
     # (rank, points, score, odds) is internally consistent per player here,
@@ -80,6 +95,42 @@ def _fix_turin_finals_rr_2024(df: pd.DataFrame, mask: pd.Series) -> None:
             "MaxL": 3.2,
             "AvgW": 1.38,
             "AvgL": 3.0,
+        },
+    )
+
+
+def _fix_turin_finals_rr_2021(df: pd.DataFrame, mask: pd.Series) -> None:
+    # Winner/Loser fully swapped, along with everything keyed to them (rank,
+    # points, score, odds) - unlike the 2024 Turin case, every column here is
+    # internally consistent per player, so the whole W*/L* bundle moves sides.
+    # Actual result was Zverev d. Berrettini 7-6(7), 1-0 RET - confirmed against
+    # Sackmann (2021-0605_288, Zverev rank 3 d. Berrettini rank 7) and the
+    # betting line (Zverev -278 favorite, Berrettini +220 underdog matches
+    # B365L=1.36/B365W=3.2 in the raw row, i.e. attached to the wrong name).
+    set_values(
+        df,
+        mask,
+        {
+            "Winner": "Zverev A.",
+            "Loser": "Berrettini M.",
+            "WRank": 3,
+            "LRank": 7,
+            "WPts": 6540,
+            "LPts": 4568,
+            "W1": 7,
+            "L1": 6,
+            "W2": 1,
+            "L2": 0,
+            "Wsets": 1,
+            "Lsets": 0,
+            "B365W": 1.36,
+            "B365L": 3.2,
+            "PSW": 1.41,
+            "PSL": 3.18,
+            "MaxW": 1.42,
+            "MaxL": 3.5,
+            "AvgW": 1.35,
+            "AvgL": 3.13,
         },
     )
 
@@ -227,6 +278,24 @@ ATP_MATCH_FIXES: list[MatchFix] = [
     ),
     MatchFix(
         tour="atp",
+        year=2019,
+        description=(
+            "Winston-Salem 1st Round (Popyrin d. Monteiro): Loser recorded as "
+            '"Monteiro J." - every other 2019 occurrence of this surname is '
+            '"Monteiro T." (Thiago Monteiro), and the rank/points (106/502, '
+            "518/57) match Sackmann's Popyrin d. Monteiro exactly."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["ATP"] == 51)
+            & (df["Winner"] == "Popyrin A.")
+            & (df["Loser"] == "Monteiro J.")
+            & (df["Date"] == "2019-08-20")
+        ),
+        apply=_fix_winston_salem_r64_2019,
+    ),
+    MatchFix(
+        tour="atp",
         year=2015,
         description=(
             "Nottingham (AEGON Open) semifinal (Istomin d. Baghdatis): labeled "
@@ -315,7 +384,76 @@ ATP_MATCH_FIXES: list[MatchFix] = [
         ),
         apply=_fix_marrakech_r16_2023,
     ),
+    MatchFix(
+        tour="atp",
+        year=2012,
+        description=(
+            "SAP Open (San Jose) 1st Round (recorded as Harrison d. Rochus C.): "
+            "Loser identity (name, rank, points) belongs to Christophe Rochus, "
+            "not the actual opponent Olivier Rochus - confirmed against "
+            "Sackmann (2012-424 match 3, Harrison rank 94 d. Olivier Rochus rank "
+            "50) and the winner's rank/points matching exactly, i.e. only the "
+            "loser's twin identity was swapped."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["ATP"] == 11)
+            & (df["Winner"] == "Harrison R.")
+            & (df["Loser"] == "Rochus C.")
+            & (df["Date"] == "2012-02-15")
+        ),
+        apply=_fix_san_jose_r32_2012,
+    ),
+    MatchFix(
+        tour="atp",
+        year=2021,
+        description=(
+            "ATP Finals (Turin) Round Robin (recorded as Berrettini d. Zverev): "
+            "Winner/Loser swapped along with rank/points/score/odds. Actual result "
+            "was Zverev d. Berrettini 7-6(7), 1-0 RET - confirmed against Sackmann "
+            "(2021-0605_288, Zverev rank 3 d. Berrettini rank 7) and the betting "
+            "line (Zverev -278 favorite, Berrettini +220 underdog matches "
+            "B365L=1.36/B365W=3.2 in the raw row, i.e. attached to the wrong name)."
+        ),
+        source_url=None,
+        match=lambda df: (
+            (df["ATP"] == 61)
+            & (df["Winner"] == "Berrettini M.")
+            & (df["Loser"] == "Zverev A.")
+            & (df["Date"] == "2021-11-14")
+        ),
+        apply=_fix_turin_finals_rr_2021,
+    ),
 ]
+
+
+def fix_2020_auckland_adelaide_swap(df: pd.DataFrame) -> pd.DataFrame:
+    """Swap the mislabeled Auckland/Adelaide tournament identity in raw 2020 ATP data.
+
+    Two concurrent ATP 250 events opened the 2020 season (both starting
+    2020-01-13): the ASB Classic (Auckland) and the inaugural Adelaide
+    International. The raw source has their identities fully swapped - every
+    match recorded under ATP id 2 / "Auckland" / "ASB Classic" is actually
+    Adelaide's draw (e.g. its "final" is Rublev d. Harris, the real Adelaide
+    final), and every match under ATP id 3 / "Adelaide" / "Adelaide
+    International" is actually Auckland's draw (its "final" is Humbert d.
+    Paire, the real Auckland final - Humbert's maiden ATP title). Swapping
+    `ATP`/`Location`/`Tournament` between the two blocks restores both to
+    their real-world identity.
+
+    Must run before `assign_round_codes()`/`add_source_event_key()` derive
+    anything from `ATP`/`Location`/`Tournament`, and only for the 2020 season
+    - `ATP` ids 2 and 3 mean different tournaments in other years.
+    """
+    df = df.copy()
+    swap_cols = ["ATP", "Location", "Tournament"]
+    auckland_mask = df["ATP"] == 2
+    adelaide_mask = df["ATP"] == 3
+    auckland_rows = df.loc[auckland_mask, swap_cols].copy()
+    adelaide_rows = df.loc[adelaide_mask, swap_cols].copy()
+    df.loc[auckland_mask, swap_cols] = adelaide_rows.values
+    df.loc[adelaide_mask, swap_cols] = auckland_rows.values
+    return df
 
 
 def fix_atp_category_typos(df: pd.DataFrame) -> pd.DataFrame:
@@ -333,5 +471,23 @@ def fix_atp_category_typos(df: pd.DataFrame) -> pd.DataFrame:
 
     df.loc[df["Comment"] == "Sched", "Comment"] = "Completed"
     df.loc[df["Comment"] == "Rrtired", "Comment"] = "Retired"
+
+    return df
+
+
+def fix_herbert_ph_typo(df: pd.DataFrame) -> pd.DataFrame:
+    """Fix "Herbert P.H" (missing trailing period) to "Herbert P.H." in Winner/Loser.
+
+    Pierre-Hugues Herbert is correctly recorded as "Herbert P.H." almost
+    everywhere, but a handful of 2015/2016 rows drop the final period. The
+    missing period breaks the deterministic name-pair matcher (it treats
+    "P.H" as part of the surname rather than initials, since it has no
+    trailing dot to mark it as an initials token). No other player is named
+    "P.H", so this is safe to apply unconditionally across every season.
+    """
+    df = df.copy()
+
+    df.loc[df["Winner"] == "Herbert P.H", "Winner"] = "Herbert P.H."
+    df.loc[df["Loser"] == "Herbert P.H", "Loser"] = "Herbert P.H."
 
     return df

@@ -1,4 +1,6 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2019,atp,2019_22_marrakech_grand_prix_hassan_ii_2019-04-08_R32_tsonga_j_w_stebe_c_m,2019-0360_280,360,104542,105649,manual_override,False,,,,,,
+2019,atp,2019_40_bastad_skistar_swedish_open_2019-07-16_R32_ramos_vinolas_a_lestienne_c,2019-0316_271,316,105077,106005,manual_override,False,,,,,,
 2019,atp,2019_1_brisbane_brisbane_international_2018-12-31_R32_dimitrov_g_nishioka_y,2019-M020_273,339,105777,106415,tournament_rank_unique,False,,1,1,True,0,0
 2019,atp,2019_1_brisbane_brisbane_international_2018-12-31_R32_raonic_m_bedene_a,2019-M020_278,339,105683,105379,tournament_rank_unique,False,,1,1,True,0,0
 2019,atp,2019_1_brisbane_brisbane_international_2018-12-31_R32_kecmanovic_m_mayer_l,2019-M020_279,339,200175,104919,tournament_rank_unique,False,,1,1,True,0,0
@@ -2604,5 +2606,6 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2019,atp,2019_32_paris_french_open_2019-05-28_R128_khachanov_k_stebe_c_m,2019-520_1125,520,111575,105649,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2019,atp,2019_41_newport_hall_of_fame_championships_2019-07-15_R32_majchrzak_k_gray_a,2019-0315_284,315,111794,202400,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2019,atp,2019_43_atlanta_bb_t_atlanta_open_2019-07-24_R32_humbert_u_gromley_c,2019-6116_270,6116,200005,211415,tournament_round_name_pair,False,missing_rank,1,1,True,,
+2019,atp,2019_51_winston_salem_winston_salem_open_at_wake_forest_university_2019-08-20_R64_popyrin_a_monteiro_t,2019-6242_240,6242,200615,106329,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2019,atp,2019_51_winston_salem_winston_salem_open_at_wake_forest_university_2019-08-20_R64_fratangelo_b_weintraub_a,2019-6242_267,6242,106216,104804,tournament_round_name_pair,False,missing_rank,1,1,True,,
 2019,atp,2019_59_shanghai_shanghai_masters_2019-10-07_R64_carreno_busta_p_zhang_ze,2019-5014_247,5014,105807,105585,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

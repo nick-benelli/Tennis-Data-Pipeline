@@ -19,7 +19,9 @@ from tennis_data_pipeline.handler.uk.cleaner.known_fixes._shared import (
 )
 from tennis_data_pipeline.handler.uk.cleaner.known_fixes.atp import (
     ATP_MATCH_FIXES,
+    fix_2020_auckland_adelaide_swap,
     fix_atp_category_typos,
+    fix_herbert_ph_typo,
 )
 from tennis_data_pipeline.handler.uk.cleaner.known_fixes.wta import (
     WTA_MATCH_FIXES,
@@ -28,6 +30,8 @@ from tennis_data_pipeline.handler.uk.cleaner.known_fixes.wta import (
 
 __all__ = [
     "ATP_MATCH_FIXES",
+    "fix_2020_auckland_adelaide_swap",
+    "fix_herbert_ph_typo",
     "WTA_MATCH_FIXES",
     "MatchFix",
     "apply_match_fixes",

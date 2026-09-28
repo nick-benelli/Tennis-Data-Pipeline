@@ -1,4 +1,8 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2015,atp,2015_3_doha_qatar_exxon_mobil_open_2015-01-06_R32_stakhovsky_s_ali_mutawa_j_m,2015-451_2,451,104660,106325,manual_override,False,,,,,,
+2015,atp,2015_4_auckland_heineken_open_2015-01-13_R32_ramos_vinolas_a_lorenzi_p,2015-301_2,301,105077,103893,manual_override,False,,,,,,
+2015,atp,2015_4_auckland_heineken_open_2015-01-14_R16_ramos_vinolas_a_lu_y_h,2015-301_14,301,105077,104229,manual_override,False,,,,,,
+2015,atp,2015_4_auckland_heineken_open_2015-01-15_QF_pouille_l_ramos_vinolas_a,2015-301_21,301,106298,105077,manual_override,False,,,,,,
 2015,atp,2015_1_brisbane_brisbane_international_2015-01-05_R32_duckworth_j_simon_g,2015-339_3,339,105902,104468,tournament_rank_unique,False,,1,1,True,0,0
 2015,atp,2015_1_brisbane_brisbane_international_2015-01-05_R32_kokkinakis_t_benneteau_j,2015-339_10,339,106423,103898,tournament_rank_unique,False,,1,1,True,0,0
 2015,atp,2015_1_brisbane_brisbane_international_2015-01-05_R32_chardy_j_golubev_a,2015-339_4,339,104871,104979,tournament_rank_unique,False,,1,1,True,0,0

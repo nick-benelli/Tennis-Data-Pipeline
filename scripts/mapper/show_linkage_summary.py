@@ -8,11 +8,17 @@ year, written by `scripts/mapper/link_matches_uk_sackmann.py`.
 With no years given, every row is printed. Otherwise only the requested
 year(s)/range(s) are shown (missing years are reported, not silently dropped).
 
+By default only the columns that matter for a quick terminal glance are
+shown, with short names (`tour`/`linked_manual`/`linked_pass_1`/
+`linked_pass_2`/`linked_at` are dropped); pass --full for every column with
+its original name.
+
 Usage:
     python scripts/mapper/show_linkage_summary.py --tour atp
     python scripts/mapper/show_linkage_summary.py --tour atp 2023
     python scripts/mapper/show_linkage_summary.py --tour atp 2010-2015
     python scripts/mapper/show_linkage_summary.py --tour wta 2019 2021 2023-2025
+    python scripts/mapper/show_linkage_summary.py --tour atp 2023 --full
 """
 
 from __future__ import annotations
@@ -30,6 +36,32 @@ logger = logging.getLogger(__name__)
 
 _TOURS = ("atp", "wta")
 
+# Short display names for every column - `tour` is dropped by default since
+# it's already implied by --tour/the header line above the table.
+_SHORT_NAMES = {
+    "uk_total_matches": "uk",
+    "sackmann_total_matches": "sackmann",
+    "linked_matches": "linked",
+    "linked_manual": "manual",
+    "linked_pass_1": "pass1",
+    "linked_pass_2": "pass2",
+    "ambiguous_matches": "ambig",
+    "unmatched_matches": "unmatched",
+    "coverage_pct": "coverage",
+}
+# Columns shown in the compact (default) view - drops the pass1/pass2/manual
+# breakdown and the linked_at timestamp, which matter for debugging but not
+# for a quick glance.
+_COMPACT_COLUMNS = [
+    "year",
+    "uk_total_matches",
+    "sackmann_total_matches",
+    "linked_matches",
+    "ambiguous_matches",
+    "unmatched_matches",
+    "coverage_pct",
+]
+
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -42,6 +74,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         nargs="*",
         help="Optional year(s) and/or range(s) to filter to, e.g. 2022 2019 2010-2015 "
         "(default: show every year)",
+    )
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Show every column (tour, linked_manual/pass_1/pass_2, linked_at) instead of "
+        "the compact default view",
     )
     parser.add_argument("--verbose", action="store_true", help="Enable debug logging")
     return parser.parse_args(argv)
@@ -91,6 +129,10 @@ def main(argv: list[str] | None = None) -> int:
     df = df.sort_values("year").reset_index(drop=True)
     df["coverage_pct"] = df["coverage_pct"].map(lambda pct: f"{pct:.1f}%")
     df["linked_at"] = pd.to_datetime(df["linked_at"]).dt.strftime("%Y-%m-%d %H:%M")
+
+    if not args.full:
+        df = df[_COMPACT_COLUMNS]
+    df = df.rename(columns=_SHORT_NAMES)
 
     print(f"\n{args.tour.upper()} linkage summary ({path})\n")
     print(df.to_string(index=False))

@@ -163,6 +163,10 @@ def clean_atp_season(df: pd.DataFrame, year: int) -> pd.DataFrame:
     Fixes run before the consistency checks (not after) so a fix that resolves
     a tournament-id/best-of issue actually prevents that check from failing.
     """
+    if year == 2020:
+        df = known_fixes.fix_2020_auckland_adelaide_swap(df)
+
+    df = known_fixes.fix_herbert_ph_typo(df)
     df = apply_known_best_of_fixes(df)
     df = apply_known_match_fixes(df, year)
 

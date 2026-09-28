@@ -1,4 +1,7 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-04_R32_fernandez_l_a_uchijima_m,2025-2088_277,2088,220367,220416,manual_override,False,,,,,,
+2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-06_QF_krueger_a_fernandez_l_a,2025-2088_295,2088,221909,220367,manual_override,False,,,,,,
+2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-08_F_bencic_b_krueger_a,2025-2088_300,2088,202505,221909,manual_override,False,,,,,,
 2025,wta,2025_1_auckland_asb_classic_2024-12-29_R32_hibino_n_niemeier_j,2025-1049_279,1049,211702,215898,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_1_auckland_asb_classic_2024-12-29_R32_tauson_c_stefanini_l,2025-1049_282,1049,220704,214593,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_1_auckland_asb_classic_2024-12-30_R32_marino_r_sun_l,2025-1049_281,1049,201606,215138,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -324,7 +327,6 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2025,wta,2025_7_singapore_singapore_open_2025-02-02_F_mertens_e_li_a,2025-1096_300,1096,210722,215983,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-03_R32_sun_l_garcia_c,2025-2088_276,2088,215138,201614,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-04_R32_bencic_b_sramkova_r,2025-2088_279,2088,202505,211685,tournament_rank_unique,False,,1,1,True,0.0,10.0
-2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_bencic_b_kudermetova_v,2025-2088_300,2088,202505,221909,tournament_rank_unique,False,,1,1,False,0.0,23.0
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_fernandez_l_a_sun_l,2025-2088_289,2088,220367,215138,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-07_SF_bencic_b_rybakina_e,2025-2088_299,2088,202505,214981,tournament_rank_unique,False,,1,1,True,0.0,0.0
 2025,wta,2025_10_doha_qatar_open_2025-02-09_R64_bucsa_c_kalinskaya_a,2025-1003_266,1003,213710,214939,tournament_rank_unique,False,,1,1,True,0.0,0.0
@@ -2445,6 +2447,7 @@ year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-04_R32_pavlyuchenkova_a_kenin_s,2025-2088_273,2088,201499,213550,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-04_R32_vondrousova_m_raducanu_e,2025-2088_280,2088,214954,221054,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-04_R32_jabeur_o_ostapenko_j,2025-2088_282,2088,202460,211533,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
+2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_bencic_b_kudermetova_v,2025-2088_290,2088,202505,206368,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_vondrousova_m_putintseva_y,2025-2088_291,2088,214954,201709,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_rybakina_e_volynets_k,2025-2088_293,2088,214981,220465,tournament_round_name_pair,False,rank_mismatch,1,1,True,,
 2025,wta,2025_8_abu_dhabi_abu_dhabi_wta_women_s_tennis_open_2025-02-05_R16_krueger_a_kasatkina_d,2025-2088_288,2088,221909,214082,tournament_round_name_pair,False,rank_mismatch,1,1,True,,

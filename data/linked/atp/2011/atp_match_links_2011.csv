@@ -1,4 +1,10 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2011,atp,2011_3_doha_qatar_exxon_mobil_open_2011-01-05_R16_tsonga_j_w_bubka_s,2011-451_22,451,104542,104869,manual_override,False,,,,,,
+2011,atp,2011_8_santiago_movistar_open_2011-01-31_R32_ramos_vinolas_a_mayer_l,2011-505_10,505,105077,104919,manual_override,False,,,,,,
+2011,atp,2011_10_costa_do_sauipe_brasil_open_2011-02-09_R16_dolgopolov_o_ramirez_hidalgo_r,2011-533_18,533,105238,103105,manual_override,False,,,,,,
+2011,atp,2011_63_valencia_valencia_open_500_2011-11-02_R32_bogomolov_a_lopez_f,2011-573_8,573,104166,103852,manual_override,False,,,,,,
+2011,atp,2011_65_london_masters_cup_2011-11-20_RR_federer_r_tsonga_j_w,2011-605_6,605,103819,104542,manual_override,False,,,,,,
+2011,atp,2011_65_london_masters_cup_2011-11-27_F_federer_r_tsonga_j_w,2011-605_8,605,103819,104542,manual_override,False,,,,,,
 2011,atp,2011_1_brisbane_brisbane_international_2011-01-02_R32_lopez_f_petzschner_p,2011-339_9,339,103852,104332,tournament_rank_unique,False,,1,1,True,0,0
 2011,atp,2011_1_brisbane_brisbane_international_2011-01-02_R32_istomin_d_de_bakker_t,2011-339_4,339,104797,105217,tournament_rank_unique,False,,1,1,True,0,0
 2011,atp,2011_1_brisbane_brisbane_international_2011-01-03_R32_berrer_m_sela_d,2011-339_2,339,103582,104534,tournament_rank_unique,False,,1,1,True,0,0

@@ -1,4 +1,7 @@
 year,tour,source_match_key,canonical_match_key,official_tournament_id,winner_id,loser_id,match_method,review_flag,data_quality_flag,source_candidate_count,canonical_candidate_count,round_agrees,winner_rank_points_diff,loser_rank_points_diff
+2018,atp,2018_1_brisbane_brisbane_international_2017-12-31_R32_dolgopolov_o_schwartzman_d,2018-M020_278,339,105238,106043,manual_override,False,,,,,,
+2018,atp,2018_1_brisbane_brisbane_international_2018-01-03_R16_dolgopolov_o_zeballos_h,2018-M020_290,339,105238,104547,manual_override,False,,,,,,
+2018,atp,2018_1_brisbane_brisbane_international_2018-01-05_QF_kyrgios_n_dolgopolov_o,2018-M020_296,339,106401,105238,manual_override,False,,,,,,
 2018,atp,2018_1_brisbane_brisbane_international_2018-01-01_R32_harrison_r_mayer_l,2018-M020_271,339,105992,104919,tournament_rank_unique,False,,1,1,True,0,0
 2018,atp,2018_1_brisbane_brisbane_international_2018-01-01_R32_ebden_m_tiafoe_f,2018-M020_280,339,105051,126207,tournament_rank_unique,False,,1,1,True,0,0
 2018,atp,2018_1_brisbane_brisbane_international_2018-01-01_R32_zverev_m_smith_j_p,2018-M020_277,339,104999,105441,tournament_rank_unique,False,,1,1,True,0,0
