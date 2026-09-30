@@ -1,4 +1,5 @@
-"""High-level Sackmann workflows: build/update the tournament-summary table.
+"""High-level Sackmann workflows: build/update the tournament-summary table,
+and load tour-level singles matches enriched with per-set score features.
 
     from tennis_data_pipeline.workflows.sackmann import build_sackmann_tournaments
 
@@ -12,6 +13,7 @@ Paths default to `settings.paths.clean` joined with `sackmann.clean_dir_name`
 
 from __future__ import annotations
 
+from .matches import load_local_matches, load_matches
 from .tournaments import (
     build_sackmann_tournaments,
     tournament_inconsistencies_path,
@@ -20,6 +22,8 @@ from .tournaments import (
 
 __all__ = [
     "build_sackmann_tournaments",
+    "load_local_matches",
+    "load_matches",
     "tournament_inconsistencies_path",
     "tournament_table_path",
 ]

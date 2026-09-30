@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from pydantic import field_validator
@@ -23,6 +24,20 @@ class SackmannConfig(StrictModel):
     tournament_dir_name: str = "tournaments"
     tournament_filename_template: str = "sackmann_{tour}_tournaments.csv"
     tournament_inconsistencies_filename_template: str = "sackmann_{tour}_tournament_inconsistencies.csv"
+
+    # Local clone of the archive repo, used by `loader.sackmann.LocalSackmannClient` to
+    # read files from disk instead of downloading them. Relative paths resolve against
+    # `paths.project_dir`, same as the `paths.*_dir` settings. None (unset) means no
+    # local clone is configured - only the network client can be used.
+    local_dir: Path | str | None = None
+
+    @field_validator("local_dir", mode="before")
+    @classmethod
+    def normalize_local_dir(cls, value: Any) -> Any:
+        """Fall back to unset (None) if unset or an unresolved env placeholder."""
+        if value is None or _is_unresolved_env_placeholder(value):
+            return None
+        return str(value)
 
     @field_validator("base_url", mode="before")
     @classmethod

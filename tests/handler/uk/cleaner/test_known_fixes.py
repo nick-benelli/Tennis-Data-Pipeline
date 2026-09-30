@@ -142,6 +142,8 @@ def test_fix_wta_category_typos() -> None:
             "Comment": ["Completed", "Walkoer", "Retired"],
             "Surface": ["Hard", "Greenset", "Clay"],
             "Best of": [3, 5, 3],
+            "WTA": [36, 1, 2],
+            "Date": pd.to_datetime(["2023-07-24", "2007-01-01", "2022-07-25"]),
         }
     )
 
@@ -151,3 +153,23 @@ def test_fix_wta_category_typos() -> None:
     assert list(result["Comment"]) == ["Completed", "Walkover", "Retired"]
     assert list(result["Surface"]) == ["Hard", "Hard", "Clay"]
     assert list(result["Best of"]) == [3, 3, 3]
+
+
+def test_fix_wta_category_typos_corrects_warsaw_2023_surface_only() -> None:
+    """The 2023 Warsaw/Poland Open (event id 36) is fixed to Hard; other Warsaw
+    editions (same event id, different year) and other 2023 events are untouched.
+    """
+    df = pd.DataFrame(
+        {
+            "Tier": ["WTA250", "WTA250", "WTA250"],
+            "Comment": ["Completed", "Completed", "Completed"],
+            "Surface": ["Clay", "Clay", "Clay"],
+            "Best of": [3, 3, 3],
+            "WTA": [36, 36, 20],
+            "Date": pd.to_datetime(["2023-07-24", "2022-07-25", "2023-01-02"]),
+        }
+    )
+
+    result = known_fixes.fix_wta_category_typos(df)
+
+    assert list(result["Surface"]) == ["Hard", "Clay", "Clay"]

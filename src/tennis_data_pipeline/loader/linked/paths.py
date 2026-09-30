@@ -1,14 +1,10 @@
-"""Locate the formalized per-year UK<->Sackmann linkage outputs (data/linked/{tour}/{year}/).
-
-See `mapper.matches.uk_sackmann.outputs` for how these tables are built, and
-`workflows.mapper.matches.uk_sackmann` for the layer that writes them.
-"""
+"""Path resolution for the per-year UK<->Sackmann linkage outputs (data/linked/{tour}/{year}/)."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from ..config import settings
+from ...config import settings
 
 
 def year_output_dir(tour: str, year: int, linked_dir: Path | None = None) -> Path:

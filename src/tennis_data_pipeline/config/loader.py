@@ -192,7 +192,7 @@ class _SettingsProxy:
         return getattr(get_settings(), name)
 
 
-settings = _SettingsProxy()
+settings: AppConfig = _SettingsProxy()
 
 
 __all__ = [

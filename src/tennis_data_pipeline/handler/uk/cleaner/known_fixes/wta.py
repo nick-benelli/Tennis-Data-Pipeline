@@ -995,8 +995,15 @@ def fix_wta_category_typos(df: pd.DataFrame) -> pd.DataFrame:
     | Comment  | Walkoer        | Walkover | 1, 2007                              |
     | Surface  | Greenset       | Hard     | 31, 2007 (Sunfeast Open)             |
     | Best of  | 5              | 3        | 1, 2007 (Pacific Life Open)          |
+    | Surface  | Clay           | Hard     | 30, 2023 (Warsaw/Poland Open, id 36) |
 
     Greenset is a hard-court surface brand name; WTA singles is always best-of-3.
+    Warsaw's Poland Open (raw event id 36) moved to outdoor hard courts for the
+    first time in 2023 (confirmed against
+    https://en.wikipedia.org/wiki/2023_WTA_Poland_Open and Sackmann's own
+    surface for the same matches) - the raw source kept recording "Clay",
+    carried over from the event's clay-court history every other year
+    (2007-2022).
 
     Must run before `Tier`/`Comment`/`Surface` are cast to `category` dtype,
     since assigning a value that isn't an existing category raises.
@@ -1009,5 +1016,8 @@ def fix_wta_category_typos(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[df["Comment"] == "Walkoer", "Comment"] = "Walkover"
     df.loc[df["Surface"] == "Greenset", "Surface"] = "Hard"
     df.loc[df["Best of"] != 3, "Best of"] = 3
+
+    warsaw_2023 = (df["WTA"] == 36) & (df["Date"].dt.year == 2023)
+    df.loc[warsaw_2023, "Surface"] = "Hard"
 
     return df

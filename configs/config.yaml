@@ -60,6 +60,9 @@ sackmann:
   tournament_dir_name: tournaments
   tournament_filename_template: "sackmann_{tour}_tournaments.csv"
   tournament_inconsistencies_filename_template: "sackmann_{tour}_tournament_inconsistencies.csv"
+  # Local clone of Aneeshers/tennis-sackmann-archive, read by loader.sackmann.LocalSackmannClient.
+  # Relative like paths.*_dir: resolved against paths.project_dir, not this file's location.
+  local_dir: ../tennis-sackmann-archive
 
 # Cross-source tournament id mapping (data/mapping/) - see mapper/tournaments.py
 mapping:
