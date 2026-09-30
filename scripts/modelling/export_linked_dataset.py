@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 _TOURS = ("atp", "wta")
 _OUTPUT_DIR_ENV_VAR = "TENNIS_ML_EXPORT_DIR"
 # Relative to --output-dir/$TENNIS_ML_EXPORT_DIR (the destination repo's root).
-_RELATIVE_PATH_TEMPLATE = "data/clean/matches/{tour}/sackmann_uk_{tour}_{year}_matches"
+_RELATIVE_PATH_TEMPLATE = "data/raw/matches/{tour}/sackmann_uk_{tour}_{year}_matches"
 
 
 def _env_default_output_dir() -> Path | None:
