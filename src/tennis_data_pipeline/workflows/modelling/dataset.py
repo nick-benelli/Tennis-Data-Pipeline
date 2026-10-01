@@ -128,10 +128,15 @@ LINKAGE_QA_COLUMNS = ["match_method", "review_flag", "data_quality_flag"]
 MODEL_COLUMNS = ["tour"] + CORE_SACKMANN_COLUMNS + UK_SUPPLEMENTAL_COLUMNS + LINKAGE_QA_COLUMNS
 
 
-def build_match_dataset(tour: Tour | str, year: int) -> pd.DataFrame:
-    """Merge one tour+year's Sackmann and UK-enriched matches into the curated model columns."""
+def build_match_dataset(tour: Tour | str, year: int, *, chronological: bool = False) -> pd.DataFrame:
+    """Merge one tour+year's Sackmann and UK-enriched matches into the curated model columns.
+
+    Pass `chronological=True` to load the Sackmann side in chronological
+    order (see `workflows.sackmann.matches.load_local_matches`) - the inner
+    join preserves that row order (one UK match per `canonical_match_key`).
+    """
     tour = Tour(str(tour).lower())
-    df_sack = sackmann_matches.load_local_matches(tour, [year])
+    df_sack = sackmann_matches.load_local_matches(tour, [year], chronological=chronological)
     df_uk = linked_loader.load_enriched_matches(tour.value, year)
 
     df_merge = pd.merge(df_sack, df_uk, how="inner", on="canonical_match_key", suffixes=("_sack", "_uk"))
@@ -141,9 +146,11 @@ def build_match_dataset(tour: Tour | str, year: int) -> pd.DataFrame:
     return df_merge[MODEL_COLUMNS]
 
 
-def build_match_dataset_for_years(tour: Tour | str, years: Iterable[int]) -> pd.DataFrame:
+def build_match_dataset_for_years(
+    tour: Tour | str, years: Iterable[int], *, chronological: bool = False
+) -> pd.DataFrame:
     """Concatenate `build_match_dataset` across several years for one tour."""
-    frames = [build_match_dataset(tour, year) for year in years]
+    frames = [build_match_dataset(tour, year, chronological=chronological) for year in years]
     return pd.concat(frames, ignore_index=True)
 
 

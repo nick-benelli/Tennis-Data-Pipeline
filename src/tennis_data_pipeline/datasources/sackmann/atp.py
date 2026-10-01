@@ -18,6 +18,7 @@ def _load_level_year(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download and (optionally) clean one ATP season for a given match level."""
     client = client or SackmannClient()
@@ -25,7 +26,7 @@ def _load_level_year(
     df = loader(client, year)
 
     if clean:
-        df = clean_matches(df)
+        df = clean_matches(df, chronological=chronological)
 
     df = df.copy()
     df["source_year"] = year
@@ -43,6 +44,7 @@ def _load_level_years(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download and concatenate multiple ATP seasons for a given match level."""
     client = client or SackmannClient()
@@ -54,6 +56,7 @@ def _load_level_years(
             match_level=match_level,
             client=client,
             clean=clean,
+            chronological=chronological,
         )
         for year in years
     ]
@@ -75,6 +78,7 @@ def _load_level_range(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download an inclusive ATP year range for a given match level."""
     if end_year < start_year:
@@ -86,6 +90,7 @@ def _load_level_range(
         match_level=match_level,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -94,6 +99,7 @@ def load_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one ATP season of tour-level singles matches."""
     return _load_level_year(
@@ -102,6 +108,7 @@ def load_year(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -110,6 +117,7 @@ def load_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of tour-level singles matches."""
     return _load_level_years(
@@ -118,6 +126,7 @@ def load_years(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -127,6 +136,7 @@ def load_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of tour-level singles matches."""
     return _load_level_range(
@@ -136,6 +146,7 @@ def load_range(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -144,6 +155,7 @@ def load_qual_chall_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one ATP season of qualifying + Challenger singles matches."""
     return _load_level_year(
@@ -152,6 +164,7 @@ def load_qual_chall_year(
         match_level=MatchLevel.QUAL_CHALL,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -160,6 +173,7 @@ def load_qual_chall_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of qualifying + Challenger singles matches."""
     return _load_level_years(
@@ -168,6 +182,7 @@ def load_qual_chall_years(
         match_level=MatchLevel.QUAL_CHALL,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -177,6 +192,7 @@ def load_qual_chall_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of qualifying + Challenger singles matches."""
     return _load_level_range(
@@ -186,6 +202,7 @@ def load_qual_chall_range(
         match_level=MatchLevel.QUAL_CHALL,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -194,6 +211,7 @@ def load_futures_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one ATP season of Futures/ITF World Tennis Tour singles matches."""
     return _load_level_year(
@@ -202,6 +220,7 @@ def load_futures_year(
         match_level=MatchLevel.FUTURES,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -210,6 +229,7 @@ def load_futures_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of Futures/ITF World Tennis Tour singles matches."""
     return _load_level_years(
@@ -218,6 +238,7 @@ def load_futures_years(
         match_level=MatchLevel.FUTURES,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -227,6 +248,7 @@ def load_futures_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of Futures/ITF World Tennis Tour singles matches."""
     return _load_level_range(
@@ -236,6 +258,7 @@ def load_futures_range(
         match_level=MatchLevel.FUTURES,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -244,6 +267,7 @@ def load_doubles_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one ATP season of doubles matches.
 
@@ -256,7 +280,7 @@ def load_doubles_year(
     df = client.load_atp_doubles_matches(year)
 
     if clean:
-        df = clean_doubles_matches(df)
+        df = clean_doubles_matches(df, chronological=chronological)
 
     df = df.copy()
     df["source_year"] = year
@@ -271,6 +295,7 @@ def load_doubles_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of doubles matches."""
     client = client or SackmannClient()
@@ -280,6 +305,7 @@ def load_doubles_years(
             year,
             client=client,
             clean=clean,
+            chronological=chronological,
         )
         for year in years
     ]
@@ -299,6 +325,7 @@ def load_doubles_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of doubles matches."""
     if end_year < start_year:
@@ -308,6 +335,7 @@ def load_doubles_range(
         range(start_year, end_year + 1),
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 

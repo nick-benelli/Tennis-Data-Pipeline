@@ -18,6 +18,7 @@ def _load_level_year(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download and (optionally) clean one WTA season for a given match level."""
     client = client or SackmannClient()
@@ -25,7 +26,7 @@ def _load_level_year(
     df = loader(client, year)
 
     if clean:
-        df = clean_matches(df)
+        df = clean_matches(df, chronological=chronological)
 
     df = df.copy()
     df["source_year"] = year
@@ -43,6 +44,7 @@ def _load_level_years(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download and concatenate multiple WTA seasons for a given match level."""
     client = client or SackmannClient()
@@ -54,6 +56,7 @@ def _load_level_years(
             match_level=match_level,
             client=client,
             clean=clean,
+            chronological=chronological,
         )
         for year in years
     ]
@@ -75,6 +78,7 @@ def _load_level_range(
     match_level: MatchLevel,
     client: SackmannClient | None,
     clean: bool,
+    chronological: bool,
 ) -> pd.DataFrame:
     """Download an inclusive WTA year range for a given match level."""
     if end_year < start_year:
@@ -86,6 +90,7 @@ def _load_level_range(
         match_level=match_level,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -94,6 +99,7 @@ def load_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one WTA season of tour-level singles matches."""
     return _load_level_year(
@@ -102,6 +108,7 @@ def load_year(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -110,6 +117,7 @@ def load_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple WTA seasons of tour-level singles matches."""
     return _load_level_years(
@@ -118,6 +126,7 @@ def load_years(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -127,6 +136,7 @@ def load_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive WTA year range of tour-level singles matches."""
     return _load_level_range(
@@ -136,6 +146,7 @@ def load_range(
         match_level=MatchLevel.MAIN,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -144,6 +155,7 @@ def load_qual_itf_year(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load one WTA season of qualifying + ITF singles matches."""
     return _load_level_year(
@@ -152,6 +164,7 @@ def load_qual_itf_year(
         match_level=MatchLevel.QUAL_ITF,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -160,6 +173,7 @@ def load_qual_itf_years(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple WTA seasons of qualifying + ITF singles matches."""
     return _load_level_years(
@@ -168,6 +182,7 @@ def load_qual_itf_years(
         match_level=MatchLevel.QUAL_ITF,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 
@@ -177,6 +192,7 @@ def load_qual_itf_range(
     *,
     client: SackmannClient | None = None,
     clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive WTA year range of qualifying + ITF singles matches."""
     return _load_level_range(
@@ -186,6 +202,7 @@ def load_qual_itf_range(
         match_level=MatchLevel.QUAL_ITF,
         client=client,
         clean=clean,
+        chronological=chronological,
     )
 
 

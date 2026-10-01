@@ -30,12 +30,14 @@ def test_load_matches_downloads_via_the_tour_specific_module_and_adds_score_feat
     monkeypatch.setattr(
         matches_module.atp,
         "load_years",
-        lambda years: load_calls.append(list(years)) or _raw_matches(),
+        lambda years, *, chronological=False: (
+            load_calls.append((list(years), chronological)) or _raw_matches()
+        ),
     )
 
     result = load_matches(Tour.ATP, [2021])
 
-    assert load_calls == [[2021]]
+    assert load_calls == [([2021], False)]
     assert result.loc[0, "match_status"] == "completed"
     assert (result.loc[0, "set1_winner"], result.loc[0, "set1_loser"]) == (6, 2)
     assert (result.loc[0, "set2_winner"], result.loc[0, "set2_loser"]) == (6, 3)
@@ -48,10 +50,44 @@ def test_load_local_matches_loads_from_a_local_clone_and_adds_score_features(
     monkeypatch.setattr(
         matches_module.local_sackmann,
         "load_wta_years",
-        lambda years, *, local_dir: load_calls.append((list(years), local_dir)) or _raw_matches(),
+        lambda years, *, local_dir, chronological=False: (
+            load_calls.append((list(years), local_dir, chronological)) or _raw_matches()
+        ),
     )
 
     result = load_local_matches(Tour.WTA, [2021], local_dir=tmp_path)
 
-    assert load_calls == [([2021], tmp_path)]
+    assert load_calls == [([2021], tmp_path, False)]
     assert result.loc[0, "sets_played"] == 2
+
+
+def test_load_matches_passes_chronological_through(monkeypatch: pytest.MonkeyPatch) -> None:
+    load_calls = []
+    monkeypatch.setattr(
+        matches_module.atp,
+        "load_years",
+        lambda years, *, chronological=False: (
+            load_calls.append((list(years), chronological)) or _raw_matches()
+        ),
+    )
+
+    load_matches(Tour.ATP, [2021], chronological=True)
+
+    assert load_calls == [([2021], True)]
+
+
+def test_load_local_matches_passes_chronological_through(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    load_calls = []
+    monkeypatch.setattr(
+        matches_module.local_sackmann,
+        "load_wta_years",
+        lambda years, *, local_dir, chronological=False: (
+            load_calls.append((list(years), local_dir, chronological)) or _raw_matches()
+        ),
+    )
+
+    load_local_matches(Tour.WTA, [2021], local_dir=tmp_path, chronological=True)
+
+    assert load_calls == [([2021], tmp_path, True)]

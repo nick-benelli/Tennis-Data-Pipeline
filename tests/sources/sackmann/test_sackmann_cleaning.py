@@ -150,3 +150,29 @@ def test_clean_doubles_matches_does_not_touch_singles_only_columns() -> None:
 
     assert "winner_id" not in df.columns
     assert "winner_name" not in df.columns
+
+
+def test_clean_matches_default_leaves_final_to_first_round_order_untouched() -> None:
+    """Without `chronological=True`, rows stay in the raw final-to-first-round order."""
+    rows = [
+        dict(_RAW_ROW, match_num="226", round="F"),
+        dict(_RAW_ROW, match_num="100", round="R128"),
+    ]
+
+    df = clean_matches(pd.DataFrame(rows))
+
+    assert df["round"].tolist() == ["F", "R128"]
+
+
+def test_clean_matches_chronological_sorts_by_tourney_date_then_match_num() -> None:
+    """`chronological=True` reorders to tournament start date, then round progression."""
+    rows = [
+        dict(_RAW_ROW, tourney_id="2026-580", tourney_date="20260119", match_num="226", round="F"),
+        dict(_RAW_ROW, tourney_id="2026-580", tourney_date="20260119", match_num="100", round="R128"),
+        dict(_RAW_ROW, tourney_id="2026-9900", tourney_date="20260105", match_num="300", round="F"),
+    ]
+
+    df = clean_matches(pd.DataFrame(rows), chronological=True)
+
+    assert df["match_num"].tolist() == [300, 100, 226]
+    assert df["round"].tolist() == ["F", "R128", "F"]

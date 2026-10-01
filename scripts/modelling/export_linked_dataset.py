@@ -23,6 +23,7 @@ Usage:
     python scripts/modelling/export_linked_dataset.py
     python scripts/modelling/export_linked_dataset.py --tour atp 2015-2020
     python scripts/modelling/export_linked_dataset.py --format csv --output-dir /tmp/out
+    python scripts/modelling/export_linked_dataset.py --chronological
 """
 
 from __future__ import annotations
@@ -87,6 +88,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default="parquet",
         help="Output file format (default: parquet)",
     )
+    parser.add_argument(
+        "--chronological",
+        action="store_true",
+        help="Order matches chronologically instead of the raw archive's final-to-first-round order",
+    )
     parser.add_argument("--verbose", action="store_true", help="Enable debug logging")
 
     args = parser.parse_args(argv)
@@ -145,7 +151,7 @@ def main(argv: list[str] | None = None) -> int:
 
         for year in years:
             try:
-                df = build_match_dataset(tour, year)
+                df = build_match_dataset(tour, year, chronological=args.chronological)
             except Exception:
                 logger.exception("%s %d: failed to build dataset", tour.value.upper(), year)
                 failed.append(f"{tour.value}_{year}")

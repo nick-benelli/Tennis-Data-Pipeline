@@ -66,136 +66,246 @@ class LocalSackmannClient(SackmannClient):
 # -------- ATP --------
 
 
-def load_atp_year(year: int, *, local_dir: Path | str | None = None, clean: bool = True) -> pd.DataFrame:
+def load_atp_year(
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
+) -> pd.DataFrame:
     """Load one ATP season of tour-level singles matches from a local archive clone."""
-    return atp.load_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of tour-level singles matches from a local archive clone."""
-    return atp.load_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of tour-level singles matches from a local archive clone."""
-    return atp.load_range(start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_range(
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
+    )
 
 
 def load_atp_qual_chall_year(
-    year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
 ) -> pd.DataFrame:
     """Load one ATP season of qualifying + Challenger singles matches from a local archive clone."""
-    return atp.load_qual_chall_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_qual_chall_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_qual_chall_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of qualifying + Challenger matches from a local archive clone."""
-    return atp.load_qual_chall_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_qual_chall_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_qual_chall_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of qualifying + Challenger matches from a local clone."""
     return atp.load_qual_chall_range(
-        start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
     )
 
 
 def load_atp_futures_year(
-    year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
 ) -> pd.DataFrame:
     """Load one ATP season of Futures/ITF World Tennis Tour matches from a local archive clone."""
-    return atp.load_futures_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_futures_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_futures_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of Futures/ITF World Tennis Tour matches from a local clone."""
-    return atp.load_futures_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_futures_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_futures_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of Futures/ITF matches from a local archive clone."""
     return atp.load_futures_range(
-        start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
     )
 
 
 def load_atp_doubles_year(
-    year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
 ) -> pd.DataFrame:
     """Load one ATP season of doubles matches from a local clone (archive covers 2000-2020)."""
-    return atp.load_doubles_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_doubles_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_doubles_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple ATP seasons of doubles matches from a local archive clone."""
-    return atp.load_doubles_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return atp.load_doubles_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_atp_doubles_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive ATP year range of doubles matches from a local archive clone."""
     return atp.load_doubles_range(
-        start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
     )
 
 
 # -------- WTA --------
 
 
-def load_wta_year(year: int, *, local_dir: Path | str | None = None, clean: bool = True) -> pd.DataFrame:
+def load_wta_year(
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
+) -> pd.DataFrame:
     """Load one WTA season of tour-level singles matches from a local archive clone."""
-    return wta.load_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return wta.load_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_wta_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple WTA seasons of tour-level singles matches from a local archive clone."""
-    return wta.load_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return wta.load_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_wta_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive WTA year range of tour-level singles matches from a local archive clone."""
-    return wta.load_range(start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean)
+    return wta.load_range(
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
+    )
 
 
 def load_wta_qual_itf_year(
-    year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    year: int, *, local_dir: Path | str | None = None, clean: bool = True, chronological: bool = False
 ) -> pd.DataFrame:
     """Load one WTA season of qualifying + ITF singles matches from a local archive clone."""
-    return wta.load_qual_itf_year(year, client=LocalSackmannClient(local_dir), clean=clean)
+    return wta.load_qual_itf_year(
+        year, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_wta_qual_itf_years(
-    years: Iterable[int], *, local_dir: Path | str | None = None, clean: bool = True
+    years: Iterable[int],
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load multiple WTA seasons of qualifying + ITF singles matches from a local archive clone."""
-    return wta.load_qual_itf_years(years, client=LocalSackmannClient(local_dir), clean=clean)
+    return wta.load_qual_itf_years(
+        years, client=LocalSackmannClient(local_dir), clean=clean, chronological=chronological
+    )
 
 
 def load_wta_qual_itf_range(
-    start_year: int, end_year: int, *, local_dir: Path | str | None = None, clean: bool = True
+    start_year: int,
+    end_year: int,
+    *,
+    local_dir: Path | str | None = None,
+    clean: bool = True,
+    chronological: bool = False,
 ) -> pd.DataFrame:
     """Load an inclusive WTA year range of qualifying + ITF matches from a local archive clone."""
     return wta.load_qual_itf_range(
-        start_year, end_year, client=LocalSackmannClient(local_dir), clean=clean
+        start_year,
+        end_year,
+        client=LocalSackmannClient(local_dir),
+        clean=clean,
+        chronological=chronological,
     )
 
 
