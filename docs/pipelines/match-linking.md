@@ -179,20 +179,30 @@ not this merge's. `classify_rank_candidates()` then computes, per candidate:
 
 - `source_candidate_count` / `canonical_candidate_count` — how many
   counterparts each side's key maps to among *these* candidates.
-- `is_unique` — `True` only when **both** counts are `1`. This is the sole
-  acceptance condition; nothing else here can promote or reject a
-  candidate.
+- `is_unique` — `True` only when **both** counts are `1`. Counts are computed
+  before checking contradictory identity evidence; filtering cannot promote
+  an ambiguous candidate to a unique one.
 - `round_agrees`, `winner_rank_points_diff`, `loser_rank_points_diff` —
   corroborating evidence only, attached for later review but never used to
   filter/accept a candidate at this stage.
 
-Accepted rows (`is_unique`) get `match_method =
+Before accepting unique candidates, `build_rank_links()` defers those whose
+nonmissing rounds disagree **and** whose available winner or loser names fail
+`player_name_compatible()`. Missing/blank names are not identity conflicts.
+Name differences alone and round differences alone do not reject a rank link:
+this preserves legitimate naming variants and correctly linked matches with
+incorrect source rounds. This narrow guard addresses the Wimbledon 2014
+Halep–Bencic / Halep–Diyas swap; it does not detect same-round identity collisions.
+
+Accepted rows get `match_method =
 MATCH_METHOD_TOURNAMENT_RANK_UNIQUE`, `review_flag = False`, and a final
 assertion that `source_match_key`/`canonical_match_key` really are 1:1 (a
 should-never-happen construction guard). Everything else splits into
 `ambiguous` (candidate existed, just not uniquely) and `unmatched_uk_rows`
 (no candidate produced at all — missing tournament id, missing rank, or
-genuinely no counterpart).
+genuinely no counterpart, or a unique candidate deferred by the conflict guard).
+Both endpoints of deferred links remain available for Pass 2, which can recover
+the correct match using round and player names and report `rank_mismatch`.
 
 ## 4. Pass 2: tournament+round-blocked name pair (`build_name_pair_links`)
 

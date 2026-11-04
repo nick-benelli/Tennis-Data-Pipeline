@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
+from .names import player_name_compatible
 from .schema import CROSSWALK_COLUMNS, MATCH_METHOD_TOURNAMENT_RANK_UNIQUE, RANK_CANDIDATE_KEY_COLUMNS
 from .tournament_ids import attach_tournament_ids
 
@@ -85,8 +86,8 @@ def classify_rank_candidates(candidates: pd.DataFrame) -> pd.DataFrame:
 
     - `source_candidate_count` / `canonical_candidate_count`: how many
       counterpart rows each side's match key maps to among these candidates.
-    - `is_unique`: True only when both counts equal 1 - the sole condition
-      under which a candidate is safe to accept.
+    - `is_unique`: True only when both counts equal 1. Acceptance also
+      checks conflicting name/round evidence in `build_rank_links`.
     - `round_agrees`, `winner_rank_points_diff`, `loser_rank_points_diff`:
       corroborating evidence only; they never filter/reject a candidate here.
     """
@@ -119,6 +120,20 @@ def classify_rank_candidates(candidates: pd.DataFrame) -> pd.DataFrame:
     return candidates
 
 
+def _has_name_conflict(candidate: pd.Series) -> bool:
+    """Return whether an available winner or loser name pair is incompatible."""
+    for side in ("winner", "loser"):
+        source = candidate.get(f"{side}_name_uk")
+        canonical = candidate.get(f"{side}_name_sk")
+        if pd.isna(source) or pd.isna(canonical):
+            continue
+        if not str(source).strip() or not str(canonical).strip():
+            continue
+        if not player_name_compatible(source, canonical):
+            return True
+    return False
+
+
 def build_rank_links(
     uk_df: pd.DataFrame,
     sackmann_df: pd.DataFrame,
@@ -137,7 +152,8 @@ def build_rank_links(
       silently dropped.
     - `unmatched_uk_rows`: `uk_df` rows (identified by `source_match_key`)
       that produced no rank-pair candidate at all, e.g. missing tournament
-      id, missing rank, or no counterpart Sackmann row.
+      id, missing rank, or no counterpart Sackmann row; also includes unique
+      candidates deferred because player-name and known-round evidence conflict.
 
     Raises `ValueError` if `source_match_key` isn't unique in `uk_df`, or the
     derived `canonical_match_key` isn't unique in `sackmann_df`.
@@ -155,6 +171,15 @@ def build_rank_links(
     candidates = classify_rank_candidates(generate_rank_candidates(uk_linked, sackmann_linked))
 
     accepted = candidates.loc[candidates["is_unique"]].copy()
+    # Rank uniqueness cannot establish identity when both names and rounds
+    # contradict it (e.g. Halep-Bencic / Halep-Diyas at Wimbledon 2014).
+    # Check only after counting candidates so no ambiguous group is promoted.
+    conflicting_rounds = (
+        accepted["round_uk"].notna() & accepted["round_sk"].notna() & ~accepted["round_agrees"]
+    )
+    if conflicting_rounds.any():
+        conflicts = accepted.loc[conflicting_rounds].apply(_has_name_conflict, axis=1)
+        accepted = accepted.drop(index=conflicts.index[conflicts])
     accepted["match_method"] = MATCH_METHOD_TOURNAMENT_RANK_UNIQUE
     accepted["review_flag"] = False
     if (
@@ -166,8 +191,7 @@ def build_rank_links(
 
     ambiguous = candidates.loc[~candidates["is_unique"]].copy()
 
-    unmatched_uk_rows = uk_linked.loc[
-        ~uk_linked["source_match_key"].isin(candidates["source_match_key"])
-    ].copy()
+    represented_keys = pd.concat([accepted["source_match_key"], ambiguous["source_match_key"]])
+    unmatched_uk_rows = uk_linked.loc[~uk_linked["source_match_key"].isin(represented_keys)].copy()
 
     return accepted, ambiguous, unmatched_uk_rows
